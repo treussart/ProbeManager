@@ -2,7 +2,7 @@
 Probe Manager
 =============
 
-|Licence| |Code Health| |Coverage Status| |Documentation Status|
+|Licence| |Code_Health| |Coverage_Status| |Documentation_Status|
 
 +------------------+--------------------+
 | Status           | Operating system   |
@@ -10,15 +10,21 @@ Probe Manager
 | |Build Status|   | Linux x86\_64      |
 +------------------+--------------------+
 
-.. |Licence| image:: http://img.shields.io/badge/license-GPLv3-blue.svg
-.. |Code Health| image:: https://landscape.io/github/matleses/Transilien-Domoticz/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/matleses/Transilien-Domoticz/master
-.. |Coverage Status| image:: https://coveralls.io/repos/github/matleses/Transilien-Domoticz/badge.svg?branch=master
-   :target: https://coveralls.io/github/matleses/Transilien-Domoticz?branch=master
-.. |Documentation Status| image:: https://readthedocs.org/projects/transilien-domoticz/badge/?version=latest
-   :target: http://transilien-domoticz.readthedocs.io/?badge=latest
-.. |Build Status| image:: https://travis-ci.org/matleses/Transilien-Domoticz.svg?branch=master
-   :target: https://travis-ci.org/matleses/Transilien-Domoticz
+.. |Licence| image:: https://img.shields.io/github/license/matleses/ProbeManager.svg
+.. |Stars| image:: https://img.shields.io/github/stars/matleses/ProbeManager.svg
+.. |Forks| image:: https://img.shields.io/github/forks/matleses/ProbeManager.svg
+.. |Downloads| image:: https://img.shields.io/github/downloads/matleses/ProbeManager/total.svg
+.. |Version| image:: https://img.shields.io/github/tag/matleses/ProbeManager.svg
+.. |Commits| image:: https://img.shields.io/github/commits-since/matleses/ProbeManager/latest.svg
+.. |Code_Health| image:: https://landscape.io/github/matleses/ProbeManager/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/matleses/ProbeManager/master
+.. |Coverage_Status| image:: https://coveralls.io/repos/github/matleses/ProbeManager/badge.svg?branch=master
+   :target: https://coveralls.io/github/matleses/ProbeManager?branch=master
+.. |Documentation_Status| image:: https://readthedocs.org/projects/ProbeManager/badge/?version=latest
+   :target: http://ProbeManager.readthedocs.io/?badge=latest
+.. |Build_Status| image:: https://travis-ci.org/matleses/ProbeManager.svg?branch=master
+   :target: https://travis-ci.org/matleses/ProbeManager
+
 
 
 Presentation
