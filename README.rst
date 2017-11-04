@@ -5,7 +5,7 @@ Probe Manager
 |Licence| |Version|
 
 
-|Code_Health| |Coverage_Status| |Documentation_Status|
+|Code_Health| |Coverage_Status|
 
 +------------------+--------------------+
 | Status           | Operating system   |
@@ -23,8 +23,6 @@ Probe Manager
    :target: https://landscape.io/github/matleses/ProbeManager/master
 .. |Coverage_Status| image:: https://coveralls.io/repos/github/matleses/ProbeManager/badge.svg?branch=master
    :target: https://coveralls.io/github/matleses/ProbeManager?branch=master
-.. |Documentation_Status| image:: https://readthedocs.org/projects/ProbeManager/badge/?version=latest
-   :target: http://ProbeManager.readthedocs.io/?badge=latest
 .. |Build_Status| image:: https://travis-ci.org/matleses/ProbeManager.svg?branch=master
    :target: https://travis-ci.org/matleses/ProbeManager
 
