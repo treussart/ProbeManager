@@ -41,7 +41,7 @@ ProbeManager is an application that centralizes the management of intrusion dete
 For the moment the NIDS Suricata is implemented and Bro and OSSEC are being implemented.
 
 features
-^^^^^^^^
+========
 
  * Search rules in those of all probes.
  * List of installed probes and their status.
@@ -49,7 +49,7 @@ features
  * API.
 
 TODO
-^^^^
+====
 
  * Create an IHM for show all the running tasks.
 
