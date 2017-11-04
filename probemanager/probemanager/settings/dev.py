@@ -123,4 +123,5 @@ INSTALLED_APPS = BASE_APPS + DEV_APPS
 
 for app in DEV_APPS:
     LOGGING['loggers'].update({app: {'handlers': ['console', 'file'], 'level': 'DEBUG', 'formatter': 'simple', 'propagate': True}})
-    importlib.import_module(app + '.settings')
+    if os.path.isfile(BASE_DIR + "/" + app + "/settings.py"):
+        importlib.import_module(app + '.settings')
