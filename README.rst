@@ -40,7 +40,7 @@ and machine detection probes on a system.
 ProbeManager is an application that centralizes the management of intrusion detection system.
 For the moment the NIDS Suricata is implemented and Bro and OSSEC are being implemented.
 
-features
+Features
 ========
 
  * Search rules in those of all probes.
