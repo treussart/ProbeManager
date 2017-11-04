@@ -36,7 +36,7 @@ def deploy_rules(probe_name):
             logger.error(traceback.print_exc())
             send_notification("Probe " + str(probe.name), e.__str__())
             return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": e.__str__()}
-        send_notification("Probe " + str(probe.name),"deployed rules successfully")
+        send_notification("Probe " + str(probe.name), "deployed rules successfully")
         return message
     else:
         send_notification("Probe " + str(probe.name), "Not enabled to deploy rules")

@@ -2,7 +2,10 @@
 Probe Manager
 =============
 
-|Licence| |Code_Health| |Coverage_Status| |Documentation_Status|
+|Licence| |Version| |Downloads| |Commits|
+
+
+|Code_Health| |Coverage_Status| |Documentation_Status|
 
 +------------------+--------------------+
 | Status           | Operating system   |

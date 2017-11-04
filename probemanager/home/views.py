@@ -20,7 +20,6 @@ def index(request):
     """
     Display all probes instances.
     """
-    probe_installed = list()
     instances = dict()
     for app in apps.get_app_configs():
         for model in app.get_models():

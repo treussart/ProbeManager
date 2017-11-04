@@ -12,7 +12,7 @@ def run(*args):
     #  call_command('graph_models suricata rules home -g -o docs/data/models_probemanager.png --settings=probemanager.settings.$arg')
     # Create index file  problem works without (solution le mettre dans script install.sh)
     template = """
-    
+
 {{ name }}
 {% for char in range(name|length) -%}
 ~
@@ -46,4 +46,3 @@ def run(*args):
         sys.exit(main(["-b html", dest + "/docs", dest + "/docs/_build/html"]))
     else:
         sys.exit(main(["-b html", settings.GIT_ROOT + "/docs", settings.GIT_ROOT + "/docs/_build/html"]))
-

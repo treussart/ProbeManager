@@ -150,5 +150,5 @@ def send_notification(title, body):
 
 
 @receiver(post_save, sender=User)
-def my_handler(sender,instance, **kwargs):
+def my_handler(sender, instance, **kwargs):
     send_notification(sender.__name__ + " created", str(instance.username) + " - " + str(instance.email))
