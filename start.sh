@@ -11,7 +11,7 @@ fi
 
 if [[ "$VIRTUAL_ENV" == "" ]]; then
     if [ ! -d venv ]; then
-        echo 'install before testing'
+        echo 'install before starting the server'
         exit
     else
         source venv/bin/activate

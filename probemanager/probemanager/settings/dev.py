@@ -2,6 +2,7 @@ from probemanager.settings.base import *
 from home.git import git_tag
 import configparser
 import os
+import importlib
 
 
 config = configparser.ConfigParser()
@@ -120,10 +121,6 @@ DATABASES = {
 DEV_APPS = ['suricata', 'bro']
 INSTALLED_APPS = BASE_APPS + DEV_APPS
 
-SURICATA_BINARY = config['SURICATA']['SURICATA_BINARY']
-SURICATA_CONFIG = config['SURICATA']['SURICATA_CONFIG']
-
-BRO_BINARY = config['BRO']['BRO_BINARY']
-
 for app in DEV_APPS:
     LOGGING['loggers'].update({app: {'handlers': ['console', 'file'], 'level': 'DEBUG', 'formatter': 'simple', 'propagate': True}})
+    importlib.import_module(app + '.settings')

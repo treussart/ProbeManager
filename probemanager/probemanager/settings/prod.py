@@ -3,6 +3,7 @@ from cryptography.fernet import Fernet
 import configparser
 import ast
 import os
+import importlib
 
 
 config = configparser.ConfigParser()
@@ -136,12 +137,7 @@ INSTALLED_APPS = BASE_APPS + PROD_APPS
 
 for app in PROD_APPS:
     LOGGING['loggers'].update({app: {'handlers': ['file'], 'level': 'INFO', 'formatter': 'simple', 'propagate': True}})
-
-
-SURICATA_BINARY = config['SURICATA']['SURICATA_BINARY']
-SURICATA_CONFIG = config['SURICATA']['SURICATA_CONFIG']
-
-BRO_BINARY = config['BRO']['BRO_BINARY']
+    importlib.import_module(app + '.settings')
 
 
 # SMTP
