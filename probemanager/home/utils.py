@@ -26,7 +26,7 @@ def create_upload_task(source):
 def create_reload_task(probe):
     try:
         PeriodicTask.objects.get(name=probe.name + "_reload_task")
-    except:
+    except PeriodicTask.DoesNotExist:
         PeriodicTask.objects.create(crontab=probe.scheduled_crontab,
                                     name=probe.name + "_reload_task",
                                     task='home.tasks.reload_probe',
@@ -38,7 +38,7 @@ def create_deploy_rules(probe, schedule=None):
         if schedule is None:
             try:
                 PeriodicTask.objects.get(name=probe.name + "_deploy_rules_" + probe.scheduled_crontab.__str__())
-            except:
+            except PeriodicTask.DoesNotExist:
                 PeriodicTask.objects.create(crontab=probe.scheduled_crontab,
                                             name=probe.name + "_deploy_rules_" + probe.scheduled_crontab.__str__(),
                                             task='home.tasks.deploy_rules',
