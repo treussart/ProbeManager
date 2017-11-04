@@ -1,2 +1,195 @@
-IN PROGRESS
+=============
+Probe Manager
+=============
+
+|Licence| |Code Health| |Coverage Status| |Documentation Status|
+
++------------------+--------------------+
+| Status           | Operating system   |
++==================+====================+
+| |Build Status|   | Linux x86\_64      |
++------------------+--------------------+
+
+.. |Licence| image:: http://img.shields.io/badge/license-GPLv3-blue.svg
+.. |Code Health| image:: https://landscape.io/github/matleses/Transilien-Domoticz/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/matleses/Transilien-Domoticz/master
+.. |Coverage Status| image:: https://coveralls.io/repos/github/matleses/Transilien-Domoticz/badge.svg?branch=master
+   :target: https://coveralls.io/github/matleses/Transilien-Domoticz?branch=master
+.. |Documentation Status| image:: https://readthedocs.org/projects/transilien-domoticz/badge/?version=latest
+   :target: http://transilien-domoticz.readthedocs.io/?badge=latest
+.. |Build Status| image:: https://travis-ci.org/matleses/Transilien-Domoticz.svg?branch=master
+   :target: https://travis-ci.org/matleses/Transilien-Domoticz
+
+
+Presentation
+~~~~~~~~~~~~
+
+It is common to note that many IDS which are installed on a system,
+are not updated, as well on the side of the software, as rules.
+This can be explained because maintenance and rule management are complicated.
+This observation made me want to develop an application that would better manage network
+and machine detection probes on a system.
+
+ProbeManager is an application that centralizes the management of intrusion detection system.
+For the moment the NIDS Suricata is implemented and Bro and OSSEC are being implemented.
+
+
+Some global features:
+ * Search rules in those of all probes.
+ * List of installed probes and their status.
+ * Push notifications (change of status, ...)
+ * API
+
+Features that depend on the type of probe:
+
+Suricata:
+ * Deployment of the probe.
+ * Configuration of the probe.
+ * Management of signatures and scripts Lua. (Editing, deleting ...)
+ * Signature and configuration tests.
+ * Signature tests via Pcap.
+ * Adding rules via HTTP or via upload file.
+ * Scheduling rules update via HTTP (EmergingThreat)
+ * Deployment planning.
+ * Grouping rules into groups.
+
+
+Installation
+~~~~~~~~~~~~
+
+Operating System
+================
+
+OSX and Debian are Supported.
+
+Requirements
+============
+
+-  Python3.
+-  Pip with access to repository
+-  Rabbitmq-server (installed with install script)
+-  Postgresql (installed with install script)
+
+Retrieve the project
+====================
+
+.. code-block:: sh
+
+    git clone --recursive https://github.com/matleses/ProbeManager.git
+
+Install
+=======
+
+
+For developer :
+---------------
+
+.. code-block:: sh
+
+    ./install.sh
+    ./start.sh
+
+For Production :
+----------------
+
+.. code-block:: sh
+
+    sudo ./install.sh prod [destination path]
+
+With Django server (not recommended) :
+
+.. code-block:: sh
+
+    [destination path]./start.sh prod
+
+With Apache (Only for Debian) :
+
+.. code-block:: sh
+
+     http://localhost
+
+Launch the tests
+================
+
+.. code-block:: sh
+
+    ./test.sh
+
+
+Open the file with a web browser :
+
+::
+
+    coverage_html/index.html
+
+
+Modules
+~~~~~~~
+
+
+Add a submodule
+===============
+
+.. code-block:: sh
+
+    git submodule add -b master --name suricata https://github.com/matleses/ProbeManager_Suricata.git probemanager/suricata
+
+Modules must respect a few rules:
+ * A file version.txt (generate by install script)
+ * A folder doc with a file index.rst
+ * A folder api with a variable urls_to_register into urls.py
+
+
+Documentation
+~~~~~~~~~~~~~
+
+
+Respect the standard : reStructuredText (RST).
+
+.. code-block:: sh
+
+    venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev --script-args -
+
+
+Open the file with a web browser :
+
+::
+
+    docs/_build/html/index.html
+
+
+Conventions
+~~~~~~~~~~~
+
+Respect the syntax and rules PEP8
+
+.. code-block:: sh
+
+    flake8 .
+
+
+Update
+~~~~~~
+
+
+Repository
+==========
+
+.. code-block:: sh
+
+    git pull origin master
+    git submodule foreach git pull origin master
+
+
+PIP Packets
 ===========
+
+.. code-block:: sh
+
+    See upgrades :
+    pip list --outdated --format=freeze
+    Apply upgrades :
+    pip list --outdated | cut -d' ' -f1 | xargs pip install --upgrade
+
+    Upgrade pip :
+    pip install --upgrade pip

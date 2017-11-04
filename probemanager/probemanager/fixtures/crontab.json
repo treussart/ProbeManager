@@ -1,0 +1,46 @@
+[
+{
+    "model": "django_celery_beat.crontabschedule",
+    "pk": 1,
+    "fields": {
+        "minute": "*/30",
+        "hour": "*",
+        "day_of_week": "*",
+        "day_of_month": "*",
+        "month_of_year": "*"
+    }
+},
+{
+    "model": "django_celery_beat.crontabschedule",
+    "pk": 2,
+    "fields": {
+        "minute": "0",
+        "hour": "*/1",
+        "day_of_week": "*",
+        "day_of_month": "*",
+        "month_of_year": "*"
+    }
+},
+{
+    "model": "django_celery_beat.crontabschedule",
+    "pk": 3,
+    "fields": {
+        "minute": "0",
+        "hour": "4",
+        "day_of_week": "0",
+        "day_of_month": "*",
+        "month_of_year": "*"
+    }
+},
+{
+    "model": "django_celery_beat.crontabschedule",
+    "pk": 4,
+    "fields": {
+        "minute": "0",
+        "hour": "4",
+        "day_of_week": "*",
+        "day_of_month": "*",
+        "month_of_year": "*"
+    }
+}
+]

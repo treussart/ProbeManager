@@ -1,0 +1,12 @@
+[report]
+omit =  */tests/*
+        venv/*
+        */apps.py
+        probemanager/probemanager/celery.py
+        probemanager/probemanager/settings/*
+        probemanager/manage.py
+        probemanager/runtests.py
+        migrations/*
+        */__init__.py
+[html]
+title = "ProbeManager Coverage report"

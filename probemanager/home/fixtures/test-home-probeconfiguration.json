@@ -1,0 +1,9 @@
+[
+{
+    "model": "home.probeconfiguration",
+    "pk": 1,
+    "fields": {
+        "name": "conf1"
+    }
+}
+]

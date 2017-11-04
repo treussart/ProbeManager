@@ -1,0 +1,16 @@
+[submodule "suricata"]
+	path = probemanager/suricata
+	url = https://github.com/matleses/ProbeManager_Suricata.git
+	branch = master
+[submodule "bro"]
+	path = probemanager/bro
+	url = https://github.com/matleses/ProbeManager_Bro.git
+	branch = master
+[submodule "ossec"]
+	path = probemanager/ossec
+	url = https://github.com/matleses/ProbeManager_Ossec.git
+	branch = master
+[submodule "checkcve"]
+	path = probemanager/checkcve
+	url = https://github.com/matleses/ProbeManager_CheckCVE.git
+	branch = master

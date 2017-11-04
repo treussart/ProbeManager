@@ -1,0 +1,27 @@
+{% extends "home/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="row">
+    <div class="col">
+        <div class="col-8">
+            {% for instance in instances %}
+                {% with instance|add:"/home.html" as template %}
+                {% include template %}
+                {% endwith %}
+                <hr/>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

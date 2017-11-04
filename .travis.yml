@@ -1,0 +1,22 @@
+notifications:
+  email:
+    recipients:
+      - matleses0@gmail.com
+    on_success: change # default: change
+    on_failure: always # default: always
+
+language: python
+
+python:
+  - "3.5"
+
+os:
+  - linux
+
+branches:
+  only:
+    - master
+
+# command to run tests  ./install travis
+script:
+  - flake8 probemanager/ --config=.flake8

@@ -1,0 +1,343 @@
+[
+{
+    "model": "home.ossupported",
+    "pk": 1,
+    "fields": {
+        "name": "debian"
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 0,
+    "fields": {
+        "name": "not-suspicious",
+        "description": "Not Suspicious Traffic",
+        "severity_level": 3
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 1,
+    "fields": {
+        "name": "unknown",
+        "description": "Unknown Traffic",
+        "severity_level": 3
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 2,
+    "fields": {
+        "name": "bad-unknown",
+        "description": "Potentially Bad Traffic",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 3,
+    "fields": {
+        "name": "attempted-recon",
+        "description": "Attempted Information Leak",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 4,
+    "fields": {
+        "name": "successful-recon-limited",
+        "description": "Information Leak",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 5,
+    "fields": {
+        "name": "successful-recon-largescale",
+        "description": "Large Scale Information Leak",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 6,
+    "fields": {
+        "name": "attempted-dos",
+        "description": "Attempted Denial of Service",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 7,
+    "fields": {
+        "name": "successful-dos",
+        "description": "Denial of Service",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 8,
+    "fields": {
+        "name": "attempted-user",
+        "description": "Attempted User Privilege Gain",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 9,
+    "fields": {
+        "name": "unsuccessful-user",
+        "description": "Unsuccessful User Privilege Gain",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 10,
+    "fields": {
+        "name": "successful-user",
+        "description": "Successful User Privilege Gain",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 11,
+    "fields": {
+        "name": "attempted-admin",
+        "description": "Attempted Administrator Privilege Gain",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 12,
+    "fields": {
+        "name": "successful-admin",
+        "description": "Successful Administrator Privilege Gain",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 13,
+    "fields": {
+        "name": "rpc-portmap-decode",
+        "description": "Decode of an RPC Query",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 14,
+    "fields": {
+        "name": "shellcode-detect",
+        "description": "Executable code was detected",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 15,
+    "fields": {
+        "name": "string-detect",
+        "description": "A suspicious string was detected",
+        "severity_level": 3
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 16,
+    "fields": {
+        "name": "suspicious-filename-detect",
+        "description": "A suspicious filename was detected",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 17,
+    "fields": {
+        "name": "suspicious-login",
+        "description": "An attempted login using a suspicious username was detected",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 18,
+    "fields": {
+        "name": "system-call-detect",
+        "description": "A system call was detected",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 19,
+    "fields": {
+        "name": "tcp-connection",
+        "description": "A TCP connection was detected",
+        "severity_level": 4
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 20,
+    "fields": {
+        "name": "trojan-activity",
+        "description": "A Network Trojan was detected",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 21,
+    "fields": {
+        "name": "unusual-client-port-connection",
+        "description": "A client was using an unusual port",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 22,
+    "fields": {
+        "name": "network-scan",
+        "description": "Detection of a Network Scan",
+        "severity_level": 3
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 23,
+    "fields": {
+        "name": "denial-of-service",
+        "description": "Detection of a Denial of Service Attack",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 24,
+    "fields": {
+        "name": "non-standard-protocol",
+        "description": "Detection of a non-standard protocol or event",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 25,
+    "fields": {
+        "name": "protocol-command-decode",
+        "description": "Generic Protocol Command Decode",
+        "severity_level": 3
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 26,
+    "fields": {
+        "name": "web-application-activity",
+        "description": "access to a potentially vulnerable web application",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 27,
+    "fields": {
+        "name": "web-application-attack",
+        "description": "Web Application Attack",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 28,
+    "fields": {
+        "name": "misc-activity",
+        "description": "Misc activity",
+        "severity_level": 3
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 29,
+    "fields": {
+        "name": "misc-attack",
+        "description": "Misc Attack",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 30,
+    "fields": {
+        "name": "icmp-event",
+        "description": "Generic ICMP event",
+        "severity_level": 3
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 31,
+    "fields": {
+        "name": "kickass-porn",
+        "description": "SCORE! Get the lotion!",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 32,
+    "fields": {
+        "name": "policy-violation",
+        "description": "Potential Corporate Privacy Violation",
+        "severity_level": 1
+    }
+},
+{
+    "model": "rules.classtype",
+    "pk": 33,
+    "fields": {
+        "name": "default-login-attempt",
+        "description": "Attempt to login by a default username and password",
+        "severity_level": 2
+    }
+},
+{
+    "model": "rules.datatypeupload",
+    "pk": 0,
+    "fields": {
+        "name": "multiple files in compressed file"
+    }
+},
+{
+    "model": "rules.datatypeupload",
+    "pk": 1,
+    "fields": {
+        "name": "one file not compressed"
+    }
+},
+{
+    "model": "rules.methodupload",
+    "pk": 0,
+    "fields": {
+        "name": "URL HTTP"
+    }
+},
+{
+    "model": "rules.methodupload",
+    "pk": 1,
+    "fields": {
+        "name": "Upload file"
+    }
+}
+]

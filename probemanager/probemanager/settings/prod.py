@@ -1,0 +1,148 @@
+from probemanager.settings.base import *
+from cryptography.fernet import Fernet
+import configparser
+import ast
+import os
+
+
+config = configparser.ConfigParser()
+config.read(os.path.join(GIT_ROOT, 'conf.ini'))
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+os.environ['ANSIBLE_HOST_KEY_CHECKING'] = 'False'
+
+HOST = config['DEFAULT']['HOST']
+ALLOWED_HOSTS = [HOST, 'localhost', '127.0.0.1']
+GIT_BINARY = config['GIT']['GIT_BINARY']
+
+# Specific for installation
+PROJECT_NAME = 'probemanager'
+APACHE_PORT = 80
+
+with open(os.path.join(GIT_ROOT, 'secret_key.txt')) as f:
+    SECRET_KEY = f.read().strip()
+with open(os.path.join(GIT_ROOT, 'fernet_key.txt')) as f:
+    FERNET_KEY = bytes(f.read().strip(), 'utf-8')
+
+if os.path.isfile(os.path.join(BASE_DIR, 'version.txt')):
+    with open(os.path.join(BASE_DIR, 'version.txt')) as f:
+        VERSION = f.read().strip()
+else:
+    VERSION = ""
+
+def decrypt(cipher_text):
+    fernet_key = Fernet(FERNET_KEY)
+    if isinstance(cipher_text, bytes):
+        return fernet_key.decrypt(cipher_text).decode('utf-8')
+    else:
+        return fernet_key.decrypt(bytes(cipher_text, 'utf-8'))
+
+
+with open(os.path.join(GIT_ROOT, 'password_db.txt')) as f:
+    PASSWORD_DB = decrypt(bytes(f.read().strip(), 'utf-8'))
+
+# Celery settings
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+    },
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(name)s %(funcName)s %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'simple',
+            # 'filename': os.path.join(tempfile.gettempdir(), 'probemanager-debug.log'),
+            'filename': os.path.join(BASE_DIR, 'probemanager.log'),
+            'filters': ['require_debug_false']
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['mail_admins', 'file'],
+            'level': 'INFO',
+            'formatter': 'simple'
+        },
+        'django.template': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['mail_admins'],
+            'level': 'INFO',
+            'formatter': 'simple',
+            'propagate': True
+        },
+        'django.db.backends': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'formatter': 'simple',
+            'propagate': True
+        },
+        'home': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'formatter': 'simple',
+            'propagate': True
+        },
+        'rules': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'formatter': 'simple',
+            'propagate': True
+        },
+    },
+
+}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'probemanager',
+        'USER': 'probemanager',
+        'PASSWORD': PASSWORD_DB,
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+
+PROD_APPS = ast.literal_eval(config['APPS']['PROD_APPS'])
+INSTALLED_APPS = BASE_APPS + PROD_APPS
+
+for app in PROD_APPS:
+    LOGGING['loggers'].update({app: {'handlers': ['file'], 'level': 'INFO', 'formatter': 'simple', 'propagate': True}})
+
+
+SURICATA_BINARY = config['SURICATA']['SURICATA_BINARY']
+SURICATA_CONFIG = config['SURICATA']['SURICATA_CONFIG']
+
+BRO_BINARY = config['BRO']['BRO_BINARY']
+
+
+# SMTP
+EMAIL_SUBJECT_PREFIX = '[ProbeManager] '
