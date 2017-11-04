@@ -40,26 +40,18 @@ and machine detection probes on a system.
 ProbeManager is an application that centralizes the management of intrusion detection system.
 For the moment the NIDS Suricata is implemented and Bro and OSSEC are being implemented.
 
+features
+^^^^^^^^
 
-Some global features:
  * Search rules in those of all probes.
  * List of installed probes and their status.
  * Push notifications (change of status, ...)
- * API
+ * API.
 
-Features that depend on the type of probe:
+TODO
+^^^^
 
-Suricata:
- * Deployment of the probe.
- * Configuration of the probe.
- * Management of signatures and scripts Lua. (Editing, deleting ...)
- * Signature and configuration tests.
- * Signature tests via Pcap.
- * Adding rules via HTTP or via upload file.
- * Scheduling rules update via HTTP (EmergingThreat)
- * Deployment planning.
- * Grouping rules into groups.
-
+ * Create an IHM for show all the running tasks.
 
 Installation
 ~~~~~~~~~~~~

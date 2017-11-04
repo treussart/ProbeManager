@@ -17,10 +17,18 @@ if [[ "$VIRTUAL_ENV" == "" ]]; then
     source venv/bin/activate
 fi
 
-flake8 probemanager/$1 --config=.flake8
+venv/bin/flake8 probemanager/$1 --config=.flake8
 
 
-coverage erase
-coverage run --source=probemanager/$1 probemanager/runtests.py $arg
-coverage report -i --skip-covered
-coverage html
+venv/bin/coverage erase
+venv/bin/coverage run --source=probemanager/$1 probemanager/runtests.py $arg
+venv/bin/coverage report -i --skip-covered
+venv/bin/coverage html
+
+if [ -f .coveralls.yml ]; then
+    echo "Send data to Coveralls ?, y/N followed by [ENTER]:"
+    read answer
+    if $answer; then
+        venv/bin/coveralls
+    fi
+fi
