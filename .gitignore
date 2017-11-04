@@ -116,3 +116,4 @@ probemanager/static/
 /docs/modules/*.rst
 /probemanager/version.txt
 /probemanager/celery.log
+.coveralls.yml

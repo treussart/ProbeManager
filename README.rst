@@ -2,7 +2,7 @@
 Probe Manager
 =============
 
-|Licence| |Version| |Downloads| |Commits|
+|Licence| |Version|
 
 
 |Code_Health| |Coverage_Status| |Documentation_Status|
@@ -10,7 +10,7 @@ Probe Manager
 +------------------+--------------------+
 | Status           | Operating system   |
 +==================+====================+
-| |Build Status|   | Linux x86\_64      |
+| |Build_Status|   | Linux x86\_64      |
 +------------------+--------------------+
 
 .. |Licence| image:: https://img.shields.io/github/license/matleses/ProbeManager.svg
