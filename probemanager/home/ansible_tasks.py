@@ -30,8 +30,8 @@ class ResultCallback(CallbackBase):
         self.host_failed[result._host.get_name()] = result
 
 
-def execute(probe, tasks):
-    host_list = [probe.host]
+def execute(server, tasks):
+    host_list = [server.host]
     Options = namedtuple('Options',
                          ['connection',
                           'module_path',
@@ -51,33 +51,33 @@ def execute(probe, tasks):
                           'timeout'])
     variable_manager = VariableManager()
     loader = DataLoader()
-    # if probe.host == 'localhost' or probe.host == '127.0.0.1':
+    # if server.host == 'localhost' or server.host == '127.0.0.1':
     #     connection = 'local'
     # else:
     #     connection = 'ssh'
-    if probe.ansible_ssh_private_key_file:
-        private_key_file = settings.MEDIA_ROOT + "/" + probe.ansible_ssh_private_key_file.file.name
+    if server.ansible_ssh_private_key_file:
+        private_key_file = settings.MEDIA_ROOT + "/" + server.ansible_ssh_private_key_file.file.name
     else:
         private_key_file = None
     options = Options(connection='smart',
                       module_path='/usr/share/ansible',
                       forks=100,
-                      remote_user=probe.ansible_remote_user,
+                      remote_user=server.ansible_remote_user,
                       private_key_file=private_key_file,
                       ssh_common_args=None,
                       ssh_extra_args=None,
                       sftp_extra_args=None,
                       scp_extra_args=None,
-                      become=probe.ansible_become,
-                      become_method=probe.ansible_become_method,
-                      become_user=probe.ansible_become_user,
+                      become=server.ansible_become,
+                      become_method=server.ansible_become_method,
+                      become_user=server.ansible_become_user,
                       check=False,
                       diff=False,
                       verbosity=None,
                       timeout=10
                       )
-    if probe.ansible_become_pass:
-        passwords = {'become_pass': decrypt(probe.ansible_become_pass)}  # dict(vault_pass='secret')
+    if server.ansible_become_pass:
+        passwords = {'become_pass': decrypt(server.ansible_become_pass)}  # dict(vault_pass='secret')
     else:
         passwords = dict()
     # Instantiate our ResultCallback for handling results as they come in
@@ -92,7 +92,7 @@ def execute(probe, tasks):
         name="Ansible Play",
         hosts=host_list,
         gather_facts='no',
-        port=probe.ansible_remote_port,
+        port=server.ansible_remote_port,
         tasks=tasks
     )
     play = Play().load(play_source, variable_manager=variable_manager, loader=loader)

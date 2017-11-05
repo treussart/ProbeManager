@@ -42,21 +42,12 @@ class SshKey(models.Model):
         return self.name
 
 
-class Probe(models.Model):
+class Server(models.Model):
     """
-    A probe is a IDS.
+    Server on which is deployed the Probes.
     """
-    # General
-    name = models.CharField(max_length=400, unique=True, blank=False, null=False)
-    description = models.CharField(max_length=400, blank=True, default="")
-    created_date = models.DateTimeField(default=timezone.now, editable=False)
-    rules_updated_date = models.DateTimeField(blank=True, null=True, editable=False)
-    host = models.CharField(max_length=400, default="localhost")
+    host = models.CharField(max_length=400, unique=True, default="localhost")
     os = models.ForeignKey(OsSupported, default=0)
-    type = models.CharField(max_length=400, blank=True, default='', editable=False)
-    secure_deployment = models.BooleanField(default=True)
-    scheduled_enabled = models.BooleanField('Enabled scheduled deployment of rules', default=False)
-    scheduled_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True)
     # Ansible
     ansible_remote_user = models.CharField(max_length=400, blank=True, default='admin')
     ansible_remote_port = models.IntegerField(blank=True, default=22)
@@ -69,7 +60,29 @@ class Probe(models.Model):
     ansible_become_pass = models.CharField(max_length=400, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.host
+
+    @classmethod
+    def get_all(cls):
+        return cls.objects.all()
+
+    @classmethod
+    def get_by_id(cls, id):
+        try:
+            probe = cls.objects.get(id=id)
+        except cls.DoesNotExist as e:
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            return None
+        return probe
+
+    @classmethod
+    def get_by_host(cls, host):
+        try:
+            host = cls.objects.get(host=host)
+        except cls.DoesNotExist as e:
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            return None
+        return host
 
     def test(self):
         tasks = [
@@ -83,11 +96,30 @@ class Probe(models.Model):
         ]
         return execute(self, tasks)
 
+
+class Probe(models.Model):
+    """
+    A probe is an IDS.
+    """
+    # General
+    name = models.CharField(max_length=400, unique=True, blank=False, null=False)
+    description = models.CharField(max_length=400, blank=True, default="")
+    created_date = models.DateTimeField(default=timezone.now, editable=False)
+    rules_updated_date = models.DateTimeField(blank=True, null=True, editable=False)
+    type = models.CharField(max_length=400, blank=True, default='', editable=False)
+    secure_deployment = models.BooleanField(default=True)
+    scheduled_enabled = models.BooleanField('Enabled scheduled deployment of rules', default=False)
+    scheduled_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True)
+    server = models.ForeignKey(Server)
+
+    def __str__(self):
+        return self.name
+
     def uptime(self):
         tasks = [
             dict(action=dict(module='shell', args='ps -o lstart\= -p $( pidof ' + self.type.lower() + ' )')),
         ]
-        response = execute(self, tasks)
+        response = execute(self.server, tasks)
         if response['result'] == 0:
             return response['message']
         else:
@@ -97,45 +129,45 @@ class Probe(models.Model):
         tasks = [
             dict(action=dict(module='service', name=self.__class__.__name__.lower(), state='restarted')),
         ]
-        return execute(self, tasks)
+        return execute(self.server, tasks)
 
     def start(self):
         tasks = [
             dict(action=dict(module='service', name=self.__class__.__name__.lower(), state='started')),
         ]
-        return execute(self, tasks)
+        return execute(self.server, tasks)
 
     def stop(self):
         tasks = [
             dict(action=dict(module='service', name=self.__class__.__name__.lower(), state='stopped')),
         ]
-        return execute(self, tasks)
+        return execute(self.server, tasks)
 
     def status(self):
         tasks = [
             dict(action=dict(module='shell', args='service ' + self.__class__.__name__.lower() + ' status')),
         ]
-        return execute(self, tasks)
+        return execute(self.server, tasks)
 
     def reload(self):
         tasks = [
             dict(action=dict(module='shell', args='service ' + self.__class__.__name__.lower() + ' reload')),
         ]
-        return execute(self, tasks)
+        return execute(self.server, tasks)
 
     def install(self):
         tasks = [
             dict(action=dict(module='shell', args='apt install python3-apt')),
             dict(action=dict(module='apt', name=self.__class__.__name__.lower(), state='present')),
         ]
-        return execute(self, tasks)
+        return execute(self.server, tasks)
 
     def update(self):
         tasks = [
             dict(action=dict(module='shell', args='apt install python3-apt')),
             dict(action=dict(module='apt', name=self.__class__.__name__.lower(), state='latest', update_cache='yes')),
         ]
-        return execute(self, tasks)
+        return execute(self.server, tasks)
 
     @classmethod
     def get_all(cls):
