@@ -45,3 +45,8 @@ def runtests():
 if __name__ == "__main__":
     """ By default tests are executed by alphabetical order """
     runtests()
+
+
+import os
+print("ee")
+
