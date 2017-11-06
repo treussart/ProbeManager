@@ -11,8 +11,8 @@
         Description:
         <pre>{{ probe.description }}</pre>
         {% endif %}
-        Os : {{ probe.os }} <br>
-        Host : {{ probe.host }}<br>
+        Os : {{ probe.server.os }} <br>
+        Host : {{ probe.server.host }}<br>
         Created date : {{ probe.created_date }}<br>
         {% if probe.rules_updated_date %}
         Rules updated date : {{ probe.rules_updated_date }}
