@@ -1,5 +1,5 @@
 from django.contrib import admin
-from home.models import SshKey, Server
+from home.models import SshKey, Server, Job
 from home.forms import ServerForm
 from home.utils import encrypt
 from django.contrib import messages
@@ -23,5 +23,15 @@ class ServerAdmin(admin.ModelAdmin):
             messages.add_message(request, messages.ERROR, "Connection to the server Failed : " + str(response['message']))
 
 
+class JobAdmin(admin.ModelAdmin):
+    list_filter = ('status', 'completed', 'probe')
+    list_display = ('name', 'probe', 'status', 'completed', 'result')
+    list_display_links = None
+
+    def has_add_permission(self, request):
+        return False
+
+
 admin.site.register(SshKey)
 admin.site.register(Server, ServerAdmin)
+admin.site.register(Job, JobAdmin)

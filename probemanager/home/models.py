@@ -8,6 +8,59 @@ from home.ansible_tasks import execute
 logger = logging.getLogger(__name__)
 
 
+class Job(models.Model):
+    STATUS_CHOICES = (
+        ('In progress', 'In progress'),
+        ('Completed', 'Completed'),
+        ('Cancelled', 'Cancelled'),
+        ('Error', 'Error'),
+    )
+    name = models.CharField(max_length=255)
+    probe = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES)
+    result = models.TextField(null=True, default=None, editable=False)
+    created = models.DateTimeField(default=timezone.now)
+    completed = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return self.name
+
+    def get_duration(self):
+        return self.created - self.completed
+
+    @classmethod
+    def get_all(cls):
+        return cls.objects.all()
+
+    @classmethod
+    def get_last(cls, nbr):
+        return cls.objects.all()[:nbr]
+
+    @classmethod
+    def get_by_id(cls, id):
+        try:
+            object = cls.objects.get(id=id)
+        except cls.DoesNotExist as e:
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            return None
+        return object
+
+    @classmethod
+    def create_job(cls, name, probe_name):
+        job = Job(name=name, probe=probe_name, status='In progress', created=timezone.now())
+        job.save()
+        return job
+
+    def update_job(self, result, status):
+        self.result = result
+        self.status = status
+        self.completed = timezone.now()
+        self.save()
+
+
 class OsSupported(models.Model):
     """
     Set of operating system name. For now, just debian is available.

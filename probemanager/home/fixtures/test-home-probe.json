@@ -7,19 +7,10 @@
         "description": "test",
         "created_date": "2017-09-23T21:00:53.094Z",
         "rules_updated_date": null,
-        "host": "localhost",
-        "os": 1,
         "type": "",
         "secure_deployment": true,
         "scheduled_enabled": true,
-        "scheduled_crontab": 1,
-        "ansible_remote_user": "admin",
-        "ansible_remote_port": 22,
-        "ansible_become": true,
-        "ansible_become_method": "sudo",
-        "ansible_become_user": "root",
-        "ansible_become_pass": "gAAAAABZxtILszEJRx8KtdqFoAOTxWG_5eiVt8if_KthNJET6agdx9iknfpAODZNdFD2IaJ-fpXBXNT3XOEKuUctSII4qpNEWe3SvkHgNdE8qG5xEIpUF3g=",
-        "ansible_ssh_private_key_file": 1
+        "scheduled_crontab": 1
     }
 }
 ]
