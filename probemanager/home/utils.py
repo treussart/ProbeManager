@@ -133,7 +133,8 @@ def update_progress(value):
     if not os.path.exists(tmpdir):
         os.makedirs(tmpdir)
     if value >= 100:
-        os.remove(tmpdir + 'progress.json')
+        if os.path.isfile(tmpdir + 'progress.json'):
+            os.remove(tmpdir + 'progress.json')
     else:
         progress = dict()
         progress['progress'] = value

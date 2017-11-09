@@ -104,7 +104,6 @@ LOGIN_URL = '/admin/login/'
 #: from unwanted access (see userguide/security.html)
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'django-db'
 
 # Security
 CSRF_COOKIE_HTTPONLY = True

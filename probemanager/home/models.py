@@ -16,7 +16,7 @@ class Job(models.Model):
         ('Error', 'Error'),
     )
     name = models.CharField(max_length=255)
-    probe = models.CharField(max_length=255)
+    probe = models.CharField(max_length=255, verbose_name="Probe / URL")
     status = models.CharField(max_length=255, choices=STATUS_CHOICES)
     result = models.TextField(null=True, default=None, editable=False)
     created = models.DateTimeField(default=timezone.now)
