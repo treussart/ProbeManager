@@ -138,7 +138,7 @@ INSTALLED_APPS = BASE_APPS + PROD_APPS
 for app in PROD_APPS:
     LOGGING['loggers'].update({app: {'handlers': ['file'], 'level': 'INFO', 'formatter': 'simple', 'propagate': True}})
     if os.path.isfile(BASE_DIR + "/" + app + "/settings.py"):
-        importlib.import_module(app + '.settings')
+        exec(open(BASE_DIR + "/" + app + "/settings.py").read())
 
 
 # SMTP
