@@ -175,7 +175,7 @@ class Probe(models.Model):
         ]
         response = execute(self.server, tasks)
         if response['result'] == 0:
-            return response['message']
+            return response['tasks']['uptime']['message']
         else:
             return 'Failed to get the uptime on the host'
 
