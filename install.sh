@@ -129,7 +129,7 @@ chooseApps(){
     i=0
     for f in probemanager/*; do
         if [[ -d $f ]]; then
-            if [ test -f "$f"/install.sh ] || [ test -f "$f"/init_db.sh ] ; then
+            if [[  -f "$f"/install.sh ]] || [[  -f "$f"/init_db.sh ]] ; then
                 apps[i]=$( echo $f | cut -f2 -d"/" )
                 i=$((i+1))
             fi
