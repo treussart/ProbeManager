@@ -99,6 +99,7 @@ class Server(models.Model):
     """
     Server on which is deployed the Probes.
     """
+    name = models.CharField(max_length=400, unique=True, default="")
     host = models.CharField(max_length=400, unique=True, default="localhost")
     os = models.ForeignKey(OsSupported, default=0)
     # Ansible
@@ -113,7 +114,7 @@ class Server(models.Model):
     ansible_become_pass = models.CharField(max_length=400, blank=True, null=True)
 
     def __str__(self):
-        return self.host
+        return self.name + ' - ' + self.host
 
     @classmethod
     def get_all(cls):
