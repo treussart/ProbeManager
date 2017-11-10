@@ -8,7 +8,7 @@ from home.utils import send_notification
 import traceback
 
 
-logger = get_task_logger('home')
+logger = get_task_logger(__name__)
 
 
 """ Ansible code return :

@@ -139,13 +139,13 @@ class Server(models.Model):
 
     def test(self):
         tasks = [
-            dict(action=dict(module='shell', args='cat /etc/hostname')),
+            dict(name="test", action=dict(module='shell', args='cat /etc/hostname')),
         ]
         return execute(self, tasks)
 
     def test_root(self):
         tasks = [
-            dict(action=dict(module='shell', args='service ssh status')),
+            dict(name="test_root", action=dict(module='shell', args='service ssh status')),
         ]
         return execute(self, tasks)
 
@@ -170,7 +170,7 @@ class Probe(models.Model):
 
     def uptime(self):
         tasks = [
-            dict(action=dict(module='shell', args='ps -o lstart\= -p $( pidof ' + self.type.lower() + ' )')),
+            dict(name="uptime", action=dict(module='shell', args='ps -o lstart\= -p $( pidof ' + self.type.lower() + ' )')),
         ]
         response = execute(self.server, tasks)
         if response['result'] == 0:
@@ -180,45 +180,45 @@ class Probe(models.Model):
 
     def restart(self):
         tasks = [
-            dict(action=dict(module='service', name=self.__class__.__name__.lower(), state='restarted')),
+            dict(name="restart", action=dict(module='service', name=self.__class__.__name__.lower(), state='restarted')),
         ]
         return execute(self.server, tasks)
 
     def start(self):
         tasks = [
-            dict(action=dict(module='service', name=self.__class__.__name__.lower(), state='started')),
+            dict(name="start", action=dict(module='service', name=self.__class__.__name__.lower(), state='started')),
         ]
         return execute(self.server, tasks)
 
     def stop(self):
         tasks = [
-            dict(action=dict(module='service', name=self.__class__.__name__.lower(), state='stopped')),
+            dict(name="stop", action=dict(module='service', name=self.__class__.__name__.lower(), state='stopped')),
         ]
         return execute(self.server, tasks)
 
     def status(self):
         tasks = [
-            dict(action=dict(module='shell', args='service ' + self.__class__.__name__.lower() + ' status')),
+            dict(name="status_" + self.__class__.__name__, action=dict(module='shell', args='service ' + self.__class__.__name__.lower() + ' status')),
         ]
         return execute(self.server, tasks)
 
     def reload(self):
         tasks = [
-            dict(action=dict(module='shell', args='service ' + self.__class__.__name__.lower() + ' reload')),
+            dict(name="reload_" + self.__class__.__name__, action=dict(module='shell', args='service ' + self.__class__.__name__.lower() + ' reload')),
         ]
         return execute(self.server, tasks)
 
     def install(self):
         tasks = [
-            dict(action=dict(module='shell', args='apt install python3-apt')),
-            dict(action=dict(module='apt', name=self.__class__.__name__.lower(), state='present')),
+            dict(name="install_python3-apt", action=dict(module='shell', args='apt install python3-apt')),
+            dict(name="install_" + self.__class__.__name__, action=dict(module='apt', name=self.__class__.__name__.lower(), state='present')),
         ]
         return execute(self.server, tasks)
 
     def update(self):
         tasks = [
-            dict(action=dict(module='shell', args='apt install python3-apt')),
-            dict(action=dict(module='apt', name=self.__class__.__name__.lower(), state='latest', update_cache='yes')),
+            dict(name="update_python3-apt", action=dict(module='shell', args='apt install python3-apt')),
+            dict(name="update_" + self.__class__.__name__, action=dict(module='apt', name=self.__class__.__name__.lower(), state='latest', update_cache='yes')),
         ]
         return execute(self.server, tasks)
 

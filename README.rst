@@ -19,8 +19,6 @@ Probe Manager
 .. |Downloads| image:: https://img.shields.io/github/downloads/matleses/ProbeManager/total.svg
 .. |Version| image:: https://img.shields.io/github/tag/matleses/ProbeManager.svg
 .. |Commits| image:: https://img.shields.io/github/commits-since/matleses/ProbeManager/latest.svg
-.. |Code_Health| image:: https://landscape.io/github/matleses/ProbeManager/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/matleses/ProbeManager/master
 .. |Coverage_Status| image:: https://coveralls.io/repos/github/matleses/ProbeManager/badge.svg?branch=master
    :target: https://coveralls.io/github/matleses/ProbeManager?branch=master
 .. |Build_Status| image:: https://travis-ci.org/matleses/ProbeManager.svg?branch=master

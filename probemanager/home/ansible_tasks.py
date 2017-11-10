@@ -20,14 +20,26 @@ class ResultCallback(CallbackBase):
         self.host_unreachable = {}
         self.host_failed = {}
 
+    def v2_runner_on_async_ok(self, result):
+        if 'stdout' in result._result:
+            self.host_ok[result._task.get_name()] = {'task': result._task.get_name(), 'host': result._host.get_name(), 'message': result._result['stdout']}
+        else:
+            self.host_ok[result._task.get_name()] = {'task': result._task.get_name(), 'host': result._host.get_name(), 'message': result._result}
+
+    def v2_runner_on_async_failed(self, result):
+        self.host_failed[result._task.get_name()] = {'task': result._task.get_name(), 'host': result._host.get_name(), 'message': result._result}
+
     def v2_runner_on_ok(self, result, *args, **kwargs):
-        self.host_ok[result._host.get_name()] = result
+        if 'stdout' in result._result:
+            self.host_ok[result._task.get_name()] = {'task': result._task.get_name(), 'host': result._host.get_name(), 'message': result._result['stdout']}
+        else:
+            self.host_ok[result._task.get_name()] = {'task': result._task.get_name(), 'host': result._host.get_name(), 'message': result._result}
 
     def v2_runner_on_unreachable(self, result):
-        self.host_unreachable[result._host.get_name()] = result
+        self.host_unreachable[result._task.get_name()] = {'task': result._task.get_name(), 'host': result._host.get_name(), 'message': result._result}
 
     def v2_runner_on_failed(self, result, *args, **kwargs):
-        self.host_failed[result._host.get_name()] = result
+        self.host_failed[result._task.get_name()] = {'task': result._task.get_name(), 'host': result._host.get_name(), 'message': result._result}
 
 
 def execute(server, tasks):
@@ -99,7 +111,7 @@ def execute(server, tasks):
 
     # actually run it
     tqm = None
-    response = None
+    response = dict()
     try:
         tqm = TaskQueueManager(
             inventory=inventory,
@@ -112,33 +124,24 @@ def execute(server, tasks):
         result_nbr = tqm.run(play)
         if result_nbr == 0:
             if results_callback.host_ok:
-                for host, result in results_callback.host_ok.items():
-                    if 'stdout' in result._result:
-                        response = {'result': result_nbr, 'host': host, 'message': result._result['stdout']}
-                    else:
-                        response = {'result': result_nbr, 'host': host, 'message': result._result}
-                    logger.debug("OK *******" + str(response))
+                response = {'result': result_nbr, 'tasks': results_callback.host_ok}
             else:
-                response = {'result': result_nbr}
-                logger.debug("OK *******" + str(response))
+                response = {'result': result_nbr, 'tasks': ''}
+            logger.debug("OK *******" + str(response))
         elif result_nbr == 4:
             if results_callback.host_unreachable:
-                for host, result in results_callback.host_unreachable.items():
-                    response = {'result': result_nbr, 'host': host, 'message': result._result}
-                    logger.error("FAILED *******" + str(response))
+                response = {'result': result_nbr, 'tasks': results_callback.host_unreachable}
             else:
-                response = {'result': result_nbr}
-                logger.error("FAILED *******" + str(response))
+                response = {'result': result_nbr, 'tasks': ''}
+            logger.error("FAILED *******" + str(response))
         else:
             if results_callback.host_failed:
-                for host, result in results_callback.host_failed.items():
-                    response = {'result': result_nbr, 'host': host, 'message': result._result}
-                    logger.error("FAILED *******" + str(response))
+                response = {'result': result_nbr, 'tasks': results_callback.host_failed}
             else:
-                response = {'result': result_nbr}
-                logger.error("FAILED *******" + str(response))
+                response = {'result': result_nbr, 'tasks': ''}
+            logger.error("FAILED *******" + str(response))
     except Exception as e:
-        response = {'result': e.__str__()}
+        response = {'result': 255, 'tasks': e.__str__()}
         logger.error("FAILED ******* " + e.__str__())
     finally:
         if tqm is not None:
