@@ -25,7 +25,7 @@ class ServerAdmin(admin.ModelAdmin):
 
 class JobAdmin(admin.ModelAdmin):
     list_filter = ('status', 'completed', 'probe')
-    list_display = ('name', 'probe', 'status', 'created' 'completed', 'result')
+    list_display = ('name', 'probe', 'status', 'created', 'completed', 'result')
     list_display_links = None
 
     def has_add_permission(self, request):
