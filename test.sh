@@ -28,7 +28,7 @@ venv/bin/coverage html
 if [ -f .coveralls.yml ]; then
     echo "Send data to Coveralls ?, y/N followed by [ENTER]:"
     read answer
-    if $answer; then
+    if [ $answer == 'y' ]; then
         venv/bin/coveralls
     fi
 fi
