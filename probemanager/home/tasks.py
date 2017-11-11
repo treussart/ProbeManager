@@ -29,23 +29,18 @@ def deploy_rules(probe_name):
         return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
     my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
-    if probe.scheduled_enabled:
-        try:
-            message = probe.deploy_rules()
-            job.update_job(message, 'Completed')
-            logger.info("task - deploy_rules : " + str(probe_name) + " - " + str(message))
-        except Exception as e:
-            logger.error(e.__str__())
-            logger.error(traceback.print_exc())
-            job.update_job(e.__str__(), 'Error')
-            send_notification("Probe " + str(probe.name), e.__str__())
-            return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": e.__str__()}
-        send_notification("Probe " + str(probe.name), "deployed rules successfully")
-        return message
-    else:
-        job.update_job("Not enabled to deploy rules", 'Error')
-        send_notification("Probe " + str(probe.name), "Not enabled to deploy rules")
-        return {"message": probe.name + " not enabled to deploy rules"}
+    try:
+        message = probe.deploy_rules()
+        job.update_job(message, 'Completed')
+        logger.info("task - deploy_rules : " + str(probe_name) + " - " + str(message))
+    except Exception as e:
+        logger.error(e.__str__())
+        logger.error(traceback.print_exc())
+        job.update_job(e.__str__(), 'Error')
+        send_notification("Probe " + str(probe.name), e.__str__())
+        return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": e.__str__()}
+    send_notification("Probe " + str(probe.name), "deployed rules successfully")
+    return message
 
 
 @task
