@@ -23,6 +23,8 @@ if [ ! -f probemanager/celery.pid ]; then
 else
     kill $( cat probemanager/celery.pid)
     sleep 3
+    pkill -f celery
+    sleep 3
     (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
 fi
 
