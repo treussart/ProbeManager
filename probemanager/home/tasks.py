@@ -77,11 +77,17 @@ def upload_url_http(source_uri, rulesets_id=None):
     if rulesets_id:
         for ruleset_id in rulesets_id:
             rulesets.append(RuleSetSuricata.get_by_id(ruleset_id))
-    source = Source.get_by_uri(source_uri)
-    if source is None:
-        return {"message": "Error - source is None - param id not set : " + str(source_uri)}
-    my_class = getattr(importlib.import_module(source.type.lower().split('source')[1] + ".models"), source.type)
-    source = my_class.get_by_uri(source_uri)
+    try:
+        source = Source.get_by_uri(source_uri)
+        if source is None:
+            return {"message": "Error - source is None - param id not set : " + str(source_uri)}
+        my_class = getattr(importlib.import_module(source.type.lower().split('source')[1] + ".models"), source.type)
+        source = my_class.get_by_uri(source_uri)
+    except Exception as e:
+        logger.error(e.__str__())
+        logger.error(traceback.print_exc())
+        job.update_job(e.__str__(), 'Error')
+        return {"message": "Error for source to upload", "exception": e.__str__()}
     try:
         message = source.upload(rulesets)
         job.update_job(message, 'Completed')
