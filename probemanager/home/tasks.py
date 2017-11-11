@@ -26,6 +26,7 @@ def deploy_rules(probe_name):
     job = Job.create_job('deploy_rules', probe_name)
     probe = Probe.get_by_name(probe_name)
     if probe is None:
+        job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
         return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
     my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
@@ -48,6 +49,7 @@ def reload_probe(probe_name):
     job = Job.create_job('reload_probe', probe_name)
     probe = Probe.get_by_name(probe_name)
     if probe is None:
+        job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
         return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
     my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
@@ -80,6 +82,7 @@ def upload_url_http(source_uri, rulesets_id=None):
     try:
         source = Source.get_by_uri(source_uri)
         if source is None:
+            job.update_job("Error - source is None - param id not set : " + str(source_uri), 'Error')
             return {"message": "Error - source is None - param id not set : " + str(source_uri)}
         my_class = getattr(importlib.import_module(source.type.lower().split('source')[1] + ".models"), source.type)
         source = my_class.get_by_uri(source_uri)
