@@ -5,7 +5,7 @@ Probe Manager
 |Licence| |Version|
 
 
-|Code_Health| |Coverage_Status|
+|Coverage_Status|
 
 +------------------+--------------------+
 | Status           | Operating system   |
