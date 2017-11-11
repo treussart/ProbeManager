@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.conf import settings
 import json
 import logging
+from home.tasks import deploy_rules as deploy_rules_probe, install_probe, update_probe
 
 
 logger = logging.getLogger(__name__)
@@ -55,11 +56,14 @@ def start(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        response_start = probe.start()
-        if response_start['result'] == 0:
-            messages.add_message(request, messages.SUCCESS, 'Started successfully')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error during the start')
+        try:
+            response_start = probe.start()
+            if response_start['result'] == 0:
+                messages.add_message(request, messages.SUCCESS, 'Probe started successfully')
+            else:
+                messages.add_message(request, messages.ERROR, 'Error during the start')
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the start : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -74,11 +78,14 @@ def stop(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        response_stop = probe.stop()
-        if response_stop['result'] == 0:
-            messages.add_message(request, messages.SUCCESS, 'Stopped successfully')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error during the stop')
+        try:
+            response_stop = probe.stop()
+            if response_stop['result'] == 0:
+                messages.add_message(request, messages.SUCCESS, 'Probe stopped successfully')
+            else:
+                messages.add_message(request, messages.ERROR, 'Error during the stop')
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the stop : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -93,11 +100,14 @@ def restart(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        response_restart = probe.restart()
-        if response_restart['result'] == 0:
-            messages.add_message(request, messages.SUCCESS, 'Restarted successfully')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error during the restart')
+        try:
+            response_restart = probe.restart()
+            if response_restart['result'] == 0:
+                messages.add_message(request, messages.SUCCESS, 'Probe restarted successfully')
+            else:
+                messages.add_message(request, messages.ERROR, 'Error during the restart')
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the restart : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -112,11 +122,14 @@ def reload(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        response_reload = probe.reload()
-        if response_reload['result'] == 0:
-            messages.add_message(request, messages.SUCCESS, 'Reloaded successfully')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error during the reload')
+        try:
+            response_reload = probe.reload()
+            if response_reload['result'] == 0:
+                messages.add_message(request, messages.SUCCESS, 'Probe reloaded successfully')
+            else:
+                messages.add_message(request, messages.ERROR, 'Error during the reload')
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the reload : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -131,7 +144,14 @@ def status(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        probe.status()
+        try:
+            response_status = probe.status()
+            if response_status['result'] == 0:
+                messages.add_message(request, messages.SUCCESS, "OK probe " + str(probe.name) + " installed successfully")
+            else:
+                messages.add_message(request, messages.ERROR, 'Error during the status')
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the status : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -146,14 +166,11 @@ def install(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        response_install = probe.install()
-        probe.deploy_conf()
-        probe.deploy_rules()
-        response_start = probe.start()
-        if response_install['result'] == 0 and response_start['result'] == 0:
-            messages.add_message(request, messages.SUCCESS, 'Installed successfully')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error during the install')
+        try:
+            install_probe.delay(probe.name)
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the install : ' + e.__str__())
+        messages.add_message(request, messages.SUCCESS, 'Install probe launched with succeed. View Job')
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -168,12 +185,11 @@ def update(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        response_update = probe.update()
-        response_restart = probe.restart()
-        if response_update['result'] == 0 and response_restart['result'] == 0:
-            messages.add_message(request, messages.SUCCESS, 'Updated successfully')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error during the update')
+        try:
+            update_probe.delay(probe.name)
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the update : ' + e.__str__())
+        messages.add_message(request, messages.SUCCESS, 'Update probe launched with succeed. View Job')
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -198,12 +214,15 @@ def deploy_conf(request, id):
             messages.add_message(request, messages.SUCCESS, "Test configuration OK")
         else:
             messages.add_message(request, messages.ERROR, "Test configuration failed ! " + str(response_test['errors']))
-        response_deploy_conf = probe.deploy_conf()
-        response_restart = probe.restart()
-        if response_deploy_conf['result'] == 0 and response_restart['result'] == 0:
-            messages.add_message(request, messages.SUCCESS, 'Deployed configuration successfully')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error during the configuration deployed')
+        try:
+            response_deploy_conf = probe.deploy_conf()
+            response_restart = probe.restart()
+            if response_deploy_conf['result'] == 0 and response_restart['result'] == 0:
+                messages.add_message(request, messages.SUCCESS, 'Deployed configuration successfully')
+            else:
+                messages.add_message(request, messages.ERROR, 'Error during the configuration deployed')
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the configuration deployed : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -236,12 +255,11 @@ def deploy_rules(request, id):
             messages.add_message(request, messages.SUCCESS, "Test pcap OK")
         else:
             messages.add_message(request, messages.ERROR, "Test pcap failed ! " + str(errors))
-        response_deploy_rules = probe.deploy_rules()
-        response_reload = probe.reload()
-        if response_deploy_rules['result'] == 0 and response_reload['result'] == 0:
-            messages.add_message(request, messages.SUCCESS, 'Deployed rules successfully')
-        else:
-            messages.add_message(request, messages.ERROR, 'Error during the rules deployed')
+        try:
+            deploy_rules_probe.delay(probe.name)
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, 'Error during the install : ' + e.__str__())
+        messages.add_message(request, messages.SUCCESS, 'Deployed rules launched with succeed. View Job')
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
