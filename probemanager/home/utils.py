@@ -33,7 +33,7 @@ def create_reload_task(probe):
                                     args=json.dumps([probe.name, ]))
 
 
-def create_deploy_rules(probe, schedule=None):
+def create_deploy_rules(probe, schedule=None, source=None):
     try:
         if schedule is None:
             try:
@@ -44,11 +44,14 @@ def create_deploy_rules(probe, schedule=None):
                                             task='home.tasks.deploy_rules',
                                             args=json.dumps([probe.name, ]))
 
-        else:
-            PeriodicTask.objects.create(crontab=schedule,
-                                        name=probe.name + "_source_deploy_rules_" + schedule.__str__(),
-                                        task='home.tasks.deploy_rules',
-                                        args=json.dumps([probe.name, ]))
+        elif source is not None:
+            try:
+                PeriodicTask.objects.get(name=probe.name + "_" + source.uri + "_deploy_rules_" + schedule.__str__())
+            except PeriodicTask.DoesNotExist:
+                PeriodicTask.objects.create(crontab=schedule,
+                                            name=probe.name + "_" + source.uri + "_deploy_rules_" + schedule.__str__(),
+                                            task='home.tasks.deploy_rules',
+                                            args=json.dumps([probe.name, ]))
     except Exception as e:
         # Error if 2 sources have the same crontab on the same probe -> useless
         logger.debug(e.__str__())
