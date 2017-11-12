@@ -21,7 +21,7 @@ services:
   - postgresql
 
 install:
-  - bash ./install.sh travis
+  - bash ./install.sh
 
 script:
   - flake8 probemanager/ --config=.flake8
