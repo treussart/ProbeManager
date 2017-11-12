@@ -457,7 +457,7 @@ else
     create_db
     create_superuser
     generate_doc
-    # setup_tests
+    setup_tests
 fi
 
 exit
