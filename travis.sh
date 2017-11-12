@@ -8,7 +8,7 @@ pwd
 echo $PWD
 
 echo '## Install ##'
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
 export DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
