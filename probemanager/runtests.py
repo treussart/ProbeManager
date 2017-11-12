@@ -13,7 +13,7 @@ from django.test.utils import get_runner
 def runtests():
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", "--all", help="run all tests - default action", action="store_true", default=False)
-    parser.add_argument("--app", help="run the tests for this app", action='append', dest='app', default=[])
+    parser.add_argument("--app", help="run the tests for this app", nargs='+', action='append', dest='app', default=[])
     args = parser.parse_args()
     tests = []
     tests_all = []
@@ -25,8 +25,9 @@ def runtests():
     tests_app = []
     for test in tests_all:
         for app in args.app:
-            if app in test:
-                tests_app.append(test)
+            for ap in app:
+                if ap in test:
+                    tests_app.append(test)
 
     if args.all or len(sys.argv) == 1:
         tests = tests_all

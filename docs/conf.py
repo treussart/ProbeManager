@@ -28,7 +28,6 @@ else:
     extlinks = {'site_url': ('https://' + settings.ALLOWED_HOSTS[0] + '%s', None)}
 
 
-
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = '1.0'

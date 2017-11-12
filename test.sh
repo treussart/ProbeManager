@@ -4,10 +4,16 @@
 if [ -z $1 ]; then
     arg=""
 else
-    arg='--app '$1
+    arg='--app '$@
 fi
-
-
+source=''
+sourcecoverage=''
+for app in $@
+do
+    source="$source"" probemanager/""$app"
+    sourcecoverage="$sourcecoverage""probemanager/""$app"","
+done
+sourcecoverage="--source=""$sourcecoverage"
 if [ ! -d venv ]; then
     echo 'install before testing'
     exit
@@ -17,11 +23,10 @@ if [[ "$VIRTUAL_ENV" == "" ]]; then
     source venv/bin/activate
 fi
 
-venv/bin/flake8 probemanager/$1 --config=.flake8
-
+venv/bin/flake8 $source --config=.flake8
 
 venv/bin/coverage erase
-venv/bin/coverage run --source=probemanager/$1 probemanager/runtests.py $arg
+venv/bin/coverage run $sourcecoverage probemanager/runtests.py $arg
 venv/bin/coverage report -i --skip-covered
 venv/bin/coverage html
 
