@@ -6,6 +6,7 @@ echo '## discover ##'
 ls -la
 which python
 which git
+git describe --tags
 echo $PWD
 
 echo '## Install ##'
