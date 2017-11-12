@@ -44,4 +44,4 @@ class ViewsRulesTest(TestCase):
         self.assertIn('Pattern   not found', str(response.content))
         response = self.client.get(reverse('rules:search'), {'pattern': '-oywz'})
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Pattern -oywz not found', str(response.content))
+        self.assertIn('Result Rules', str(response.content))
