@@ -361,8 +361,12 @@ launch_celery(){
 
 set_pushbullet(){
     echo '## Set Pushbullet ##'
-    echo "Give the API Key, followed by [ENTER]:"
-    read key
+    if [ $arg == 'travis' ]; then
+        key=''
+    else
+        echo "Give the API Key, followed by [ENTER]:"
+        read key
+    fi
     if [ $arg == 'prod' ]; then
         echo "[PUSH]" >> "$destfull"conf.ini
         echo "PUSHBULLET_API_KEY = $key" >> "$destfull"conf.ini
@@ -446,7 +450,9 @@ elif [ $arg == 'travis' ]; then
     installVirtualEnv
     set_settings
     setGit
+    set_pushbullet
     generate_version
+    create_db
     generate_doc
 else
     echo 'Install for Development'

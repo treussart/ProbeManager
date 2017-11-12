@@ -17,9 +17,10 @@ branches:
   only:
     - master
 
-# command to run tests  ./install travis
+# command to run tests
 script:
   - flake8 probemanager/ --config=.flake8
+  - ./install.sh travis
   - coverage erase
   - coverage run --source=probemanager/home probemanager/runtests.py --app home
   - coverage report -i --skip-covered
