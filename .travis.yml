@@ -21,9 +21,10 @@ services:
   - postgresql
 
 install:
-  - bash -c "install.sh travis"
+  - echo "not install default"
 
 script:
+  - ./install.sh  travis
   - flake8 probemanager/ --config=.flake8
   - coverage erase
   - coverage run --source=probemanager/home probemanager/runtests.py --app home
