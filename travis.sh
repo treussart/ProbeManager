@@ -3,8 +3,9 @@
 
 
 echo '## discover ##'
-ls -l
+ls -la
 which python
+which git
 echo $PWD
 
 echo '## Install ##'
