@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+
+## source ~/virtualenv/python3.5/bin/activate
 echo '## discover ##'
 ls -l
 pwd
