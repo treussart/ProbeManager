@@ -11,6 +11,9 @@ python:
   - "3.5"
   - "pypy3"
 
+env:
+  - DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
+
 os:
   - linux
 
