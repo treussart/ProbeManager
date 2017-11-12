@@ -9,7 +9,6 @@ language: python
 
 python:
   - "3.5"
-  - "pypy3"
 
 env:
   - DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
@@ -25,7 +24,7 @@ services:
   - postgresql
 
 install:
-  - sudo ./travis.sh
+  - ./travis.sh
 
 script:
   - flake8 probemanager/ --config=.flake8

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 
-## source ~/virtualenv/python3.5/bin/activate
+
 echo '## discover ##'
 ls -l
-pwd
+which python
 echo $PWD
 
 echo '## Install ##'
@@ -28,10 +28,8 @@ python probemanager/manage.py runscript version --settings=probemanager.settings
 
 
 echo '## Create DB ##'
-su postgres -c 'dropdb --if-exists probemanager'
-su postgres -c 'dropuser probemanager'
-su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
-su postgres -c 'createdb -T template0 -O probemanager probemanager'
+sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
+sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
 
 python probemanager/manage.py makemigrations --settings=probemanager.settings.dev
 python probemanager/manage.py migrate --settings=probemanager.settings.dev
