@@ -361,7 +361,7 @@ launch_celery(){
 
 set_pushbullet(){
     echo '## Set Pushbullet ##'
-    if [ $arg == 'travis' ]; then
+    if [ $arg == 'dev' ]; then
         key=''
     else
         echo "Give the API Key, followed by [ENTER]:"
@@ -443,17 +443,6 @@ if [ $arg == 'prod' ]; then
         post_install
         launch_celery
     fi
-
-elif [ $arg == 'travis' ]; then
-    clean
-    installDependencies
-    installVirtualEnv
-    set_settings
-    setGit
-    set_pushbullet
-    generate_version
-    create_db
-    generate_doc
 else
     echo 'Install for Development'
 
@@ -468,7 +457,7 @@ else
     create_db
     create_superuser
     generate_doc
-    setup_tests
+    # setup_tests
 fi
 
 exit
