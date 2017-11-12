@@ -10,7 +10,8 @@
         "type": "",
         "secure_deployment": true,
         "scheduled_enabled": true,
-        "scheduled_crontab": 1
+        "scheduled_crontab": 1,
+        "server": 1
     }
 }
 ]

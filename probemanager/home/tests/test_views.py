@@ -4,14 +4,7 @@ from django.contrib.auth.models import User
 
 
 class ViewsHomeTest(TestCase):
-    fixtures = ['init',
-                'crontab',
-                'test-rules-source',
-                'test-suricata-conf',
-                'test-suricata-script',
-                'test-suricata-signature',
-                'test-suricata-ruleset',
-                'test-suricata-probe']
+    fixtures = ['init', 'crontab', 'test-rules-source']
 
     def setUp(self):
         self.client = Client()

@@ -7,7 +7,7 @@ from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
 
 class TasksRulesTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-rules-source', 'test-home-probe']
+    fixtures = ['init', 'crontab', 'test-rules-source', 'test-home-server', 'test-home-probe']
 
     @classmethod
     def setUpTestData(cls):
@@ -35,12 +35,11 @@ class TasksRulesTest(TestCase):
     def test_create_deploy_rules_with_schedule(self):
         probe = Probe.get_by_id(1)
         schedule = CrontabSchedule.objects.get(id=1)
-        create_deploy_rules(probe, schedule)
-        periodic_task = PeriodicTask.objects.get(name=probe.name + '_source_deploy_rules_' + schedule.__str__())
+        source = Source.objects.get(id=1)
+        create_deploy_rules(probe, schedule, source)
+        periodic_task = PeriodicTask.objects.get(name=probe.name + '_' + source.uri + '_deploy_rules_' + schedule.__str__())
         self.assertEqual(periodic_task.task, 'home.tasks.deploy_rules')
         self.assertEqual(periodic_task.args, str([probe.name, ]).replace("'", '"'))
-        with self.assertLogs('home.utils', level='DEBUG'):
-            create_deploy_rules(probe, schedule)
 
     def test_encrypt_decrypt(self):
         test = encrypt(self.test)

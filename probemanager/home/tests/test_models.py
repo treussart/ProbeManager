@@ -70,7 +70,7 @@ class SshKeyTest(TestCase):
 
 
 class ProbeTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-suricata-script', 'test-suricata-signature', 'test-suricata-ruleset', 'test-suricata-conf', 'test-suricata-probe']
+    fixtures = ['init', 'crontab', 'test-home-server', 'test-home-probe']
 
     @classmethod
     def setUpTestData(cls):
@@ -79,36 +79,11 @@ class ProbeTest(TestCase):
     def test_probe(self):
         all_probe = Probe.get_all()
         probe = Probe.get_by_id(1)
-        self.assertEqual(Probe.get_by_name("suricata1"), Probe.get_by_id(1))
-        self.assertEqual(len(all_probe), 2)
-        self.assertEqual(probe.name, "suricata1")
-        self.assertEqual(str(probe), "suricata1")
+        self.assertEqual(Probe.get_by_name("probe1"), Probe.get_by_id(1))
+        self.assertEqual(len(all_probe), 1)
+        self.assertEqual(probe.name, "probe1")
+        self.assertEqual(str(probe), "probe1")
         self.assertEqual(probe.description, "test")
-        response = probe.test()
-        self.assertEqual(0, response['result'])
-        response = probe.test_root()
-        print(response)
-        self.assertEqual(0, response['result'])
-        response = probe.status()
-        self.assertEqual(2, response['result'])
-        self.assertEqual('Unit probe.service could not be found.', response['message']['stderr'])
-        response = probe.reload()
-        self.assertEqual(2, response['result'])
-        self.assertEqual('probe: unrecognized service', response['message']['stderr'])
-        response = probe.stop()
-        self.assertEqual(2, response['result'])
-        self.assertEqual('Could not find the requested service probe: host', response['message']['msg'])
-        response = probe.start()
-        self.assertEqual(2, response['result'])
-        self.assertEqual('Could not find the requested service probe: host', response['message']['msg'])
-        response = probe.restart()
-        self.assertEqual(2, response['result'])
-        self.assertEqual('Could not find the requested service probe: host', response['message']['msg'])
-        response = probe.install()
-        self.assertEqual(2, response['result'])
-        response = probe.update()
-        self.assertEqual(2, response['result'])
-
         probe = Probe.get_by_id(99)
         self.assertEqual(probe, None)
         with self.assertRaises(AttributeError):
