@@ -16,6 +16,8 @@ env:
 os:
   - linux
 
+sudo: required
+
 branches:
   only:
     - master

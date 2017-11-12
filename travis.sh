@@ -28,6 +28,13 @@ python probemanager/manage.py runscript version --settings=probemanager.settings
 
 
 echo '## Create DB ##'
+for f in probemanager/*; do
+    if [[ -d $f ]]; then
+        if test -d "$f"/migrations ; then
+            rm "$f"/migrations/00*.py
+        fi
+    fi
+done
 sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
 sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
 
