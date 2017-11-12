@@ -41,7 +41,6 @@ class ViewsHomeTest(TestCase):
         response = client_not_logged.get('/admin/', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn('<title>Log in | Probe Manager site admin</title>', str(response.content))
-        self.assertIn('<label class="required" for="id_username">Username:</label> <input type="text" name="username" autofocus maxlength="254" required id="id_username" />', str(response.content))
         self.assertEqual(str(response.context['user']), 'AnonymousUser')
         response = client_not_logged.get('/admin/')
         self.assertRedirects(response, expected_url='/admin/login/?next=/admin/', status_code=302, target_status_code=200)
