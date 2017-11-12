@@ -21,7 +21,7 @@ services:
   - postgresql
 
 install:
-  - ./install.sh
+  - sudo ./install.sh
 
 script:
   - flake8 probemanager/ --config=.flake8
