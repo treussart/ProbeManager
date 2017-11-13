@@ -43,13 +43,14 @@ Features
 
  * Search rules in those of all probes.
  * List of installed probes and their status.
- * Push notifications (change of status, ...)
- * API.
+ * Push notifications (change of status, ...).
+ * API Restfull.
+
 
 TODO
 ====
 
- * Create an IHM for show all the running tasks.
+ * Increase tests
 
 Installation
 ~~~~~~~~~~~~
@@ -133,7 +134,7 @@ Add a submodule
 
 Modules must respect a few rules:
  * A file version.txt (generate by install script)
- * A folder doc with a file index.rst
+ * A file README.rst
  * A folder api with a variable urls_to_register into urls.py
 
 
