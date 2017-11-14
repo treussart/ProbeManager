@@ -4,6 +4,7 @@ Probe Manager
 
 |Licence| |Version|
 
+|Code_Health|
 
 |Coverage_Status|
 
@@ -23,8 +24,8 @@ Probe Manager
    :target: https://coveralls.io/github/matleses/ProbeManager?branch=master
 .. |Build_Status| image:: https://travis-ci.org/matleses/ProbeManager.svg?branch=master
    :target: https://travis-ci.org/matleses/ProbeManager
-
-
+.. |Code_Health| image:: https://landscape.io/github/matleses/ProbeManager/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/matleses/ProbeManager/master
 
 Presentation
 ~~~~~~~~~~~~
