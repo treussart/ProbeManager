@@ -14,10 +14,12 @@ def execute(server, commands, become=False):
     for command_name, command in commands.items():
         if become:
             if server.ansible_become:
-                command = " echo '" + decrypt(server.ansible_become_pass).decode('utf-8') + \
-                          "' | " + server.ansible_become_method + " -S " + \
-                          command
-        # echo "rootpass" | sudo -S
+                if server.ansible_become_pass is not None:
+                    command = " echo '" + decrypt(server.ansible_become_pass).decode('utf-8') + \
+                              "' | " + server.ansible_become_method + " -S " + \
+                              command
+                else:
+                    command = server.ansible_become_method + " " + command
         command_ssh = 'ssh -o StrictHostKeyChecking=no -p ' + \
                       str(server.ansible_remote_port) + ' -i ' + \
                       settings.MEDIA_ROOT + "/" + \
