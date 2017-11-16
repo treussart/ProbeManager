@@ -8,14 +8,15 @@ import os
 logger = logging.getLogger(__name__)
 
 
-def execute(server, commands):
+def execute(server, commands, become=False):
     result = dict()
     # commands is a dict {'name of command': command}
     for command_name, command in commands.items():
-        if server.ansible_become:
-            command = " echo '" + decrypt(server.ansible_become_pass).decode('utf-8') + \
-                      "' | " + server.ansible_become_method + " -S " + \
-                      command
+        if become:
+            if server.ansible_become:
+                command = " echo '" + decrypt(server.ansible_become_pass).decode('utf-8') + \
+                          "' | " + server.ansible_become_method + " -S " + \
+                          command
         # echo "rootpass" | sudo -S
         command_ssh = 'ssh -o StrictHostKeyChecking=no -p ' + \
                       str(server.ansible_remote_port) + ' -i ' + \
@@ -61,7 +62,7 @@ def execute_copy(server, src, dest, owner=None, group=None, mode=None):
         else:
             result['copy'] = output
         commands = {"mv": "mv " + os.path.basename(dest) + " " + dest}
-        result['mv'] = execute(server, commands)['mv']
+        result['mv'] = execute(server, commands, become=True)['mv']
     else:
         exitcode, output = subprocess.getstatusoutput(command_scp)
         if exitcode != 0:

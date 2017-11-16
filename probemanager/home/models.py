@@ -154,7 +154,7 @@ class Server(models.Model):
         command = "service ssh status"
         tasks = {"test_root": command}
         try:
-            response = execute(self, tasks)
+            response = execute(self, tasks, become=True)
         except Exception as e:
             logger.error(e)
             return False
@@ -195,7 +195,7 @@ class Probe(models.Model):
         command = "service " + self.__class__.__name__.lower() + " restart"
         tasks = {"restart": command}
         try:
-            response = execute(self.server, tasks)
+            response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e)
             return False
@@ -206,7 +206,7 @@ class Probe(models.Model):
         command = "service " + self.__class__.__name__.lower() + " start"
         tasks = {"start": command}
         try:
-            response = execute(self.server, tasks)
+            response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e)
             return False
@@ -217,7 +217,7 @@ class Probe(models.Model):
         command = "service " + self.__class__.__name__.lower() + " stop"
         tasks = {"stop": command}
         try:
-            response = execute(self.server, tasks)
+            response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e)
             return False
@@ -228,7 +228,7 @@ class Probe(models.Model):
         command = "service " + self.__class__.__name__.lower() + " status"
         tasks = {"status": command}
         try:
-            response = execute(self.server, tasks)
+            response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e)
             return 'Failed to get status : ' + str(e)
@@ -239,7 +239,7 @@ class Probe(models.Model):
         command = "service " + self.__class__.__name__.lower() + " reload"
         tasks = {"reload": command}
         try:
-            response = execute(self.server, tasks)
+            response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e)
             return False
@@ -251,7 +251,7 @@ class Probe(models.Model):
         command2 = "apt install " + self.__class__.__name__.lower()
         tasks = {"update": command1, "install": command2}
         try:
-            response = execute(self.server, tasks)
+            response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e)
             return False
