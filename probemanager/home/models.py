@@ -45,7 +45,7 @@ class Job(models.Model):
         try:
             object = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
             return None
         return object
 
@@ -80,7 +80,7 @@ class OsSupported(models.Model):
         try:
             object = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
             return None
         return object
 
@@ -126,7 +126,7 @@ class Server(models.Model):
         try:
             probe = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
             return None
         return probe
 
@@ -135,7 +135,7 @@ class Server(models.Model):
         try:
             host = cls.objects.get(host=host)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
             return None
         return host
 
@@ -145,7 +145,7 @@ class Server(models.Model):
         try:
             response = execute(self, tasks)
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
             return False
         logger.debug("output : " + str(response))
         return True
@@ -156,7 +156,7 @@ class Server(models.Model):
         try:
             response = execute(self, tasks, become=True)
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
             return False
         logger.debug("output : " + str(response))
         return True
@@ -186,7 +186,7 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks)
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
             return 'Failed to get the uptime on the host : ' + str(e)
         logger.debug("output : " + str(response))
         return response['uptime']
@@ -197,7 +197,7 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
             return False
         logger.debug("output : " + str(response))
         return True
@@ -208,7 +208,7 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
             return False
         logger.debug("output : " + str(response))
         return True
@@ -219,7 +219,7 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
             return False
         logger.debug("output : " + str(response))
         return True
@@ -227,13 +227,11 @@ class Probe(models.Model):
     def status(self):
         command = "service " + self.__class__.__name__.lower() + " status"
         tasks = {"status": command}
-        import traceback
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error('Failed to get status : ' + e.__str__())
-            traceback.print_exc()
-            return 'Failed to get status : ' + str(e)
+            return 'Failed to get status : ' + e.__str__()
         logger.debug("output : " + str(response))
         return response['status']
 
@@ -243,7 +241,7 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
             return False
         logger.debug("output : " + str(response))
         return True
@@ -255,7 +253,7 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e)
+            logger.error(e.__str__())
             return False
         logger.debug("output : " + str(response))
         return True
@@ -272,7 +270,7 @@ class Probe(models.Model):
         try:
             probe = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
             return None
         return probe
 
@@ -281,7 +279,7 @@ class Probe(models.Model):
         try:
             probe = cls.objects.get(name=name)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
             return None
         return probe
 
@@ -305,6 +303,6 @@ class ProbeConfiguration(models.Model):
         try:
             object = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
             return None
         return object
