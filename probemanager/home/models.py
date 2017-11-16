@@ -231,7 +231,7 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e)
+            logger.error('Failed to get status : ' + e.__str__())
             traceback.print_exc()
             return 'Failed to get status : ' + str(e)
         logger.debug("output : " + str(response))
