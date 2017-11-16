@@ -18,7 +18,7 @@ def execute(server, commands, become=False):
                 logger.info("OK1")
                 if server.ansible_become_pass is not None:
                     logger.info("OK2")
-                    command = " echo '" + decrypt(server.ansible_become_pass).decode('utf-8') + \
+                    command = " echo '" + decrypt(server.ansible_become_pass).decode('ascii') + \
                               "' | " + server.ansible_become_method + " -S " + \
                               command
                 else:
