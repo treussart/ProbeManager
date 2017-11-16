@@ -13,8 +13,11 @@ def execute(server, commands, become=False):
     # commands is a dict {'name of command': command}
     for command_name, command in commands.items():
         if become:
+            logger.info("OK0")
             if server.ansible_become:
+                logger.info("OK1")
                 if server.ansible_become_pass is not None:
+                    logger.info("OK2")
                     command = " echo '" + decrypt(server.ansible_become_pass).decode('utf-8') + \
                               "' | " + server.ansible_become_method + " -S " + \
                               command
@@ -26,14 +29,18 @@ def execute(server, commands, become=False):
                       server.ansible_ssh_private_key_file.file.name + ' ' + \
                       server.ansible_remote_user + '@' + \
                       server.host + ' "' + command + ' "'
+        logger.info("OK3")
         exitcode, output = subprocess.getstatusoutput(command_ssh)
+        logger.info("OK4")
         if exitcode != 0:
+            logger.info("OK5")
             raise Exception("Command Failed",
                             "Command: " + command_name +
                             " Exitcode: " + str(exitcode) +
                             " Message: " + str(output)
                             )
         else:
+            logger.info("OK6")
             result[command_name] = output
     return result
 
