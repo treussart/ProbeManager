@@ -227,10 +227,12 @@ class Probe(models.Model):
     def status(self):
         command = "service " + self.__class__.__name__.lower() + " status"
         tasks = {"status": command}
+        import traceback
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e)
+            traceback.print_exc()
             return 'Failed to get status : ' + str(e)
         logger.debug("output : " + str(response))
         return response['status']
