@@ -58,7 +58,7 @@ def start(request, id):
     else:
         try:
             response_start = probe.start()
-            if response_start['result'] == 0:
+            if response_start:
                 messages.add_message(request, messages.SUCCESS, 'Probe started successfully')
             else:
                 messages.add_message(request, messages.ERROR, 'Error during the start')
@@ -80,7 +80,7 @@ def stop(request, id):
     else:
         try:
             response_stop = probe.stop()
-            if response_stop['result'] == 0:
+            if response_stop:
                 messages.add_message(request, messages.SUCCESS, 'Probe stopped successfully')
             else:
                 messages.add_message(request, messages.ERROR, 'Error during the stop')
@@ -102,7 +102,7 @@ def restart(request, id):
     else:
         try:
             response_restart = probe.restart()
-            if response_restart['result'] == 0:
+            if response_restart:
                 messages.add_message(request, messages.SUCCESS, 'Probe restarted successfully')
             else:
                 messages.add_message(request, messages.ERROR, 'Error during the restart')
@@ -124,7 +124,7 @@ def reload(request, id):
     else:
         try:
             response_reload = probe.reload()
-            if response_reload['result'] == 0:
+            if response_reload:
                 messages.add_message(request, messages.SUCCESS, 'Probe reloaded successfully')
             else:
                 messages.add_message(request, messages.ERROR, 'Error during the reload')
@@ -146,8 +146,8 @@ def status(request, id):
     else:
         try:
             response_status = probe.status()
-            if response_status['result'] == 0:
-                messages.add_message(request, messages.SUCCESS, "OK probe " + str(probe.name) + " installed successfully")
+            if response_status:
+                messages.add_message(request, messages.SUCCESS, "OK probe " + str(probe.name) + " get status successfully")
             else:
                 messages.add_message(request, messages.ERROR, 'Error during the status')
         except Exception as e:
@@ -217,7 +217,7 @@ def deploy_conf(request, id):
         try:
             response_deploy_conf = probe.deploy_conf()
             response_restart = probe.restart()
-            if response_deploy_conf['result'] == 0 and response_restart['result'] == 0:
+            if response_deploy_conf and response_restart:
                 messages.add_message(request, messages.SUCCESS, 'Deployed configuration successfully')
             else:
                 messages.add_message(request, messages.ERROR, 'Error during the configuration deployed')

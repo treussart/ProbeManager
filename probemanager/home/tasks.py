@@ -33,7 +33,7 @@ def deploy_rules(probe_name):
     try:
         response_deploy_rules = probe.deploy_rules()
         response_reload = probe.reload()
-        if response_deploy_rules['result'] == 0 and response_reload['result'] == 0:
+        if response_deploy_rules and response_reload:
             job.update_job('Deployed rules successfully', 'Completed')
         else:
             job.update_job('Error during the rules deployed', 'Error')
@@ -129,7 +129,7 @@ def install_probe(probe_name):
         job.update_job(e.__str__(), 'Error')
         send_notification("Error for probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to install", "exception": e.__str__()}
-    if response_install['result'] == 0 and response_start['result'] == 0 and response_deploy_conf['result'] == 0 and response_deploy_rules['result'] == 0:
+    if response_install and response_start and response_deploy_conf and response_deploy_rules:
         return {"message": "OK probe " + str(probe.name) + " installed successfully"}
     else:
         return {"message": "Error for probe " + str(probe.name) + " to install"}
@@ -153,7 +153,7 @@ def update_probe(probe_name):
         job.update_job(e.__str__(), 'Error')
         send_notification("Error for probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to install", "exception": e.__str__()}
-    if response_update['result'] == 0 and response_restart['result'] == 0:
+    if response_update and response_restart:
         return {"message": "OK probe " + str(probe.name) + " updated successfully"}
     else:
         return {"message": "Error for probe " + str(probe.name) + " to update"}

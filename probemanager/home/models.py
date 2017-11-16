@@ -2,7 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
 import logging
-from home.ansible_tasks import execute
+# from home.ansible_tasks import execute
+from home.ssh import execute
 
 
 logger = logging.getLogger(__name__)
@@ -139,16 +140,26 @@ class Server(models.Model):
         return host
 
     def test(self):
-        tasks = [
-            dict(name="test", action=dict(module='shell', args='cat /etc/hostname')),
-        ]
-        return execute(self, tasks)
+        command = "cat /etc/hostname"
+        tasks = {"test": command}
+        try:
+            response = execute(self, tasks)
+        except Exception as e:
+            logger.error(e)
+            return False
+        logger.debug("output : " + str(response))
+        return True
 
     def test_root(self):
-        tasks = [
-            dict(name="test_root", action=dict(module='shell', args='service ssh status')),
-        ]
-        return execute(self, tasks)
+        command = "service ssh status"
+        tasks = {"test_root": command}
+        try:
+            response = execute(self, tasks)
+        except Exception as e:
+            logger.error(e)
+            return False
+        logger.debug("output : " + str(response))
+        return True
 
 
 class Probe(models.Model):
@@ -170,58 +181,85 @@ class Probe(models.Model):
         return self.name
 
     def uptime(self):
-        tasks = [
-            dict(name="uptime", action=dict(module='shell', args='ps -o lstart\= -p $( pidof ' + self.type.lower() + ' )')),
-        ]
-        response = execute(self.server, tasks)
-        if response['result'] == 0:
-            return response['tasks']['uptime']['message']
-        else:
-            return 'Failed to get the uptime on the host'
+        command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '1 p'  |  cut -d '/' -f 1"
+        tasks = {"uptime": command}
+        try:
+            response = execute(self.server, tasks)
+        except Exception as e:
+            logger.error(e)
+            return 'Failed to get the uptime on the host : ' + str(e)
+        logger.debug("output : " + str(response))
+        return response['uptime']
 
     def restart(self):
-        tasks = [
-            dict(name="restart", action=dict(module='service', name=self.__class__.__name__.lower(), state='restarted')),
-        ]
-        return execute(self.server, tasks)
+        command = "service " + self.__class__.__name__.lower() + " restart"
+        tasks = {"restart": command}
+        try:
+            response = execute(self.server, tasks)
+        except Exception as e:
+            logger.error(e)
+            return False
+        logger.debug("output : " + str(response))
+        return True
 
     def start(self):
-        tasks = [
-            dict(name="start", action=dict(module='service', name=self.__class__.__name__.lower(), state='started')),
-        ]
-        return execute(self.server, tasks)
+        command = "service " + self.__class__.__name__.lower() + " start"
+        tasks = {"start": command}
+        try:
+            response = execute(self.server, tasks)
+        except Exception as e:
+            logger.error(e)
+            return False
+        logger.debug("output : " + str(response))
+        return True
 
     def stop(self):
-        tasks = [
-            dict(name="stop", action=dict(module='service', name=self.__class__.__name__.lower(), state='stopped')),
-        ]
-        return execute(self.server, tasks)
+        command = "service " + self.__class__.__name__.lower() + " stop"
+        tasks = {"stop": command}
+        try:
+            response = execute(self.server, tasks)
+        except Exception as e:
+            logger.error(e)
+            return False
+        logger.debug("output : " + str(response))
+        return True
 
     def status(self):
-        tasks = [
-            dict(name="status_" + self.__class__.__name__, action=dict(module='shell', args='service ' + self.__class__.__name__.lower() + ' status')),
-        ]
-        return execute(self.server, tasks)
+        command = "service " + self.__class__.__name__.lower() + " status"
+        tasks = {"status": command}
+        try:
+            response = execute(self.server, tasks)
+        except Exception as e:
+            logger.error(e)
+            return 'Failed to get status : ' + str(e)
+        logger.debug("output : " + str(response))
+        return response['status']
 
     def reload(self):
-        tasks = [
-            dict(name="reload_" + self.__class__.__name__, action=dict(module='shell', args='service ' + self.__class__.__name__.lower() + ' reload')),
-        ]
-        return execute(self.server, tasks)
+        command = "service " + self.__class__.__name__.lower() + " reload"
+        tasks = {"reload": command}
+        try:
+            response = execute(self.server, tasks)
+        except Exception as e:
+            logger.error(e)
+            return False
+        logger.debug("output : " + str(response))
+        return True
 
     def install(self):
-        tasks = [
-            dict(name="install_python3-apt", action=dict(module='shell', args='apt install python3-apt')),
-            dict(name="install_" + self.__class__.__name__, action=dict(module='apt', name=self.__class__.__name__.lower(), state='present')),
-        ]
-        return execute(self.server, tasks)
+        command1 = "apt update"
+        command2 = "apt install " + self.__class__.__name__.lower()
+        tasks = {"update": command1, "install": command2}
+        try:
+            response = execute(self.server, tasks)
+        except Exception as e:
+            logger.error(e)
+            return False
+        logger.debug("output : " + str(response))
+        return True
 
     def update(self):
-        tasks = [
-            dict(name="update_python3-apt", action=dict(module='shell', args='apt install python3-apt')),
-            dict(name="update_" + self.__class__.__name__, action=dict(module='apt', name=self.__class__.__name__.lower(), state='latest', update_cache='yes')),
-        ]
-        return execute(self.server, tasks)
+        return self.install()
 
     @classmethod
     def get_all(cls):

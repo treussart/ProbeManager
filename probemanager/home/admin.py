@@ -17,7 +17,7 @@ class ServerAdmin(admin.ModelAdmin):
             obj.ansible_become_pass = encrypt(obj.ansible_become_pass)
         super().save_model(request, obj, form, change)
         response = obj.test_root()
-        if response['result'] == 0:
+        if response:
             messages.add_message(request, messages.SUCCESS, "Connection to the server OK")
         else:
             messages.add_message(request, messages.ERROR, "Connection to the server Failed : " + str(response['message']))
