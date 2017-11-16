@@ -29,7 +29,7 @@ def execute(server, commands, become=False):
                       server.ansible_ssh_private_key_file.file.name + ' ' + \
                       server.ansible_remote_user + '@' + \
                       server.host + ' "' + command + ' "'
-        logger.info("OK3")
+        logger.info("command_ssh " + command_ssh)
         exitcode, output = subprocess.getstatusoutput(command_ssh)
         logger.info("OK4")
         if exitcode != 0:
