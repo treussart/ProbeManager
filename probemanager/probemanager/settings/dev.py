@@ -5,6 +5,8 @@ import os
 import importlib
 
 
+assert importlib
+
 config = configparser.ConfigParser()
 config.read(os.path.join(GIT_ROOT, 'conf.ini'))
 

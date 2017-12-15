@@ -397,7 +397,6 @@ if [ $arg == 'prod' ]; then
         install_modules
         set_settings
         setGit
-        set_pushbullet
         generate_keys
         create_db
         generate_version
@@ -434,7 +433,6 @@ else
     install_modules
     set_settings
     setGit
-    set_pushbullet
     generate_version
     create_db
     create_superuser

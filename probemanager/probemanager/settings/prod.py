@@ -3,6 +3,10 @@ from cryptography.fernet import Fernet
 import configparser
 import ast
 import os
+import importlib
+
+
+assert importlib
 
 
 config = configparser.ConfigParser()
