@@ -4,7 +4,7 @@ from home.models import Probe, Job
 from suricata.models import RuleSetSuricata
 import importlib
 from rules.models import Source
-from home.utils import send_notification
+from home.notifications import send_notification
 import traceback
 
 
@@ -44,7 +44,6 @@ def deploy_rules(probe_name):
         job.update_job(e.__str__(), 'Error')
         send_notification("Probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": e.__str__()}
-    send_notification("Probe " + str(probe.name), "deployed rules successfully")
     return str(response_deploy_rules) + " - " + str(response_reload)
 
 
@@ -68,7 +67,6 @@ def reload_probe(probe_name):
             job.update_job(e.__str__(), 'Error')
             send_notification("Probe " + str(probe.name), e.__str__())
             return {"message": "Error for probe " + str(probe.name) + " to reload", "exception": e.__str__()}
-        send_notification("Probe " + str(probe.name), "reloaded probe successfully")
         return message
     else:
         job.update_job("Not enabled to reload", 'Error')
@@ -105,7 +103,6 @@ def upload_url_http(source_uri, rulesets_id=None):
         job.update_job(e.__str__(), 'Error')
         send_notification("Error for source " + str(source.uri), e.__str__())
         return {"message": "Error for source " + str(source.uri) + " to upload", "exception": e.__str__()}
-    send_notification("Source " + str(source.uri), "Uploaded rules by HTTP successfully")
     return {"message": "OK source " + str(source.uri) + " upload by HTTP", "upload_message": message}
 
 
