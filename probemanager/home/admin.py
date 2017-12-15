@@ -1,5 +1,5 @@
 from django.contrib import admin
-from home.models import SshKey, Server, Job
+from home.models import SshKey, Server, Job, Configuration
 from home.forms import ServerForm
 from home.utils import encrypt
 from django.contrib import messages
@@ -35,3 +35,4 @@ class JobAdmin(admin.ModelAdmin):
 admin.site.register(SshKey)
 admin.site.register(Server, ServerAdmin)
 admin.site.register(Job, JobAdmin)
+admin.site.register(Configuration)
