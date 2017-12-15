@@ -359,24 +359,6 @@ launch_celery(){
     fi
 }
 
-set_pushbullet(){
-    echo '## Set Pushbullet ##'
-    if [ $arg == 'dev' ]; then
-        key=''
-    else
-        echo "Give the API Key, followed by [ENTER]:"
-        read key
-    fi
-    if [ $arg == 'prod' ]; then
-        echo "[PUSH]" >> "$destfull"conf.ini
-        echo "PUSHBULLET_API_KEY = $key" >> "$destfull"conf.ini
-    else
-        echo "[PUSH]"  >> conf.ini
-        echo "PUSHBULLET_API_KEY = $key" >> conf.ini
-    fi
-}
-
-
 post_install() {
     echo '## Post Install ##'
     chown -R www-data:www-data "$destfull"

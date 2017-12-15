@@ -3,7 +3,6 @@ from cryptography.fernet import Fernet
 import configparser
 import ast
 import os
-import importlib
 
 
 config = configparser.ConfigParser()
@@ -142,4 +141,4 @@ for app in PROD_APPS:
 
 
 # SMTP
-EMAIL_SUBJECT_PREFIX = '[ProbeManager] '
+EMAIL_SUBJECT_PREFIX = '[ProbeManager]'

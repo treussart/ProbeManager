@@ -7,6 +7,14 @@
     }
 },
 {
+    "model": "home.configuration",
+    "pk": 1,
+    "fields": {
+        "key": "PUSHBULLET_API_KEY",
+        "value": ""
+    }
+},
+{
     "model": "rules.classtype",
     "pk": 0,
     "fields": {

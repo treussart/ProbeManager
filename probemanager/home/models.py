@@ -306,3 +306,22 @@ class ProbeConfiguration(models.Model):
             logger.debug('Tries to access an object that does not exist : ' + e.__str__())
             return None
         return object
+
+
+class Configuration(models.Model):
+    """
+    Configuration for the application.
+    """
+    # General
+    key = models.CharField(max_length=100, unique=True, blank=False, null=False)
+    value = models.CharField(max_length=300, blank=False, null=False)
+
+    @classmethod
+    def get_value(cls, key):
+        if cls.objects.get(key=key):
+            if cls.objects.get(key=key).value:
+                return cls.objects.get(key=key).value
+            else:
+                return None
+        else:
+            return None

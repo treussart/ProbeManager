@@ -9,6 +9,7 @@ from pushbullet import Pushbullet
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
+from home.models import Configuration
 
 
 fernet_key = Fernet(settings.FERNET_KEY)
@@ -147,8 +148,8 @@ def update_progress(value):
 
 
 def send_notification(title, body):
-    if settings.PUSHBULLET_API_KEY:
-        pb = Pushbullet(settings.PUSHBULLET_API_KEY)
+    if Configuration.get_value("PUSHBULLET_API_KEY"):
+        pb = Pushbullet(Configuration.get_value("PUSHBULLET_API_KEY"))
         push = pb.push_note(title, body)
         logger.debug(push)
 
