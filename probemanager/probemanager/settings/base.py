@@ -127,6 +127,4 @@ SWAGGER_SETTINGS = {
     'VALIDATOR_URL': None
 }
 
-PUSHBULLET_API_KEY = config['PUSH']['PUSHBULLET_API_KEY']
-
 FIXTURE_DIRS = [BASE_DIR + '/probemanager/fixtures', ]
