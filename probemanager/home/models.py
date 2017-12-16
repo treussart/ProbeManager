@@ -316,6 +316,9 @@ class Configuration(models.Model):
     key = models.CharField(max_length=100, unique=True, blank=False, null=False)
     value = models.CharField(max_length=300, blank=False, null=False)
 
+    def __str__(self):
+        return self.key
+
     @classmethod
     def get_value(cls, key):
         if cls.objects.get(key=key):
