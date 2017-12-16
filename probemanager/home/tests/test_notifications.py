@@ -17,7 +17,7 @@ class NotificationsTest(TestCase):
 
     def test_push_ok(self):
         api = Configuration.objects.get(key="PUSHBULLET_API_KEY")
-        api.value = "o.nkN6cvwybstW58883xfDOjAZPf3Z3zl4"
+        api.value = "Put your API key here"
         api.save()
         send_notification("test", "test")
 
