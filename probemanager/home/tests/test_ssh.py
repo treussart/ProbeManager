@@ -16,9 +16,6 @@ class SshTest(TestCase):
         server = Server.get_by_id(1)
         client = connection(server)
         stdin, stdout, stderr = client.exec_command("hostname")
-        # for line in stdout.read().splitlines():
-        #    print(line)
-        # print("stdin : " + str(stdin) + " stdout : " + str(stdout.readlines()) + " stderr : " + str(stderr.readlines()))
         self.assertEqual(stdout.channel.recv_exit_status(), 0)
         self.assertEqual(stdout.read().decode('utf-8'), 'server\n')
         self.assertEqual(stderr.readlines(), [])
