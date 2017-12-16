@@ -15,8 +15,6 @@ config.read(os.path.join(GIT_ROOT, 'conf.ini'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-os.environ['ANSIBLE_HOST_KEY_CHECKING'] = 'False'
-
 HOST = config['DEFAULT']['HOST']
 ALLOWED_HOSTS = [HOST, 'localhost', '127.0.0.1']
 GIT_BINARY = config['GIT']['GIT_BINARY']

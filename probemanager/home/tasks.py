@@ -11,16 +11,6 @@ import traceback
 logger = get_task_logger(__name__)
 
 
-""" Ansible code return :
-RUN_OK = 0
-RUN_ERROR = 1
-RUN_FAILED_HOSTS = 2
-RUN_UNREACHABLE_HOSTS = 4
-RUN_FAILED_BREAK_PLAY = 8
-RUN_UNKNOWN_ERROR = 255
-"""
-
-
 @task
 def deploy_rules(probe_name):
     job = Job.create_job('deploy_rules', probe_name)

@@ -13,9 +13,9 @@ def connection(server):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(hostname=server.host,
-                   username=server.ansible_remote_user,
-                   port=server.ansible_remote_port,
-                   key_filename=settings.MEDIA_ROOT + "/" + server.ansible_ssh_private_key_file.file.name
+                   username=server.remote_user,
+                   port=server.remote_port,
+                   key_filename=settings.MEDIA_ROOT + "/" + server.ssh_private_key_file.file.name
                    )
     return client
 
@@ -25,13 +25,15 @@ def execute(server, commands, become=False):
     # commands is a dict {'name of command': command}
     for command_name, command in commands.items():
         if become:
-            if server.ansible_become:
-                if server.ansible_become_pass is not None:
-                    command = " echo '" + decrypt(server.ansible_become_pass).decode('utf-8') + \
-                              "' | " + server.ansible_become_method + " -S " + \
+            if server.become:
+                if server.become_pass is not None:
+                    command = " echo '" + decrypt(server.become_pass).decode('utf-8') + \
+                              "' | " + server.become_method + " -S " + \
                               command
                 else:
-                    command = server.ansible_become_method + " " + command
+                    command = server.become_method + " " + command
+            else:
+                raise Exception("Server cannot become", server.name)
         client = connection(server)
         stdin, stdout, stderr = client.exec_command(command)
         if stdout.channel.recv_exit_status() != 0:
@@ -57,8 +59,10 @@ def execute_copy(server, src, dest, put=True, become=False):
     try:
         if put:
             if become:
-                if server.ansible_become:
+                if server.become:
                     ftp_client.put(src, os.path.basename(dest))
+                else:
+                    raise Exception("Server cannot become", server.name)
             else:
                 ftp_client.put(src, dest)
         else:
@@ -69,7 +73,7 @@ def execute_copy(server, src, dest, put=True, become=False):
                         )
     result['copy'] = "OK"
     if become:
-        if server.ansible_become:
+        if server.become:
             commands = {"mv": "mv " + os.path.basename(dest) + " " + dest}
             result['mv'] = execute(server, commands, become=True)
     ftp_client.close()

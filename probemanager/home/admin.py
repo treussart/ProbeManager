@@ -13,8 +13,8 @@ class ServerAdmin(admin.ModelAdmin):
     form = ServerForm
 
     def save_model(self, request, obj, form, change):
-        if obj.ansible_become_pass:
-            obj.ansible_become_pass = encrypt(obj.ansible_become_pass)
+        if obj.become_pass:
+            obj.become_pass = encrypt(obj.become_pass)
         super().save_model(request, obj, form, change)
         response = obj.test_root()
         if response:

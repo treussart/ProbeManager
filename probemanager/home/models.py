@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
 import logging
-# from home.ansible_tasks import execute
 from home.ssh import execute
 
 
@@ -87,7 +86,7 @@ class OsSupported(models.Model):
 
 class SshKey(models.Model):
     """
-    Set of Ssh keys, To connect to the remote server in Ansible.
+    Set of Ssh keys, To connect to the remote server.
     """
     name = models.CharField(max_length=400, unique=True, blank=False, null=False)
     file = models.FileField(upload_to='ssh_keys/')
@@ -103,16 +102,13 @@ class Server(models.Model):
     name = models.CharField(max_length=400, unique=True, default="")
     host = models.CharField(max_length=400, unique=True, default="localhost")
     os = models.ForeignKey(OsSupported, default=0)
-    # Ansible
-    ansible_remote_user = models.CharField(max_length=400, blank=True, default='admin')
-    ansible_remote_port = models.IntegerField(blank=True, default=22)
-    ansible_ssh_private_key_file = models.ForeignKey(SshKey, blank=True, null=True)
-    # Not Yet implemented in Inventory in API Python
-    # ansible_host_key_checking = models.BooleanField(default=True, blank=True)
-    ansible_become = models.BooleanField(default=False, blank=True)
-    ansible_become_method = models.CharField(max_length=400, blank=True, default='sudo')
-    ansible_become_user = models.CharField(max_length=400, blank=True, default='root')
-    ansible_become_pass = models.CharField(max_length=400, blank=True, null=True)
+    remote_user = models.CharField(max_length=400, blank=True, default='admin')
+    remote_port = models.IntegerField(blank=True, default=22)
+    ssh_private_key_file = models.ForeignKey(SshKey, blank=True, null=True)
+    become = models.BooleanField(default=False, blank=True)
+    become_method = models.CharField(max_length=400, blank=True, default='sudo')
+    become_user = models.CharField(max_length=400, blank=True, default='root')
+    become_pass = models.CharField(max_length=400, blank=True, null=True)
 
     def __str__(self):
         return self.name + ' - ' + self.host
@@ -322,9 +318,9 @@ class Configuration(models.Model):
     @classmethod
     def get_value(cls, key):
         try:
-            if cls.objects.get(key=key).value:
+            if cls.objects.get(key=key):
                 return cls.objects.get(key=key).value
             else:
                 return None
-        except cls.DoesNotExist as e:
+        except cls.DoesNotExist:
             return None

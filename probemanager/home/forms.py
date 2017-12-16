@@ -5,7 +5,7 @@ from django.forms import ModelForm, PasswordInput
 class ServerForm(ModelForm):
     class Meta:
         model = Server
-        fields = ('name', 'host', 'os', 'ansible_remote_user', 'ansible_remote_port', 'ansible_become', 'ansible_become_method', 'ansible_become_user', 'ansible_become_pass', 'ansible_ssh_private_key_file')
+        fields = ('name', 'host', 'os', 'remote_user', 'remote_port', 'become', 'become_method', 'become_user', 'become_pass', 'ssh_private_key_file')
         widgets = {
-            'ansible_become_pass': PasswordInput(),
+            'become_pass': PasswordInput(),
         }

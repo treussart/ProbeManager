@@ -20,13 +20,13 @@
     "fields": {
         "host": "localhost",
         "os": 1,
-        "ansible_remote_user": "test",
-        "ansible_remote_port": 22,
-        "ansible_ssh_private_key_file": 1,
-        "ansible_become": true,
-        "ansible_become_method": "sudo",
-        "ansible_become_user": "root",
-        "ansible_become_pass": "gAAAAABaBik8K6_b124nFdGz96MHXvZ9q9B6sbRiw5Kd2Lqb2G5DAZNPqkcTeZB9hNftdYv9iFlmcrtpE0m40RcA3N4LWHFONE0xjgrmRDoH0AASCSwfqj8="
+        "remote_user": "test",
+        "remote_port": 22,
+        "ssh_private_key_file": 1,
+        "become": true,
+        "become_method": "sudo",
+        "become_user": "root",
+        "become_pass": "gAAAAABaBik8K6_b124nFdGz96MHXvZ9q9B6sbRiw5Kd2Lqb2G5DAZNPqkcTeZB9hNftdYv9iFlmcrtpE0m40RcA3N4LWHFONE0xjgrmRDoH0AASCSwfqj8="
     }
 }
 ]
