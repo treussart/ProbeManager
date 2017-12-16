@@ -36,6 +36,7 @@ def execute(server, commands, become=False):
                 raise Exception("Server cannot become", server.name)
         client = connection(server)
         stdin, stdout, stderr = client.exec_command(command)
+        # stdin.write(decrypt(server.become_pass).decode('utf-8') + '\n')
         if stdout.channel.recv_exit_status() != 0:
             raise Exception("Command Failed",
                             "Command: " + command_name +
