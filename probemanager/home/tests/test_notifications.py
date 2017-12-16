@@ -6,7 +6,7 @@ from pushbullet.errors import InvalidKeyError
 
 
 class NotificationsTest(TestCase):
-    fixtures = ['init', ]
+    fixtures = ['init']
 
     @classmethod
     def setUpTestData(cls):
@@ -15,11 +15,11 @@ class NotificationsTest(TestCase):
     def test_push_empty(self):
         send_notification("test", "test")
 
-    def test_push_ok(self):
-        api = Configuration.objects.get(key="PUSHBULLET_API_KEY")
-        api.value = "Put your API key here"
-        api.save()
-        send_notification("test", "test")
+    # def test_push_ok(self):
+    #     api = Configuration.objects.get(key="PUSHBULLET_API_KEY")
+    #     api.value = "Put your API key here"
+    #     api.save()
+    #     send_notification("test", "test")
 
     def test_push_fail(self):
         api = Configuration.objects.get(key="PUSHBULLET_API_KEY")
