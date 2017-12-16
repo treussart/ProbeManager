@@ -321,10 +321,10 @@ class Configuration(models.Model):
 
     @classmethod
     def get_value(cls, key):
-        if cls.objects.get(key=key):
+        try:
             if cls.objects.get(key=key).value:
                 return cls.objects.get(key=key).value
             else:
                 return None
-        else:
+        except cls.DoesNotExist as e:
             return None

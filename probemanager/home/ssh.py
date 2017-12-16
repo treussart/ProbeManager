@@ -1,11 +1,23 @@
-import subprocess
 from django.conf import settings
 import logging
 from home.utils import decrypt
 import os
+import paramiko
+# from paramiko.ssh_exception import BadHostKeyException, AuthenticationException, SSHException
 
 
 logger = logging.getLogger(__name__)
+
+
+def connection(server):
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(hostname=server.host,
+                   username=server.ansible_remote_user,
+                   port=server.ansible_remote_port,
+                   key_filename=settings.MEDIA_ROOT + "/" + server.ansible_ssh_private_key_file.file.name
+                   )
+    return client
 
 
 def execute(server, commands, become=False):
@@ -20,58 +32,46 @@ def execute(server, commands, become=False):
                               command
                 else:
                     command = server.ansible_become_method + " " + command
-        command_ssh = 'ssh -o StrictHostKeyChecking=no -p ' + \
-                      str(server.ansible_remote_port) + ' -i ' + \
-                      settings.MEDIA_ROOT + "/" + \
-                      server.ansible_ssh_private_key_file.file.name + ' ' + \
-                      server.ansible_remote_user + '@' + \
-                      server.host + ' "' + command + ' "'
-        exitcode, output = subprocess.getstatusoutput(command_ssh)
-        if exitcode != 0:
+        client = connection(server)
+        stdin, stdout, stderr = client.exec_command(command)
+        if stdout.channel.recv_exit_status() != 0:
             raise Exception("Command Failed",
                             "Command: " + command_name +
-                            " Exitcode: " + str(exitcode) +
-                            " Message: " + str(output)
+                            " Exitcode: " + str(stdout.channel.recv_exit_status()) +
+                            " Message: " + stdout.read().decode('utf-8') +
+                            " Error: " + str(stderr.readlines())
                             )
         else:
-            result[command_name] = output
+            result[command_name] = stdout.read().decode('utf-8').replace('\n', '')
+            if result[command_name] == '':
+                result[command_name] = 'OK'
+
+        client.close()
     return result
 
 
-def execute_copy(server, src, dest, owner=None, group=None, mode=None):
+def execute_copy(server, src, dest, put=True, become=False):
     result = dict()
-    command_scp = 'scp -o StrictHostKeyChecking=no -P ' + \
-                  str(server.ansible_remote_port) + ' -i ' + \
-                  settings.MEDIA_ROOT + "/" + \
-                  server.ansible_ssh_private_key_file.file.name + ' ' + \
-                  src + ' ' + \
-                  server.ansible_remote_user + '@' + \
-                  server.host + ':' + dest
-    if server.ansible_become:
-        command_scp = 'scp -o StrictHostKeyChecking=no -P ' + \
-                      str(server.ansible_remote_port) + ' -i ' + \
-                      settings.MEDIA_ROOT + "/" + \
-                      server.ansible_ssh_private_key_file.file.name + ' ' + \
-                      src + ' ' + \
-                      server.ansible_remote_user + '@' + \
-                      server.host + ':' + os.path.basename(dest)
-        exitcode, output = subprocess.getstatusoutput(command_scp)
-        if exitcode != 0:
-            raise Exception("Command scp Failed",
-                            " Exitcode: " + str(exitcode) +
-                            " Message: " + str(output)
-                            )
+    client = connection(server)
+    ftp_client = client.open_sftp()
+    try:
+        if put:
+            if become:
+                if server.ansible_become:
+                    ftp_client.put(src, os.path.basename(dest))
+            else:
+                ftp_client.put(src, dest)
         else:
-            result['copy'] = output
-        commands = {"mv": "mv " + os.path.basename(dest) + " " + dest}
-        result['mv'] = execute(server, commands, become=True)['mv']
-    else:
-        exitcode, output = subprocess.getstatusoutput(command_scp)
-        if exitcode != 0:
-            raise Exception("Command scp Failed",
-                            " Exitcode: " + str(exitcode) +
-                            " Message: " + str(output)
-                            )
-        else:
-            result['copy'] = output
+            ftp_client.get(dest, src)
+    except Exception as e:
+        raise Exception("Command scp Failed",
+                        " Message: " + e.__str__()
+                        )
+    result['copy'] = "OK"
+    if become:
+        if server.ansible_become:
+            commands = {"mv": "mv " + os.path.basename(dest) + " " + dest}
+            result['mv'] = execute(server, commands, become=True)
+    ftp_client.close()
+    client.close()
     return result

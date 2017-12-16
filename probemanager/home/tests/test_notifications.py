@@ -5,7 +5,7 @@ from home.models import Configuration
 from pushbullet.errors import InvalidKeyError
 
 
-class TasksRulesTest(TestCase):
+class NotificationsTest(TestCase):
     fixtures = ['init', ]
 
     @classmethod
