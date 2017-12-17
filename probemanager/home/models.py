@@ -170,7 +170,7 @@ class Probe(models.Model):
     type = models.CharField(max_length=400, blank=True, default='', editable=False)
     secure_deployment = models.BooleanField(default=True)
     scheduled_enabled = models.BooleanField('Enabled scheduled deployment of rules', default=False)
-    scheduled_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True, verbose_name='Scheduled Crontab (Only the first time)')
+    scheduled_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True, verbose_name='Scheduled Crontab')
     server = models.ForeignKey(Server)
 
     def __str__(self):
