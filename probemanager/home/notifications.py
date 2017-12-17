@@ -29,7 +29,6 @@ def send_notification(title, body, html=False):
         if Configuration.get_value("SPLUNK_USER") and Configuration.get_value("SPLUNK_PASSWORD"):
             url = "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
             r = requests.post(url, verify=False, data=html_body, auth=(Configuration.get_value("SPLUNK_USER"), Configuration.get_value("SPLUNK_PASSWORD")))
-
         else:
             url = "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
             r = requests.post(url, verify=False, data=html_body)
