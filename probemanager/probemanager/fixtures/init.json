@@ -16,7 +16,7 @@
 },
 {
     "model": "home.configuration",
-    "pk": 1,
+    "pk": 2,
     "fields": {
         "key": "SPLUNK_HOST",
         "value": ""
@@ -24,7 +24,7 @@
 },
 {
     "model": "home.configuration",
-    "pk": 1,
+    "pk": 3,
     "fields": {
         "key": "SPLUNK_USER",
         "value": ""
@@ -32,7 +32,7 @@
 },
 {
     "model": "home.configuration",
-    "pk": 1,
+    "pk": 4,
     "fields": {
         "key": "SPLUNK_PASSWORD",
         "value": ""
