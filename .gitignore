@@ -117,3 +117,4 @@ probemanager/static/
 /probemanager/version.txt
 /probemanager/celery.log
 .coveralls.yml
+/probemanager/home/fixtures/init-test.json
