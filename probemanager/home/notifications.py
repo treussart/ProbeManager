@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 from home.models import Configuration
 from django.conf import settings
 import logging
-import subprocess
+import requests
 from lxml import html as html_lxml
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('home')
 
 
 def send_notification(title, body, html=False):
@@ -26,10 +26,19 @@ def send_notification(title, body, html=False):
         logger.debug(push)
     # Splunk
     if Configuration.get_value("SPLUNK_HOST"):
-        if Configuration.get_value("SPLUNK_USER") != "" and Configuration.get_value("SPLUNK_PASSWORD") != "":
-            subprocess.getoutput(["curl", "-u", Configuration.get_value("SPLUNK_USER") + ":" + Configuration.get_value("SPLUNK_PASSWORD"), "-k", "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification", "-d", body])
+        if Configuration.get_value("SPLUNK_USER") and Configuration.get_value("SPLUNK_PASSWORD"):
+            # output = subprocess.getoutput(["curl", "-u", Configuration.get_value("SPLUNK_USER") + ":" + Configuration.get_value("SPLUNK_PASSWORD"), "-k", "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification", "-d", body])
+            url = "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
+            files = {'file': ('notification.json', plain_body, {'Expires': '0'})}
+            r = requests.post(url, files=files, headers={'Authorization': Configuration.get_value("SPLUNK_USER") + ":" + Configuration.get_value("SPLUNK_PASSWORD")})
+
         else:
-            subprocess.getoutput(["curl", "-k", "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification", "-d", body])
+            url = "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
+            files = {'file': ('notification.json', plain_body, {'Expires': '0'})}
+            r = requests.post(url, files=files)
+            # output = subprocess.getoutput(["curl", "-k", "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification", "-d", body])
+            # output = subprocess.getoutput("curl -d '" + plain_body + "' -H 'Content-Type: application/json' -X POST -k https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification")
+        logger.debug("Splunk " + str(r.text))
     # Email
     users = User.objects.all()
     if settings.DEFAULT_FROM_EMAIL:

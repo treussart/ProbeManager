@@ -319,7 +319,10 @@ class Configuration(models.Model):
     def get_value(cls, key):
         try:
             if cls.objects.get(key=key):
-                return cls.objects.get(key=key).value
+                if cls.objects.get(key=key).value != "":
+                    return cls.objects.get(key=key).value
+                else:
+                    return None
             else:
                 return None
         except cls.DoesNotExist:
