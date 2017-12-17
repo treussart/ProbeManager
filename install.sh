@@ -299,6 +299,7 @@ update_db(){
     echo '## Update DB ##'
     "$destfull"venv/bin/python "$destfull"probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
     "$destfull"venv/bin/python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
+    "$destfull"venv/bin/python "$destfull"probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
 }
 
 create_superuser(){

@@ -15,6 +15,30 @@
     }
 },
 {
+    "model": "home.configuration",
+    "pk": 1,
+    "fields": {
+        "key": "SPLUNK_HOST",
+        "value": ""
+    }
+},
+{
+    "model": "home.configuration",
+    "pk": 1,
+    "fields": {
+        "key": "SPLUNK_USER",
+        "value": ""
+    }
+},
+{
+    "model": "home.configuration",
+    "pk": 1,
+    "fields": {
+        "key": "SPLUNK_PASSWORD",
+        "value": ""
+    }
+},
+{
     "model": "rules.classtype",
     "pk": 0,
     "fields": {

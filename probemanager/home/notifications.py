@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from home.models import Configuration
 from django.conf import settings
 import logging
+import subprocess
 from lxml import html as html_lxml
 
 
@@ -23,6 +24,12 @@ def send_notification(title, body, html=False):
         pb = Pushbullet(Configuration.get_value("PUSHBULLET_API_KEY"))
         push = pb.push_note(title, plain_body)
         logger.debug(push)
+    # Splunk
+        if Configuration.get_value("SPLUNK_HOST"):
+            if Configuration.get_value("SPLUNK_USER") and Configuration.get_value("SPLUNK_PASSWORD"):
+                subprocess.getoutput(["curl", "-u", Configuration.get_value("SPLUNK_USER") + ":" + Configuration.get_value("SPLUNK_PASSWORD"), "-k", "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification", "-d", body])
+            else:
+                subprocess.getoutput(["curl", "-k", "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification", "-d", body])
     # Email
     users = User.objects.all()
     if settings.DEFAULT_FROM_EMAIL:
