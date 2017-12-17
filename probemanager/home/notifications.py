@@ -30,12 +30,12 @@ def send_notification(title, body, html=False):
             # output = subprocess.getoutput(["curl", "-u", Configuration.get_value("SPLUNK_USER") + ":" + Configuration.get_value("SPLUNK_PASSWORD"), "-k", "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification", "-d", body])
             url = "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
             files = {'file': ('notification.json', plain_body, {'Expires': '0'})}
-            r = requests.post(url, files=files, headers={'Authorization': Configuration.get_value("SPLUNK_USER") + ":" + Configuration.get_value("SPLUNK_PASSWORD")})
+            r = requests.post(url, verify=False, files=files, headers={'Authorization': Configuration.get_value("SPLUNK_USER") + ":" + Configuration.get_value("SPLUNK_PASSWORD")})
 
         else:
             url = "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
             files = {'file': ('notification.json', plain_body, {'Expires': '0'})}
-            r = requests.post(url, files=files)
+            r = requests.post(url, verify=False, files=files)
             # output = subprocess.getoutput(["curl", "-k", "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification", "-d", body])
             # output = subprocess.getoutput("curl -d '" + plain_body + "' -H 'Content-Type: application/json' -X POST -k https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification")
         logger.debug("Splunk " + str(r.text))
