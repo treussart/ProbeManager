@@ -36,7 +36,7 @@ def send_notification(title, body, html=False):
         try:
             for user in users:
                 if user.is_superuser:
-                    user.email_user(title, html_message=html_body, from_email=settings.DEFAULT_FROM_EMAIL)
+                    user.email_user(title, html_body, from_email=settings.DEFAULT_FROM_EMAIL)
         except ConnectionRefusedError:
             pass
 
