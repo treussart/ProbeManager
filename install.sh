@@ -208,6 +208,17 @@ set_host(){
     fi
 }
 
+set_timezone(){
+    echo '## Set Timezone ##'
+    echo "Give the timezone, followed by [ENTER], example: Europe/Paris:"
+    read timezone
+    if [ $arg == 'prod' ]; then
+        echo "TIME_ZONE = $timezone" >> "$destfull"probemanager/probemanager/settings/base.py
+    else
+        echo "TIME_ZONE = $timezone" >> probemanager/probemanager/settings/base.py
+    fi
+}
+
 set_smtp(){
     if [ $arg == 'prod' ]; then
         echo '## Set SMTP settings ##'
@@ -393,6 +404,7 @@ if [ $arg == 'prod' ]; then
         installDependencies
         installVirtualEnv
         set_host
+        set_timezone
         chooseApps
         install_modules
         set_settings
@@ -432,6 +444,7 @@ else
     installVirtualEnv
     install_modules
     set_settings
+    set_timezone
     setGit
     generate_version
     create_db
