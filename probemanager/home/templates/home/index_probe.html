@@ -44,7 +44,6 @@
         {% endif %}
         <br>
         <div class="list-group">
-            <a class="list-group-item list-group-item-action list-group-item-secondary" href="/admin/{{ probe.type|lower }}/{{ probe.type|lower }}/{{ probe.id }}/change/">Update Configuration</a>
             <a class="list-group-item list-group-item-action list-group-item-secondary" href="/{{ probe.type|lower }}/install/{{ probe.id }}">Install {{ probe.type }} Instance</a>
             <a class="list-group-item list-group-item-action list-group-item-secondary" href="/{{ probe.type|lower }}/update/{{ probe.id }}">Update {{ probe.type }} Instance</a>
             <a class="list-group-item list-group-item-action list-group-item-secondary" href="/{{ probe.type|lower }}/deploy-conf/{{ probe.id }}">Deploy Configuration</a>
