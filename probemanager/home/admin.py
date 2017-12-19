@@ -28,6 +28,11 @@ class JobAdmin(admin.ModelAdmin):
     list_display = ('name', 'probe', 'status', 'created', 'completed', 'result')
     list_display_links = None
 
+    class Media:
+        js = (
+            'home/js/reload.js',
+        )
+
     def has_add_permission(self, request):
         return False
 
