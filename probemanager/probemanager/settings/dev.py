@@ -24,6 +24,7 @@ VERSION = git_tag(GIT_ROOT)
 # Celery settings
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 
+TIME_ZONE = 'UTC'
 
 LOGGING = {
     'version': 1,

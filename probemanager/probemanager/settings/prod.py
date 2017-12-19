@@ -144,3 +144,10 @@ for app in PROD_APPS:
 
 # SMTP
 EMAIL_SUBJECT_PREFIX = '[ProbeManager]'
+EMAIL_HOST = config['EMAIL']['HOST']
+EMAIL_HOST_USER = config['EMAIL']['USER']
+EMAIL_HOST_PASSWORD = decrypt(config['EMAIL']['PASSWORD'])
+DEFAULT_FROM_EMAIL = config['EMAIL']['FROM']
+EMAIL_USE_TLS = config.getboolean('EMAIL', 'TLS')
+
+TIME_ZONE = config['DEFAULT']['TIMEZONE']

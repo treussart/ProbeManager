@@ -4,11 +4,12 @@ from getpass import getpass
 import sys
 
 template_smtp = """
-EMAIL_HOST = '{{ host }}'
-EMAIL_HOST_USER = '{{ host_user }}'
-EMAIL_HOST_PASSWORD = decrypt('{{ host_password }}')
-DEFAULT_FROM_EMAIL = '{{ default_from_email }}'
-EMAIL_USE_TLS = {{ use_tls }}
+[EMAIL]
+HOST = {{ host }}
+USER = {{ host_user }}
+PASSWORD = {{ host_password }}
+FROM = {{ default_from_email }}
+TLS = {{ use_tls }}
 """
 
 
@@ -32,7 +33,7 @@ def run(*args):
                          use_tls=str(use_tls)
                          )
 
-        with open(args[0] + 'probemanager/probemanager/settings/prod.py', 'a') as f:
+        with open(args[0] + 'conf.ini', 'a') as f:
             f.write(final)
         f.close()
         sys.exit(0)

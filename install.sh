@@ -213,9 +213,7 @@ set_timezone(){
     echo "Give the timezone, followed by [ENTER], example: Europe/Paris:"
     read timezone
     if [ $arg == 'prod' ]; then
-        echo "TIME_ZONE = $timezone" >> "$destfull"probemanager/probemanager/settings/base.py
-    else
-        echo "TIME_ZONE = $timezone" >> probemanager/probemanager/settings/base.py
+        echo "TIME_ZONE = $timezone" >> "$destfull"conf.ini
     fi
 }
 
@@ -444,7 +442,6 @@ else
     installVirtualEnv
     install_modules
     set_settings
-    set_timezone
     setGit
     generate_version
     create_db
