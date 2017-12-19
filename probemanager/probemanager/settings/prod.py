@@ -146,7 +146,8 @@ for app in PROD_APPS:
 EMAIL_SUBJECT_PREFIX = '[ProbeManager]'
 EMAIL_HOST = config['EMAIL']['HOST']
 EMAIL_HOST_USER = config['EMAIL']['USER']
-EMAIL_HOST_PASSWORD = decrypt(config['EMAIL']['PASSWORD'])
+with open(os.path.join(GIT_ROOT, 'password_email.txt')) as f:
+    EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
 DEFAULT_FROM_EMAIL = config['EMAIL']['FROM']
 EMAIL_USE_TLS = config.getboolean('EMAIL', 'TLS')
 
