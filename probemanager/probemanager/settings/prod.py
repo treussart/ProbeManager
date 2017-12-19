@@ -151,4 +151,4 @@ with open(os.path.join(GIT_ROOT, 'password_email.txt')) as f:
 DEFAULT_FROM_EMAIL = config['EMAIL']['FROM']
 EMAIL_USE_TLS = config.getboolean('EMAIL', 'TLS')
 
-TIME_ZONE = config['DEFAULT']['TIMEZONE']
+TIME_ZONE = config['DEFAULT']['TIME_ZONE']
