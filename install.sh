@@ -210,8 +210,11 @@ set_host(){
 
 set_timezone(){
     echo '## Set Timezone ##'
-    echo "Give the timezone, followed by [ENTER], example: Europe/Paris:"
+    echo "Give the timezone, followed by [ENTER], example: Europe/Paris, default: UTC:"
     read timezone
+    if [ "$timezone" == "" ]; then
+        $timezone='UTC'
+    fi
     if [ $arg == 'prod' ]; then
         echo "TIME_ZONE = $timezone" >> "$destfull"conf.ini
     fi
