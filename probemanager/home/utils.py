@@ -140,3 +140,42 @@ def update_progress(value):
         f = open(tmpdir + 'progress.json', 'w')
         f.write(json.dumps(progress))
         f.close()
+
+
+def add_1_hour(crontab):
+    schedule = crontab
+    try:
+        if schedule.minute.isdigit():
+            if schedule.hour.isdigit():
+                hour = schedule.hour
+                if int(hour) in range(0, 22):
+                    print("OK")
+                    # 2 1  ->  2 2
+                    hour = int(schedule.hour)
+                    hour += 1
+                    schedule.hour = str(hour)
+                    return schedule
+                else:
+                    # 2 23 -> 2 0  + 1 jour
+                    if schedule.day_of_week.isdigit():
+                        schedule.hour = str(0)
+                        if int(schedule.day_of_week) in range(0, 5):
+                            schedule.day_of_week = str(int(schedule.day_of_week) + 1)
+                        else:
+                            schedule.day_of_week = str(0)
+                    else:
+                        # 2 23 * -> 2 0  + 1 jour illogic
+                        pass
+                    return schedule
+            else:
+                # 50 * -> equal  illogic
+                # 10 */2 -> equal  illogic
+                return schedule
+        else:
+            # */2 1 ->  */2 2 illogic
+            # */2 * ->  equal  illogic
+            # * 23 -> * 0  + 1 jour  illogic
+            # * 1 -> * 2  illogic
+            return schedule
+    except ValueError:
+        return schedule

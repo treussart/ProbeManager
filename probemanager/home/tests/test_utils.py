@@ -1,6 +1,6 @@
-""" python manage.py test home.tests.test_utils """
+""" venv/bin/python probemanager/manage.py test home.tests.test_utils """
 from django.test import TestCase
-from home.utils import create_upload_task, create_deploy_rules, create_reload_task, encrypt, decrypt, add_10_min
+from home.utils import create_upload_task, create_deploy_rules, create_reload_task, encrypt, decrypt, add_10_min, add_1_hour
 from rules.models import Source
 from home.models import Probe
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
@@ -159,3 +159,64 @@ class TasksRulesTest(TestCase):
                                                             )
         schedule_added = add_10_min(schedule)
         self.assertEqual(str(schedule_added), "52 */23- * * * (m/h/d/dM/MY)")
+
+    def test_add_1_hour(self):
+        self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='2',
+                                                                 hour='2',
+                                                                 day_of_week='*',
+                                                                 day_of_month='*',
+                                                                 month_of_year='*',
+                                                                 )
+        self.schedule.save()
+        schedule_added = add_1_hour(self.schedule)
+        self.assertEqual(str(schedule_added), "2 3 * * * (m/h/d/dM/MY)")
+
+        self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='2',
+                                                                 hour='23',
+                                                                 day_of_week='*',
+                                                                 day_of_month='*',
+                                                                 month_of_year='*',
+                                                                 )
+        self.schedule.save()
+        schedule_added = add_1_hour(self.schedule)
+        self.assertEqual(str(schedule_added), "2 23 * * * (m/h/d/dM/MY)")
+
+        self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='2',
+                                                                 hour='23',
+                                                                 day_of_week='1',
+                                                                 day_of_month='*',
+                                                                 month_of_year='*',
+                                                                 )
+        self.schedule.save()
+        schedule_added = add_1_hour(self.schedule)
+        self.assertEqual(str(schedule_added), "2 0 2 * * (m/h/d/dM/MY)")
+
+        self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='2',
+                                                                 hour='23',
+                                                                 day_of_week='6',
+                                                                 day_of_month='*',
+                                                                 month_of_year='*',
+                                                                 )
+        self.schedule.save()
+        schedule_added = add_1_hour(self.schedule)
+        self.assertEqual(str(schedule_added), "2 0 0 * * (m/h/d/dM/MY)")
+
+        self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='*',
+                                                                 hour='23',
+                                                                 day_of_week='6',
+                                                                 day_of_month='*',
+                                                                 month_of_year='*',
+                                                                 )
+        self.schedule.save()
+        schedule_added = add_1_hour(self.schedule)
+        self.assertEqual(str(schedule_added), "* 23 6 * * (m/h/d/dM/MY)")
+
+        self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='2',
+                                                                 hour='*',
+                                                                 day_of_week='6',
+                                                                 day_of_month='*',
+                                                                 month_of_year='*',
+                                                                 )
+        self.schedule.save()
+        schedule_added = add_1_hour(self.schedule)
+        self.assertEqual(str(schedule_added), "2 * 6 * * (m/h/d/dM/MY)")
