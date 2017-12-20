@@ -177,7 +177,7 @@ class Probe(models.Model):
         return self.name
 
     def uptime(self):
-        command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '1 p'  |  cut -d '/' -f 1"
+        command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
         tasks = {"uptime": command}
         try:
             response = execute(self.server, tasks)
