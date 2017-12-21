@@ -177,7 +177,10 @@ class Probe(models.Model):
         return self.name
 
     def uptime(self):
-        command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
+        if self.server.os.name == 'debian':
+            command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
+        else:
+            raise Exception("Not yet implemented")
         tasks = {"uptime": command}
         try:
             response = execute(self.server, tasks)
@@ -188,7 +191,10 @@ class Probe(models.Model):
         return response['uptime']
 
     def restart(self):
-        command = "service " + self.__class__.__name__.lower() + " restart"
+        if self.server.os.name == 'debian':
+            command = "service " + self.__class__.__name__.lower() + " restart"
+        else:
+            raise Exception("Not yet implemented")
         tasks = {"restart": command}
         try:
             response = execute(self.server, tasks, become=True)
@@ -199,7 +205,10 @@ class Probe(models.Model):
         return True
 
     def start(self):
-        command = "service " + self.__class__.__name__.lower() + " start"
+        if self.server.os.name == 'debian':
+            command = "service " + self.__class__.__name__.lower() + " start"
+        else:
+            raise Exception("Not yet implemented")
         tasks = {"start": command}
         try:
             response = execute(self.server, tasks, become=True)
@@ -210,7 +219,10 @@ class Probe(models.Model):
         return True
 
     def stop(self):
-        command = "service " + self.__class__.__name__.lower() + " stop"
+        if self.server.os.name == 'debian':
+            command = "service " + self.__class__.__name__.lower() + " stop"
+        else:
+            raise Exception("Not yet implemented")
         tasks = {"stop": command}
         try:
             response = execute(self.server, tasks, become=True)
@@ -221,7 +233,10 @@ class Probe(models.Model):
         return True
 
     def status(self):
-        command = "service " + self.__class__.__name__.lower() + " status"
+        if self.server.os.name == 'debian':
+            command = "service " + self.__class__.__name__.lower() + " status"
+        else:
+            raise Exception("Not yet implemented")
         tasks = {"status": command}
         try:
             response = execute(self.server, tasks, become=True)
@@ -232,7 +247,10 @@ class Probe(models.Model):
         return response['status']
 
     def reload(self):
-        command = "service " + self.__class__.__name__.lower() + " reload"
+        if self.server.os.name == 'debian':
+            command = "service " + self.__class__.__name__.lower() + " reload"
+        else:
+            raise Exception("Not yet implemented")
         tasks = {"reload": command}
         try:
             response = execute(self.server, tasks, become=True)
@@ -243,8 +261,11 @@ class Probe(models.Model):
         return True
 
     def install(self):
-        command1 = "apt update"
-        command2 = "apt install " + self.__class__.__name__.lower()
+        if self.server.os.name == 'debian':
+            command1 = "apt update"
+            command2 = "apt install " + self.__class__.__name__.lower()
+        else:
+            raise Exception("Not yet implemented")
         tasks = {"update": command1, "install": command2}
         try:
             response = execute(self.server, tasks, become=True)
