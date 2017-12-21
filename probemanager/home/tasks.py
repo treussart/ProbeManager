@@ -152,7 +152,7 @@ def update_probe(probe_name):
 
 @task
 def check_probe(probe_name):
-    job = Job.create_job('update_probe', probe_name)
+    job = Job.create_job('check_probe', probe_name)
     probe = Probe.get_by_name(probe_name)
     if probe is None:
         job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
