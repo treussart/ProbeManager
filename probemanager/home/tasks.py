@@ -172,8 +172,9 @@ def check_probe(probe_name):
             job.update_job(response_status, 'Completed')
             return {"message": "OK probe " + str(probe.name) + " checked successfully"}
         else:
-            job.update_job("Error for probe " + str(probe.name) + " to check status", 'Error')
-            return {"message": "Error for probe " + str(probe.name) + " to check status"}
+            job.update_job("KO probe " + str(probe.name) + " not running", 'Completed')
+            send_notification("probe KO", "Probe " + str(probe.name) + " not running")
+            return {"message": "KO probe " + str(probe.name) + " not running"}
     else:
         job.update_job("Error for probe " + str(probe.name) + " to check status", 'Error')
         return {"message": "Error for probe " + str(probe.name) + " to check status"}
