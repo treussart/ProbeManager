@@ -117,8 +117,10 @@ def install_probe(probe_name):
         send_notification("Error for probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to install", "exception": e.__str__()}
     if response_install and response_start and response_deploy_conf and response_deploy_rules:
+        job.update_job(response_install + response_deploy_conf + response_deploy_rules + response_start, 'Completed')
         return {"message": "OK probe " + str(probe.name) + " installed successfully"}
     else:
+        job.update_job("Error for probe " + str(probe.name) + " to install", 'Error')
         return {"message": "Error for probe " + str(probe.name) + " to install"}
 
 
@@ -141,6 +143,37 @@ def update_probe(probe_name):
         send_notification("Error for probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to install", "exception": e.__str__()}
     if response_update and response_restart:
+        job.update_job(response_update + response_restart, 'Completed')
         return {"message": "OK probe " + str(probe.name) + " updated successfully"}
     else:
+        job.update_job("Error for probe " + str(probe.name) + " to update", 'Error')
         return {"message": "Error for probe " + str(probe.name) + " to update"}
+
+
+@task
+def check_probe(probe_name):
+    job = Job.create_job('update_probe', probe_name)
+    probe = Probe.get_by_name(probe_name)
+    if probe is None:
+        job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
+        return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
+    my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
+    probe = my_class.get_by_name(probe_name)
+    try:
+        response_status = probe.status()
+    except Exception as e:
+        logger.error(e.__str__())
+        logger.error(traceback.print_exc())
+        job.update_job(e.__str__(), 'Error')
+        send_notification("Error for probe " + str(probe.name), e.__str__())
+        return {"message": "Error for probe " + str(probe.name) + " to check status", "exception": e.__str__()}
+    if response_status:
+        if 'active (running)' in response_status:
+            job.update_job(response_status, 'Completed')
+            return {"message": "OK probe " + str(probe.name) + " checked successfully"}
+        else:
+            job.update_job("Error for probe " + str(probe.name) + " to check status", 'Error')
+            return {"message": "Error for probe " + str(probe.name) + " to check status"}
+    else:
+        job.update_job("Error for probe " + str(probe.name) + " to check status", 'Error')
+        return {"message": "Error for probe " + str(probe.name) + " to check status"}
