@@ -9,8 +9,8 @@
         "rules_updated_date": null,
         "type": "",
         "secure_deployment": true,
-        "scheduled_enabled": true,
-        "scheduled_crontab": 1,
+        "scheduled_rules_deployment_enabled": true,
+        "scheduled_rules_deployment_crontab": 1,
         "server": 1
     }
 }

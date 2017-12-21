@@ -6,8 +6,8 @@
         "method": 0,
         "data_type": 1,
         "uri": "https://sslbl.abuse.ch/blacklist/sslblacklist.rules",
-        "scheduled_enabled": true,
-        "scheduled_crontab": 1,
+        "scheduled_rules_deployment_enabled": true,
+        "scheduled_rules_deployment_crontab": 1,
         "scheduled_deploy": true,
         "file": "",
         "type": ""

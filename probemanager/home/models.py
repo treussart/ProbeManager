@@ -169,8 +169,10 @@ class Probe(models.Model):
     rules_updated_date = models.DateTimeField(blank=True, null=True, editable=False)
     type = models.CharField(max_length=400, blank=True, default='', editable=False)
     secure_deployment = models.BooleanField(default=True)
-    scheduled_enabled = models.BooleanField('Enabled scheduled deployment of rules', default=False)
-    scheduled_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True, verbose_name='Scheduled Crontab')
+    scheduled_rules_deployment_enabled = models.BooleanField(default=False)
+    scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True)
+    scheduled_check_enabled = models.BooleanField(default=False)
+    scheduled_check_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True)
     server = models.ForeignKey(Server)
 
     def __str__(self):

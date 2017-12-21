@@ -1,6 +1,6 @@
 """ venv/bin/python probemanager/manage.py test home.tests.test_utils """
 from django.test import TestCase
-from home.utils import create_upload_task, create_deploy_rules, create_reload_task, encrypt, decrypt, add_10_min, add_1_hour
+from home.utils import create_upload_task, create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, add_1_hour
 from rules.models import Source
 from home.models import Probe
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
@@ -25,18 +25,18 @@ class TasksRulesTest(TestCase):
         self.assertEqual(periodic_task.task, 'home.tasks.reload_probe')
         self.assertEqual(periodic_task.args, str([Probe.get_by_id(1).name, ]).replace("'", '"'))
 
-    def test_create_deploy_rules(self):
+    def test_create_deploy_rules_task(self):
         probe = Probe.get_by_id(1)
-        create_deploy_rules(probe)
-        periodic_task = PeriodicTask.objects.get(name=probe.name + '_deploy_rules_' + probe.scheduled_crontab.__str__())
+        create_deploy_rules_task(probe)
+        periodic_task = PeriodicTask.objects.get(name=probe.name + '_deploy_rules_' + probe.scheduled_rules_deployment_crontab.__str__())
         self.assertEqual(periodic_task.task, 'home.tasks.deploy_rules')
         self.assertEqual(periodic_task.args, str([probe.name, ]).replace("'", '"'))
 
-    def test_create_deploy_rules_with_schedule(self):
+    def test_create_deploy_rules_task_with_schedule(self):
         probe = Probe.get_by_id(1)
         schedule = CrontabSchedule.objects.get(id=1)
         source = Source.objects.get(id=1)
-        create_deploy_rules(probe, schedule, source)
+        create_deploy_rules_task(probe, schedule, source)
         periodic_task = PeriodicTask.objects.get(name=probe.name + '_' + source.uri + '_deploy_rules_' + schedule.__str__())
         self.assertEqual(periodic_task.task, 'home.tasks.deploy_rules')
         self.assertEqual(periodic_task.args, str([probe.name, ]).replace("'", '"'))

@@ -1,4 +1,4 @@
-from django_celery_beat.models import PeriodicTask
+from django_celery_beat.models import PeriodicTask, CrontabSchedule
 import json
 import logging
 from django.conf import settings
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def create_upload_task(source):
-    PeriodicTask.objects.create(crontab=source.scheduled_crontab,
+    PeriodicTask.objects.create(crontab=source.scheduled_rules_deployment_crontab,
                                 name=str(source.uri) + "_upload_task",
                                 task='home.tasks.upload_url_http',
                                 args=json.dumps([source.uri, ])
@@ -23,23 +23,48 @@ def create_reload_task(probe):
     try:
         PeriodicTask.objects.get(name=probe.name + "_reload_task")
     except PeriodicTask.DoesNotExist:
-        PeriodicTask.objects.create(crontab=probe.scheduled_crontab,
+        PeriodicTask.objects.create(crontab=probe.scheduled_rules_deployment_crontab,
                                     name=probe.name + "_reload_task",
                                     task='home.tasks.reload_probe',
                                     args=json.dumps([probe.name, ]))
 
 
-def create_deploy_rules(probe, schedule=None, source=None):
+def create_check_task(probe):
+    try:
+        PeriodicTask.objects.get(name=probe.name + "_check_task")
+    except PeriodicTask.DoesNotExist:
+        if probe.scheduled_check_crontab:
+            PeriodicTask.objects.create(crontab=probe.scheduled_check_crontab,
+                                        name=probe.name + "_check_task",
+                                        task='home.tasks.check_probe',
+                                        enabled=probe.scheduled_check_enabled,
+                                        args=json.dumps([probe.name, ]))
+        else:
+            PeriodicTask.objects.create(crontab=CrontabSchedule.objects.get(id=4),
+                                        name=probe.name + "_check_task",
+                                        task='home.tasks.check_probe',
+                                        enabled=probe.scheduled_check_enabled,
+                                        args=json.dumps([probe.name, ]))
+
+
+def create_deploy_rules_task(probe, schedule=None, source=None):
     try:
         if schedule is None:
             try:
-                PeriodicTask.objects.get(name=probe.name + "_deploy_rules_" + probe.scheduled_crontab.__str__())
+                PeriodicTask.objects.get(name=probe.name + "_deploy_rules_" + probe.scheduled_rules_deployment_crontab.__str__())
             except PeriodicTask.DoesNotExist:
-                PeriodicTask.objects.create(crontab=probe.scheduled_crontab,
-                                            name=probe.name + "_deploy_rules_" + probe.scheduled_crontab.__str__(),
-                                            task='home.tasks.deploy_rules',
-                                            args=json.dumps([probe.name, ]))
-
+                if probe.scheduled_rules_deployment_crontab:
+                    PeriodicTask.objects.create(crontab=probe.scheduled_rules_deployment_crontab,
+                                                name=probe.name + "_deploy_rules_" + probe.scheduled_rules_deployment_crontab.__str__(),
+                                                task='home.tasks.deploy_rules',
+                                                enabled=probe.scheduled_rules_deployment_enabled,
+                                                args=json.dumps([probe.name, ]))
+                else:
+                    PeriodicTask.objects.create(crontab=CrontabSchedule.objects.get(id=4),
+                                                name=probe.name + "_deploy_rules_" + probe.scheduled_rules_deployment_crontab.__str__(),
+                                                task='home.tasks.deploy_rules',
+                                                enabled=probe.scheduled_rules_deployment_enabled,
+                                                args=json.dumps([probe.name, ]))
         elif source is not None:
             try:
                 PeriodicTask.objects.get(name=probe.name + "_" + source.uri + "_deploy_rules_" + schedule.__str__())
@@ -47,6 +72,7 @@ def create_deploy_rules(probe, schedule=None, source=None):
                 PeriodicTask.objects.create(crontab=schedule,
                                             name=probe.name + "_" + source.uri + "_deploy_rules_" + schedule.__str__(),
                                             task='home.tasks.deploy_rules',
+                                            enabled=probe.scheduled_rules_deployment_enabled,
                                             args=json.dumps([probe.name, ]))
     except Exception as e:
         # Error if 2 sources have the same crontab on the same probe -> useless
