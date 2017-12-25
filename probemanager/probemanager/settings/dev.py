@@ -121,7 +121,7 @@ DATABASES = {
     }
 }
 
-DEV_APPS = ['suricata', 'checkcve']
+DEV_APPS = ['suricata', 'checkcve', 'ossec']
 INSTALLED_APPS = BASE_APPS + DEV_APPS
 
 for app in DEV_APPS:
