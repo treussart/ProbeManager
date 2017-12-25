@@ -237,28 +237,7 @@ def deploy_rules(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        response_tests = probe.test_rules()
-        test_pcap = True
-        errors = list()
-        if probe.secure_deployment:
-            if not response_tests['status']:
-                messages.add_message(request, messages.ERROR, 'Error during the rules test')
-                return render(request, probe.type.lower() + '/index.html', {'probe': probe})
-            elif not test_pcap:
-                messages.add_message(request, messages.ERROR, "Test pcap failed ! " + str(errors))
-                return render(request, probe.type.lower() + '/index.html', {'probe': probe})
-        if response_tests['status']:
-            messages.add_message(request, messages.SUCCESS, "Test signatures OK")
-        else:
-            messages.add_message(request, messages.ERROR, "Test signatures failed ! " + str(response_tests['errors']))
-        if test_pcap:
-            messages.add_message(request, messages.SUCCESS, "Test pcap OK")
-        else:
-            messages.add_message(request, messages.ERROR, "Test pcap failed ! " + str(errors))
-        try:
-            deploy_rules_probe.delay(probe.name)
-        except Exception as e:
-            messages.add_message(request, messages.ERROR, 'Error during the install : ' + e.__str__())
+        deploy_rules_probe.delay(probe.name)
         messages.add_message(request, messages.SUCCESS, 'Deployed rules launched with succeed. View Job')
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
