@@ -119,7 +119,6 @@ LOGGING = {
             'propagate': True
         },
     },
-
 }
 
 DATABASES = {
