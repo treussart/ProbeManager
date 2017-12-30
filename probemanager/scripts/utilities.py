@@ -1,4 +1,4 @@
-# python probemanager/scripts/utilities.py -d /usr/local/share/ProbeManager/
+# sudo /usr/local/share/ProbeManager/venv/bin/python /usr/local/share/ProbeManager/probemanager/scripts/utilities.py -d /usr/local/share/ProbeManager/
 import argparse
 import sys
 from getpass import getpass
@@ -18,5 +18,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     password = getpass('Type the password for the database, followed by [ENTER]: ')
     password_encrypted = encrypt(password, args.dest)
-    print("Password encrypted : " + password_encrypted)
+    print("Password encrypted : " + password_encrypted.decode('utf-8'))
     sys.exit(0)
