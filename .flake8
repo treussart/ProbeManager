@@ -8,6 +8,6 @@ exclude =
     htmlcov/,
     manage.py,
     probemanager/probemanager/settings/*,
-max-complexity = 18
+max-complexity = 22
 #E501 line too long
 #E402 Not importing files at top of the file
