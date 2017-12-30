@@ -6,6 +6,7 @@ import sys
 template_smtp = """
 [EMAIL]
 HOST = {{ host }}
+PORT = {{ port }}
 USER = {{ host_user }}
 FROM = {{ default_from_email }}
 TLS = {{ use_tls }}
@@ -15,6 +16,7 @@ TLS = {{ use_tls }}
 def run(*args):
     print("Server SMTP :")
     host = input('host : ')
+    port = input('port : ')
     host_user = input('user : ')
     host_password = getpass('password : ')
     default_from_email = input('default from email : ')
@@ -22,6 +24,7 @@ def run(*args):
 
     t = Template(template_smtp)
     final = t.render(host=host,
+                     port=port,
                      host_user=host_user,
                      default_from_email=default_from_email,
                      use_tls=str(use_tls)

@@ -41,8 +41,8 @@ def send_notification(title, body, html=False):
             for user in users:
                 if user.is_superuser:
                     user.email_user(title, plain_body, html_message=html_body, from_email=None)
-        except SMTPException:
-            pass
+        except SMTPException as e:
+            logger.error(e.__str__())
 
 
 @receiver(post_save, sender=User)

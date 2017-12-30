@@ -144,6 +144,7 @@ for app in PROD_APPS:
 # SMTP
 EMAIL_SUBJECT_PREFIX = '[ProbeManager]'
 EMAIL_HOST = config['EMAIL']['HOST']
+EMAIL_PORT = int(config['EMAIL']['PORT'])
 EMAIL_HOST_USER = config['EMAIL']['USER']
 with open(os.path.join(GIT_ROOT, 'password_email.txt')) as f:
     EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
