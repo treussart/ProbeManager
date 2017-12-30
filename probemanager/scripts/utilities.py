@@ -1,4 +1,4 @@
-# python probemanager/scripts/utilities.py -d /usr/local/share/ProbeManager/ -p
+# python probemanager/scripts/utilities.py -d /usr/local/share/ProbeManager/
 import argparse
 import sys
 from getpass import getpass
@@ -15,9 +15,8 @@ def encrypt(plain_text, dest):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dest", help="destination", default='/usr/local/share/ProbeManager/')
-    parser.add_argument("-p", "--password", help="password")
     args = parser.parse_args()
     password = getpass('Type the password for the database, followed by [ENTER]: ')
-    password_encrypted = encrypt(args.password, args.dest)
+    password_encrypted = encrypt(password, args.dest)
     print("Password encrypted : " + password_encrypted)
     sys.exit(0)
