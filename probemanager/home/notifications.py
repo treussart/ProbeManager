@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from home.models import Configuration
 from django.conf import settings
+from smtplib import SMTPException
 import logging
 import requests
 from lxml import html as html_lxml
@@ -40,7 +41,7 @@ def send_notification(title, body, html=False):
             for user in users:
                 if user.is_superuser:
                     user.email_user(title, plain_body, html_message=html_body, from_email=None)
-        except ConnectionRefusedError:
+        except SMTPException:
             pass
 
 
