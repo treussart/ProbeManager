@@ -407,9 +407,9 @@ if [ $arg == 'prod' ]; then
         set_host
         set_timezone
         chooseApps
-        install_modules
         set_settings
         setGit
+        install_modules
         generate_keys
         create_db
         generate_version
@@ -443,9 +443,9 @@ else
     clean
     installDependencies
     installVirtualEnv
-    install_modules
     set_settings
     setGit
+    install_modules
     generate_version
     create_db
     create_superuser
