@@ -26,6 +26,11 @@
                 <a class="list-group-item list-group-item-action list-group-item-secondary" href="/admin/{{ app.name }}/script{{ app.name }}/{{ script.id }}/change/">{{ script }}</a>
             {% endfor %}
         </div>
+        <div class="list-group">
+            {% for rule in app.rules %}
+                <a class="list-group-item list-group-item-action list-group-item-secondary" href="/admin/{{ app.name }}/rule{{ app.name }}/{{ rule.id }}/change/">{{ rule }}</a>
+            {% endfor %}
+        </div>
         {% endfor %}
 
     </div>

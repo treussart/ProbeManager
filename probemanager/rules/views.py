@@ -26,12 +26,20 @@ def search(request):
                             if first:
                                 first = False
                                 probe_data = dict()
-                                my_class = getattr(importlib.import_module(app.label + ".models"), 'Signature' + app.verbose_name)
-                                signatures = my_class.find(pattern)
-                                probe_data.update({'signatures': signatures})
-                                my_class = getattr(importlib.import_module(app.label + ".models"), 'Script' + app.verbose_name)
-                                scripts = my_class.find(pattern)
-                                probe_data.update({'scripts': scripts})
+                                try:
+                                    my_class = getattr(importlib.import_module(app.label + ".models"), 'Signature' + app.verbose_name)
+                                    signatures = my_class.find(pattern)
+                                    probe_data.update({'signatures': signatures})
+
+                                    my_class = getattr(importlib.import_module(app.label + ".models"), 'Script' + app.verbose_name)
+                                    scripts = my_class.find(pattern)
+                                    probe_data.update({'scripts': scripts})
+
+                                    my_class = getattr(importlib.import_module(app.label + ".models"), 'Rule' + app.verbose_name)
+                                    rules = my_class.find(pattern)
+                                    probe_data.update({'rules': rules})
+                                except AttributeError:
+                                    pass
                                 probe_data.update({'name': app.label})
                                 data.append(probe_data)
             return render(request, 'rules/search.html', {'data': data})
