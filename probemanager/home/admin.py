@@ -16,11 +16,14 @@ class ServerAdmin(admin.ModelAdmin):
         if obj.become_pass:
             obj.become_pass = encrypt(obj.become_pass)
         super().save_model(request, obj, form, change)
-        response = obj.test_root()
+        if obj.become:
+            response = obj.test_root()
+        else:
+            response = obj.test()
         if response:
             messages.add_message(request, messages.SUCCESS, "Connection to the server OK")
         else:
-            messages.add_message(request, messages.ERROR, "Connection to the server Failed : " + str(response['message']))
+            messages.add_message(request, messages.ERROR, "Connection to the server Failed")
 
 
 class JobAdmin(admin.ModelAdmin):
