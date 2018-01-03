@@ -18,7 +18,10 @@ def deploy_rules(probe_name):
     if probe is None:
         job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
         return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
-    my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
+    if probe.subtype:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
+    else:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
     try:
         response_deploy_rules = probe.deploy_rules()
@@ -44,7 +47,10 @@ def reload_probe(probe_name):
     if probe is None:
         job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
         return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
-    my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
+    if probe.subtype:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
+    else:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
     if probe.scheduled_rules_deployment_enabled:
         try:
@@ -103,7 +109,10 @@ def install_probe(probe_name):
     if probe is None:
         job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
         return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
-    my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
+    if probe.subtype:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
+    else:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
     try:
         response_install = probe.install()
@@ -131,7 +140,10 @@ def update_probe(probe_name):
     if probe is None:
         job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
         return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
-    my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
+    if probe.subtype:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
+    else:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
     try:
         response_update = probe.update()
@@ -157,7 +169,10 @@ def check_probe(probe_name):
     if probe is None:
         job.update_job("Error - probe is None - param id not set : " + str(probe_name), 'Error')
         return {"message": "Error - probe is None - param id not set : " + str(probe_name)}
-    my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
+    if probe.subtype:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
+    else:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
     try:
         response_status = probe.status()

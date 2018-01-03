@@ -168,6 +168,7 @@ class Probe(models.Model):
     created_date = models.DateTimeField(default=timezone.now, editable=False)
     rules_updated_date = models.DateTimeField(blank=True, null=True, editable=False)
     type = models.CharField(max_length=400, blank=True, default='', editable=False)
+    subtype = models.CharField(max_length=400, blank=True, null=True, editable=False)
     secure_deployment = models.BooleanField(default=True)
     scheduled_rules_deployment_enabled = models.BooleanField(default=False)
     scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, related_name='crontabschedule_rules', blank=True, null=True)

@@ -13,7 +13,10 @@ def status(probe_id):
     probe = Probe.get_by_id(probe_id)
     if probe is None:  # pragma: no cover
         return {"message": "Error - probe is None - param id not set : " + str(probe_id)}
-    my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
+    if probe.subtype:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
+    else:
+        my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_id(probe_id)
     response = probe.status()
     if 'active (running)' in response:
