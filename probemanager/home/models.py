@@ -203,9 +203,9 @@ class Probe(models.Model):
             response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e.__str__())
-            return False
+            return {'status': False, 'errors': e.__str__()}
         logger.debug("output : " + str(response))
-        return True
+        return {'status': True}
 
     def start(self):
         if self.server.os.name == 'debian':
@@ -217,9 +217,9 @@ class Probe(models.Model):
             response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e.__str__())
-            return False
+            return {'status': False, 'errors': e.__str__()}
         logger.debug("output : " + str(response))
-        return True
+        return {'status': True}
 
     def stop(self):
         if self.server.os.name == 'debian':
@@ -231,9 +231,9 @@ class Probe(models.Model):
             response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e.__str__())
-            return False
+            return {'status': False, 'errors': e.__str__()}
         logger.debug("output : " + str(response))
-        return True
+        return {'status': True}
 
     def status(self):
         if self.server.os.name == 'debian':
@@ -259,9 +259,9 @@ class Probe(models.Model):
             response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e.__str__())
-            return False
+            return {'status': False, 'errors': e.__str__()}
         logger.debug("output : " + str(response))
-        return True
+        return {'status': True}
 
     def install(self):
         if self.server.os.name == 'debian':
@@ -274,9 +274,9 @@ class Probe(models.Model):
             response = execute(self.server, tasks, become=True)
         except Exception as e:
             logger.error(e.__str__())
-            return False
+            return {'status': False, 'errors': e.__str__()}
         logger.debug("output : " + str(response))
-        return True
+        return {'status': True}
 
     def update(self):
         return self.install()

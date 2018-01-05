@@ -26,18 +26,21 @@ def deploy_rules(probe_name):
     try:
         response_deploy_rules = probe.deploy_rules()
         response_reload = probe.reload()
-        if response_deploy_rules and response_reload:
+        if response_deploy_rules['status'] and response_reload['status']:
             job.update_job('Deployed rules successfully', 'Completed')
-        else:
-            job.update_job('Error during the rules deployed', 'Error')
-        logger.info("task - deploy_rules : " + str(probe_name) + " - " + str(response_deploy_rules) + " - " + str(response_reload))
+        elif not response_deploy_rules['status']:
+            job.update_job('Error during the rules deployed', 'Error: ' + str(probe_name) + " - " + str(response_deploy_rules['errors']))
+            logger.error("task - deploy_rules : " + str(probe_name) + " - " + str(response_deploy_rules['errors']))
+        elif not response_reload['status']:
+            job.update_job('Error during the rules deployed', 'Error: ' + str(probe_name) + str(response_reload['errors']))
+            logger.error("task - deploy_rules : " + str(probe_name) + " - " + str(response_reload['errors']))
     except Exception as e:
         logger.error(e.__str__())
         logger.error(traceback.print_exc())
         job.update_job(e.__str__(), 'Error')
         send_notification("Probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": e.__str__()}
-    return str(response_deploy_rules) + " - " + str(response_reload)
+    return str(response_deploy_rules['message']) + " - " + str(response_reload['message'])
 
 
 @task
@@ -54,16 +57,20 @@ def reload_probe(probe_name):
     probe = my_class.get_by_name(probe_name)
     if probe.scheduled_rules_deployment_enabled:
         try:
-            message = probe.reload()
-            job.update_job(message, 'Completed')
-            logger.info("task - reload_probe : " + str(probe_name) + " - " + str(message))
+            response = probe.reload()
+            if response['status']:
+                job.update_job("task - reload_probe : " + str(probe_name), 'Completed')
+                logger.info("task - reload_probe : " + str(probe_name))
+                return {"message": "Probe " + str(probe.name) + "reloaded successfully"}
+            else:
+                job.update_job(str(response['errors']), 'Error')
+                return {"message": "Error for probe " + str(probe.name) + " to reload", "exception": str(response['errors'])}
         except Exception as e:
             logger.error(e.__str__())
             logger.error(traceback.print_exc())
             job.update_job(e.__str__(), 'Error')
             send_notification("Probe " + str(probe.name), e.__str__())
             return {"message": "Error for probe " + str(probe.name) + " to reload", "exception": e.__str__()}
-        return message
     else:
         job.update_job("Not enabled to reload", 'Error')
         send_notification("Probe " + str(probe.name), "Not enabled to reload")
@@ -125,8 +132,8 @@ def install_probe(probe_name):
         job.update_job(e.__str__(), 'Error')
         send_notification("Error for probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to install", "exception": e.__str__()}
-    if response_install and response_start and response_deploy_conf and response_deploy_rules:
-        job.update_job(response_install + response_deploy_conf + response_deploy_rules + response_start, 'Completed')
+    if response_install['status'] and response_start['status'] and response_deploy_conf['status'] and response_deploy_rules['status']:
+        job.update_job('Probe ' + str(probe.name) + ' installed successfully', 'Completed')
         return {"message": "OK probe " + str(probe.name) + " installed successfully"}
     else:
         job.update_job("Error for probe " + str(probe.name) + " to install", 'Error')
@@ -154,7 +161,7 @@ def update_probe(probe_name):
         job.update_job(e.__str__(), 'Error')
         send_notification("Error for probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to install", "exception": e.__str__()}
-    if response_update and response_restart:
+    if response_update['status'] and response_restart['status']:
         job.update_job(response_update + response_restart, 'Completed')
         return {"message": "OK probe " + str(probe.name) + " updated successfully"}
     else:

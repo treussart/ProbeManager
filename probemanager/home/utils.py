@@ -175,7 +175,6 @@ def add_1_hour(crontab):
             if schedule.hour.isdigit():
                 hour = schedule.hour
                 if int(hour) in range(0, 22):
-                    print("OK")
                     # 2 1  ->  2 2
                     hour = int(schedule.hour)
                     hour += 1

@@ -64,10 +64,10 @@ def start(request, id):
     else:
         try:
             response_start = probe.start()
-            if response_start:
+            if response_start['status']:
                 messages.add_message(request, messages.SUCCESS, 'Probe started successfully')
             else:
-                messages.add_message(request, messages.ERROR, 'Error during the start')
+                messages.add_message(request, messages.ERROR, 'Error during the start: ' + str(response_start['errors']))
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the start : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
@@ -89,10 +89,10 @@ def stop(request, id):
     else:
         try:
             response_stop = probe.stop()
-            if response_stop:
+            if response_stop['status']:
                 messages.add_message(request, messages.SUCCESS, 'Probe stopped successfully')
             else:
-                messages.add_message(request, messages.ERROR, 'Error during the stop')
+                messages.add_message(request, messages.ERROR, 'Error during the stop: ' + str(response_stop['errors']))
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the stop : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
@@ -114,10 +114,10 @@ def restart(request, id):
     else:
         try:
             response_restart = probe.restart()
-            if response_restart:
+            if response_restart['status']:
                 messages.add_message(request, messages.SUCCESS, 'Probe restarted successfully')
             else:
-                messages.add_message(request, messages.ERROR, 'Error during the restart')
+                messages.add_message(request, messages.ERROR, 'Error during the restart: ' + str(response_restart['errors']))
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the restart : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
@@ -139,10 +139,10 @@ def reload(request, id):
     else:
         try:
             response_reload = probe.reload()
-            if response_reload:
+            if response_reload['status']:
                 messages.add_message(request, messages.SUCCESS, 'Probe reloaded successfully')
             else:
-                messages.add_message(request, messages.ERROR, 'Error during the reload')
+                messages.add_message(request, messages.ERROR, 'Error during the reload: ' + str(response_reload['errors']))
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the reload : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
@@ -244,10 +244,12 @@ def deploy_conf(request, id):
         try:
             response_deploy_conf = probe.deploy_conf()
             response_restart = probe.restart()
-            if response_deploy_conf and response_restart:
+            if response_deploy_conf['status'] and response_restart['status']:
                 messages.add_message(request, messages.SUCCESS, 'Deployed configuration successfully')
-            else:
-                messages.add_message(request, messages.ERROR, 'Error during the configuration deployed')
+            elif not response_deploy_conf['status']:
+                messages.add_message(request, messages.ERROR, 'Error during the configuration deployed: ' + str(response_deploy_conf['errors']))
+            elif not response_restart['status']:
+                messages.add_message(request, messages.ERROR, 'Error during the configuration deployed: ' + str(response_restart['errors']))
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the configuration deployed : ' + e.__str__())
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
