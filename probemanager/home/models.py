@@ -104,7 +104,7 @@ class Server(models.Model):
     os = models.ForeignKey(OsSupported, default=0)
     remote_user = models.CharField(max_length=400, blank=True, default='admin')
     remote_port = models.IntegerField(blank=True, default=22)
-    ssh_private_key_file = models.ForeignKey(SshKey, blank=True, null=True)
+    ssh_private_key_file = models.ForeignKey(SshKey)
     become = models.BooleanField(default=False, blank=True)
     become_method = models.CharField(max_length=400, blank=True, default='sudo')
     become_user = models.CharField(max_length=400, blank=True, default='root')
