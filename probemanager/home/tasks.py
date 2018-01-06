@@ -31,16 +31,20 @@ def deploy_rules(probe_name):
         elif not response_deploy_rules['status']:
             job.update_job('Error during the rules deployed', 'Error: ' + str(probe_name) + " - " + str(response_deploy_rules['errors']))
             logger.error("task - deploy_rules : " + str(probe_name) + " - " + str(response_deploy_rules['errors']))
+            return {"message": "Error for probe " + str(probe.name) + " to deploy rules",
+                    "exception": str(response_deploy_rules['errors'])}
         elif not response_reload['status']:
             job.update_job('Error during the rules deployed', 'Error: ' + str(probe_name) + str(response_reload['errors']))
             logger.error("task - deploy_rules : " + str(probe_name) + " - " + str(response_reload['errors']))
+            return {"message": "Error for probe " + str(probe.name) + " to deploy rules",
+                    "exception": str(response_reload['errors'])}
     except Exception as e:
         logger.error(e.__str__())
         logger.error(traceback.print_exc())
         job.update_job(e.__str__(), 'Error')
         send_notification("Probe " + str(probe.name), e.__str__())
         return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": e.__str__()}
-    return str(response_deploy_rules['message']) + " - " + str(response_reload['message'])
+    return {"message": probe.name + ' Deployed rules successfully'}
 
 
 @task
