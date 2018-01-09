@@ -11,6 +11,7 @@ from django.conf import settings
 import json
 import logging
 from home.tasks import deploy_rules as deploy_rules_probe, install_probe, update_probe
+from django.utils.safestring import mark_safe
 
 
 logger = logging.getLogger(__name__)
@@ -191,7 +192,7 @@ def install(request, id):
             install_probe.delay(probe.name)
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the install : ' + e.__str__())
-        messages.add_message(request, messages.SUCCESS, 'Install probe launched with succeed. View Job')
+        messages.add_message(request, messages.SUCCESS, mark_safe("Install probe launched with succeed. <a href='/admin/home/job/'>View Job</a>"))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -213,7 +214,7 @@ def update(request, id):
             update_probe.delay(probe.name)
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the update : ' + e.__str__())
-        messages.add_message(request, messages.SUCCESS, 'Update probe launched with succeed. View Job')
+        messages.add_message(request, messages.SUCCESS, mark_safe("Update probe launched with succeed. <a href='/admin/home/job/'>View Job</a>"))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -270,7 +271,7 @@ def deploy_rules(request, id):
         return HttpResponseNotFound
     else:
         deploy_rules_probe.delay(probe.name)
-        messages.add_message(request, messages.SUCCESS, 'Deployed rules launched with succeed. View Job')
+        messages.add_message(request, messages.SUCCESS, mark_safe("Deployed rules launched with succeed. <a href='/admin/home/job/'>View Job</a>"))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
