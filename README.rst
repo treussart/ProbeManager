@@ -187,8 +187,8 @@ Repository
     git submodule foreach git pull origin master
 
 
-PIP Packets
-===========
+PIP Packages
+============
 
 .. code-block:: sh
 
