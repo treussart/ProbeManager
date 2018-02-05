@@ -1,8 +1,9 @@
 """ python manage.py test rules.tests.test_models """
-from django.test import TestCase
-from rules.models import DataTypeUpload, MethodUpload, ClassType, Source, RuleSet, Rule
 from django.db.utils import IntegrityError
+from django.test import TestCase
 from django.utils import timezone
+
+from rules.models import DataTypeUpload, MethodUpload, ClassType, Source, RuleSet, Rule
 
 
 class ClassTypeTest(TestCase):

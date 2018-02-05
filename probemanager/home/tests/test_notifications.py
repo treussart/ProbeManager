@@ -1,8 +1,9 @@
 """ python probemanager/manage.py test home.tests.test_notifications """
 from django.test import TestCase
-from home.notifications import send_notification
-from home.models import Configuration
 from pushbullet.errors import InvalidKeyError
+
+from home.models import Configuration
+from home.notifications import send_notification
 
 
 class NotificationsTest(TestCase):

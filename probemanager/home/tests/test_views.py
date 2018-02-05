@@ -1,6 +1,6 @@
 """ python manage.py test home.tests.test_views --settings=probemanager.settings.dev """
-from django.test import Client, TestCase
 from django.contrib.auth.models import User
+from django.test import Client, TestCase
 
 
 class ViewsHomeTest(TestCase):
@@ -43,7 +43,8 @@ class ViewsHomeTest(TestCase):
         self.assertIn('<title>Log in | Probe Manager site admin</title>', str(response.content))
         self.assertEqual(str(response.context['user']), 'AnonymousUser')
         response = client_not_logged.get('/admin/')
-        self.assertRedirects(response, expected_url='/admin/login/?next=/admin/', status_code=302, target_status_code=200)
+        self.assertRedirects(response, expected_url='/admin/login/?next=/admin/', status_code=302,
+                             target_status_code=200)
         with self.assertTemplateUsed('admin/login.html'):
             client_not_logged.get('/admin/', follow=True)
 

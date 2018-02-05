@@ -1,4 +1,3 @@
-
 Presentation
 ~~~~~~~~~~~~
 
@@ -14,14 +13,14 @@ Models
 ^^^^^^
 
 .. automodule:: home.models
-   :members:
+:members:
 
 Views
 ^^^^^
 
 .. automodule:: home.views
-    :members:
-    :undoc-members:
-    :special-members:
-    :inherited-members:
-    :show-inheritance:
+:members:
+        :undoc-members:
+        :special-members:
+        :inherited-members:
+        :show-inheritance:

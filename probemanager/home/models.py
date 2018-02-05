@@ -1,9 +1,10 @@
+import logging
+
 from django.db import models
 from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
-import logging
-from home.ssh import execute
 
+from home.ssh import execute
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,7 @@ class Job(models.Model):
         try:
             object = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return object
 
@@ -79,7 +80,7 @@ class OsSupported(models.Model):
         try:
             object = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return object
 
@@ -101,10 +102,10 @@ class Server(models.Model):
     """
     name = models.CharField(max_length=400, unique=True, default="")
     host = models.CharField(max_length=400, unique=True, default="localhost")
-    os = models.ForeignKey(OsSupported, default=0)
+    os = models.ForeignKey(OsSupported, default=0, on_delete=models.CASCADE)
     remote_user = models.CharField(max_length=400, blank=True, default='admin')
     remote_port = models.IntegerField(blank=True, default=22)
-    ssh_private_key_file = models.ForeignKey(SshKey)
+    ssh_private_key_file = models.ForeignKey(SshKey, on_delete=models.CASCADE)
     become = models.BooleanField(default=False, blank=True)
     become_method = models.CharField(max_length=400, blank=True, default='sudo')
     become_user = models.CharField(max_length=400, blank=True, default='root')
@@ -122,7 +123,7 @@ class Server(models.Model):
         try:
             probe = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return probe
 
@@ -131,7 +132,7 @@ class Server(models.Model):
         try:
             host = cls.objects.get(host=host)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return host
 
@@ -141,7 +142,7 @@ class Server(models.Model):
         try:
             response = execute(self, tasks)
         except Exception as e:
-            logger.error(e.__str__())
+            logger.error(str(e))
             return False
         logger.debug("output : " + str(response))
         return True
@@ -152,7 +153,7 @@ class Server(models.Model):
         try:
             response = execute(self, tasks, become=True)
         except Exception as e:
-            logger.error(e.__str__())
+            logger.error(str(e))
             return False
         logger.debug("output : " + str(response))
         return True
@@ -171,10 +172,12 @@ class Probe(models.Model):
     subtype = models.CharField(max_length=400, blank=True, null=True, editable=False)
     secure_deployment = models.BooleanField(default=True)
     scheduled_rules_deployment_enabled = models.BooleanField(default=False)
-    scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, related_name='crontabschedule_rules', blank=True, null=True)
+    scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, related_name='crontabschedule_rules',
+                                                           blank=True, null=True, on_delete=models.CASCADE)
     scheduled_check_enabled = models.BooleanField(default=True)
-    scheduled_check_crontab = models.ForeignKey(CrontabSchedule, related_name='crontabschedule_check', blank=True, null=True)
-    server = models.ForeignKey(Server)
+    scheduled_check_crontab = models.ForeignKey(CrontabSchedule, related_name='crontabschedule_check', blank=True,
+                                                null=True, on_delete=models.CASCADE)
+    server = models.ForeignKey(Server, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -188,7 +191,7 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks)
         except Exception as e:
-            logger.error(e.__str__())
+            logger.error(str(e))
             return 'Failed to get the uptime on the host : ' + str(e)
         logger.debug("output : " + str(response))
         return response['uptime']
@@ -202,8 +205,8 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e.__str__())
-            return {'status': False, 'errors': e.__str__()}
+            logger.error(str(e))
+            return {'status': False, 'errors': str(e)}
         logger.debug("output : " + str(response))
         return {'status': True}
 
@@ -216,8 +219,8 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e.__str__())
-            return {'status': False, 'errors': e.__str__()}
+            logger.error(str(e))
+            return {'status': False, 'errors': str(e)}
         logger.debug("output : " + str(response))
         return {'status': True}
 
@@ -230,8 +233,8 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e.__str__())
-            return {'status': False, 'errors': e.__str__()}
+            logger.error(str(e))
+            return {'status': False, 'errors': str(e)}
         logger.debug("output : " + str(response))
         return {'status': True}
 
@@ -244,8 +247,8 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error('Failed to get status : ' + e.__str__())
-            return 'Failed to get status : ' + e.__str__()
+            logger.error('Failed to get status : ' + str(e))
+            return 'Failed to get status : ' + str(e)
         logger.debug("output : " + str(response))
         return response['status']
 
@@ -258,8 +261,8 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e.__str__())
-            return {'status': False, 'errors': e.__str__()}
+            logger.error(str(e))
+            return {'status': False, 'errors': str(e)}
         logger.debug("output : " + str(response))
         return {'status': True}
 
@@ -273,8 +276,8 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(e.__str__())
-            return {'status': False, 'errors': e.__str__()}
+            logger.error(str(e))
+            return {'status': False, 'errors': str(e)}
         logger.debug("output : " + str(response))
         return {'status': True}
 
@@ -290,7 +293,7 @@ class Probe(models.Model):
         try:
             probe = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return probe
 
@@ -299,7 +302,7 @@ class Probe(models.Model):
         try:
             probe = cls.objects.get(name=name)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return probe
 
@@ -323,7 +326,7 @@ class ProbeConfiguration(models.Model):
         try:
             object = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + e.__str__())
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return object
 

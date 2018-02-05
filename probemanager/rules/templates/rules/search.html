@@ -7,8 +7,8 @@
 <h2>Result Rules</h2>
 
 {% if message %}
-    <br>
-    <h4 style="color: red;">{{ message }}</h4>
+<br>
+<h4 style="color: red;">{{ message }}</h4>
 
 {% else %}
 
@@ -18,17 +18,20 @@
         <h4>{{ app.name }} rules</h4>
         <div class="list-group">
             {% for signature in app.signatures %}
-                <a class="list-group-item list-group-item-action list-group-item-secondary" href="/admin/{{ app.name }}/signature{{ app.name }}/{{ signature.id }}/change/">{{ signature }}</a>
+            <a class="list-group-item list-group-item-action list-group-item-secondary"
+               href="/admin/{{ app.name }}/signature{{ app.name }}/{{ signature.id }}/change/">{{ signature }}</a>
             {% endfor %}
         </div>
         <div class="list-group">
             {% for script in app.scripts %}
-                <a class="list-group-item list-group-item-action list-group-item-secondary" href="/admin/{{ app.name }}/script{{ app.name }}/{{ script.id }}/change/">{{ script }}</a>
+            <a class="list-group-item list-group-item-action list-group-item-secondary"
+               href="/admin/{{ app.name }}/script{{ app.name }}/{{ script.id }}/change/">{{ script }}</a>
             {% endfor %}
         </div>
         <div class="list-group">
             {% for rule in app.rules %}
-                <a class="list-group-item list-group-item-action list-group-item-secondary" href="/admin/{{ app.name }}/rule{{ app.name }}/{{ rule.id }}/change/">{{ rule }}</a>
+            <a class="list-group-item list-group-item-action list-group-item-secondary"
+               href="/admin/{{ app.name }}/rule{{ app.name }}/{{ rule.id }}/change/">{{ rule }}</a>
             {% endfor %}
         </div>
         {% endfor %}

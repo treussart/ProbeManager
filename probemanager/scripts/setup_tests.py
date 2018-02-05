@@ -57,7 +57,7 @@ def run():
             copyfile(ssh_private_key_file, ssh_dir + ssh_private_key_file_basename)
             os.chmod(ssh_dir + ssh_private_key_file_basename, 0o600)
         except Exception as e:
-            print("Error in the path of the file : " + e.__str__())
+            print("Error in the path of the file : " + str(e))
             sys.exit(1)
 
         t = Template(template_server_test)

@@ -1,10 +1,11 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-import logging
-from django.apps.registry import apps
-from rules.models import Rule
 import importlib
+import logging
 
+from django.apps.registry import apps
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from rules.models import Rule
 
 logger = logging.getLogger(__name__)
 
@@ -27,15 +28,18 @@ def search(request):
                                 first = False
                                 probe_data = dict()
                                 try:
-                                    my_class = getattr(importlib.import_module(app.label + ".models"), 'Signature' + app.verbose_name)
+                                    my_class = getattr(importlib.import_module(app.label + ".models"),
+                                                       'Signature' + app.verbose_name)
                                     signatures = my_class.find(pattern)
                                     probe_data.update({'signatures': signatures})
 
-                                    my_class = getattr(importlib.import_module(app.label + ".models"), 'Script' + app.verbose_name)
+                                    my_class = getattr(importlib.import_module(app.label + ".models"),
+                                                       'Script' + app.verbose_name)
                                     scripts = my_class.find(pattern)
                                     probe_data.update({'scripts': scripts})
 
-                                    my_class = getattr(importlib.import_module(app.label + ".models"), 'Rule' + app.verbose_name)
+                                    my_class = getattr(importlib.import_module(app.label + ".models"),
+                                                       'Rule' + app.verbose_name)
                                     rules = my_class.find(pattern)
                                     probe_data.update({'rules': rules})
                                 except AttributeError:

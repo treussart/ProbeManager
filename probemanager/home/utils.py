@@ -1,11 +1,12 @@
-from django_celery_beat.models import PeriodicTask, CrontabSchedule
 import json
 import logging
-from django.conf import settings
-from cryptography.fernet import Fernet
 import os
-from probemanager.settings import BASE_DIR
 
+from cryptography.fernet import Fernet
+from django.conf import settings
+from django_celery_beat.models import PeriodicTask, CrontabSchedule
+
+from probemanager.settings import BASE_DIR
 
 fernet_key = Fernet(settings.FERNET_KEY)
 logger = logging.getLogger(__name__)
@@ -51,32 +52,35 @@ def create_deploy_rules_task(probe, schedule=None, source=None):
     try:
         if schedule is None:
             try:
-                PeriodicTask.objects.get(name=probe.name + "_deploy_rules_" + probe.scheduled_rules_deployment_crontab.__str__())
+                PeriodicTask.objects.get(
+                    name=probe.name + "_deploy_rules_" + str(probe.scheduled_rules_deployment_crontab))
             except PeriodicTask.DoesNotExist:
                 if probe.scheduled_rules_deployment_crontab:
                     PeriodicTask.objects.create(crontab=probe.scheduled_rules_deployment_crontab,
-                                                name=probe.name + "_deploy_rules_" + probe.scheduled_rules_deployment_crontab.__str__(),
+                                                name=probe.name + "_deploy_rules_" + str(
+                                                    probe.scheduled_rules_deployment_crontab),
                                                 task='home.tasks.deploy_rules',
                                                 enabled=probe.scheduled_rules_deployment_enabled,
                                                 args=json.dumps([probe.name, ]))
                 else:
                     PeriodicTask.objects.create(crontab=CrontabSchedule.objects.get(id=4),
-                                                name=probe.name + "_deploy_rules_" + probe.scheduled_rules_deployment_crontab.__str__(),
+                                                name=probe.name + "_deploy_rules_" + str(
+                                                    probe.scheduled_rules_deployment_crontab),
                                                 task='home.tasks.deploy_rules',
                                                 enabled=probe.scheduled_rules_deployment_enabled,
                                                 args=json.dumps([probe.name, ]))
         elif source is not None:
             try:
-                PeriodicTask.objects.get(name=probe.name + "_" + source.uri + "_deploy_rules_" + schedule.__str__())
+                PeriodicTask.objects.get(name=probe.name + "_" + source.uri + "_deploy_rules_" + str(schedule))
             except PeriodicTask.DoesNotExist:
                 PeriodicTask.objects.create(crontab=schedule,
-                                            name=probe.name + "_" + source.uri + "_deploy_rules_" + schedule.__str__(),
+                                            name=probe.name + "_" + source.uri + "_deploy_rules_" + str(schedule),
                                             task='home.tasks.deploy_rules',
                                             enabled=probe.scheduled_rules_deployment_enabled,
                                             args=json.dumps([probe.name, ]))
     except Exception as e:
         # Error if 2 sources have the same crontab on the same probe -> useless
-        logger.debug(e.__str__())
+        logger.debug(str(e))
 
 
 def decrypt(cipher_text):

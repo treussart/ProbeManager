@@ -1,8 +1,11 @@
 """ python manage.py test home.tests.test_tasks """
 from django.test import TestCase
-from rules.models import Source
+
 from home.models import Probe
 from home.tasks import upload_url_http, deploy_rules, reload_probe
+from rules.models import Source
+
+
 # from unittest import skip
 
 

@@ -1,9 +1,11 @@
 """ venv/bin/python probemanager/manage.py test home.tests.test_utils """
 from django.test import TestCase
-from home.utils import create_upload_task, create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, add_1_hour
-from rules.models import Source
-from home.models import Probe
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
+
+from home.models import Probe
+from home.utils import create_upload_task, create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, \
+    add_1_hour
+from rules.models import Source
 
 
 class TasksRulesTest(TestCase):
@@ -28,7 +30,8 @@ class TasksRulesTest(TestCase):
     def test_create_deploy_rules_task(self):
         probe = Probe.get_by_id(1)
         create_deploy_rules_task(probe)
-        periodic_task = PeriodicTask.objects.get(name=probe.name + '_deploy_rules_' + probe.scheduled_rules_deployment_crontab.__str__())
+        periodic_task = PeriodicTask.objects.get(
+            name=probe.name + '_deploy_rules_' + str(probe.scheduled_rules_deployment_crontab))
         self.assertEqual(periodic_task.task, 'home.tasks.deploy_rules')
         self.assertEqual(periodic_task.args, str([probe.name, ]).replace("'", '"'))
 
@@ -37,7 +40,7 @@ class TasksRulesTest(TestCase):
         schedule = CrontabSchedule.objects.get(id=1)
         source = Source.objects.get(id=1)
         create_deploy_rules_task(probe, schedule, source)
-        periodic_task = PeriodicTask.objects.get(name=probe.name + '_' + source.uri + '_deploy_rules_' + schedule.__str__())
+        periodic_task = PeriodicTask.objects.get(name=probe.name + '_' + source.uri + '_deploy_rules_' + str(schedule))
         self.assertEqual(periodic_task.task, 'home.tasks.deploy_rules')
         self.assertEqual(periodic_task.args, str([probe.name, ]).replace("'", '"'))
 

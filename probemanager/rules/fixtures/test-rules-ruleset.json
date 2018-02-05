@@ -1,12 +1,12 @@
 [
-{
+  {
     "model": "rules.ruleset",
     "pk": 1,
     "fields": {
-        "name": "ruleset1",
-        "description": "test",
-        "created_date": "2017-09-23T21:09:11.291Z",
-        "updated_date": null
+      "name": "ruleset1",
+      "description": "test",
+      "created_date": "2017-09-23T21:09:11.291Z",
+      "updated_date": null
     }
-}
+  }
 ]

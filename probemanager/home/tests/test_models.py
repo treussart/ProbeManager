@@ -1,7 +1,10 @@
 """ python manage.py test home.tests.test_models --settings=probemanager.settings.dev """
-from django.test import TestCase
-from home.models import OsSupported, Probe, ProbeConfiguration, SshKey
 from django.db.utils import IntegrityError
+from django.test import TestCase
+
+from home.models import OsSupported, Probe, ProbeConfiguration, SshKey
+
+
 # from unittest import skip
 
 

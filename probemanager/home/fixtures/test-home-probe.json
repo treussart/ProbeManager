@@ -1,17 +1,17 @@
 [
-{
+  {
     "model": "home.probe",
     "pk": 1,
     "fields": {
-        "name": "probe1",
-        "description": "test",
-        "created_date": "2017-09-23T21:00:53.094Z",
-        "rules_updated_date": null,
-        "type": "",
-        "secure_deployment": true,
-        "scheduled_rules_deployment_enabled": true,
-        "scheduled_rules_deployment_crontab": 1,
-        "server": 1
+      "name": "probe1",
+      "description": "test",
+      "created_date": "2017-09-23T21:00:53.094Z",
+      "rules_updated_date": null,
+      "type": "",
+      "secure_deployment": true,
+      "scheduled_rules_deployment_enabled": true,
+      "scheduled_rules_deployment_crontab": 1,
+      "server": 1
     }
-}
+  }
 ]

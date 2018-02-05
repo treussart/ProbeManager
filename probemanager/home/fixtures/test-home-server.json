@@ -1,32 +1,32 @@
 [
-{
+  {
     "model": "home.ossupported",
     "pk": 1,
     "fields": {
-        "name": "debian"
+      "name": "debian"
     }
-},
-{
+  },
+  {
     "model": "home.sshkey",
     "pk": 1,
     "fields": {
-        "name": "matthieu",
-        "file": "ssh_keys/test.com_rsa"
+      "name": "matthieu",
+      "file": "ssh_keys/test.com_rsa"
     }
-},
-{
+  },
+  {
     "model": "home.server",
     "pk": 1,
     "fields": {
-        "host": "localhost",
-        "os": 1,
-        "remote_user": "test",
-        "remote_port": 22,
-        "ssh_private_key_file": 1,
-        "become": true,
-        "become_method": "sudo",
-        "become_user": "root",
-        "become_pass": "gAAAAABaBik8K6_b124nFdGz96MHXvZ9q9B6sbRiw5Kd2Lqb2G5DAZNPqkcTeZB9hNftdYv9iFlmcrtpE0m40RcA3N4LWHFONE0xjgrmRDoH0AASCSwfqj8="
+      "host": "localhost",
+      "os": 1,
+      "remote_user": "test",
+      "remote_port": 22,
+      "ssh_private_key_file": 1,
+      "become": true,
+      "become_method": "sudo",
+      "become_user": "root",
+      "become_pass": "gAAAAABaBik8K6_b124nFdGz96MHXvZ9q9B6sbRiw5Kd2Lqb2G5DAZNPqkcTeZB9hNftdYv9iFlmcrtpE0m40RcA3N4LWHFONE0xjgrmRDoH0AASCSwfqj8="
     }
-}
+  }
 ]

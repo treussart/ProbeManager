@@ -1,14 +1,15 @@
-from pushbullet import Pushbullet
+import logging
+from smtplib import SMTPException
+
+import requests
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import User
-from home.models import Configuration
-from django.conf import settings
-from smtplib import SMTPException
-import logging
-import requests
 from lxml import html as html_lxml
+from pushbullet import Pushbullet
 
+from home.models import Configuration
 
 logger = logging.getLogger('home')
 
@@ -28,10 +29,13 @@ def send_notification(title, body, html=False):
     # Splunk
     if Configuration.get_value("SPLUNK_HOST"):
         if Configuration.get_value("SPLUNK_USER") and Configuration.get_value("SPLUNK_PASSWORD"):
-            url = "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
-            r = requests.post(url, verify=False, data=html_body, auth=(Configuration.get_value("SPLUNK_USER"), Configuration.get_value("SPLUNK_PASSWORD")))
+            url = "https://" + Configuration.get_value(
+                "SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
+            r = requests.post(url, verify=False, data=html_body,
+                              auth=(Configuration.get_value("SPLUNK_USER"), Configuration.get_value("SPLUNK_PASSWORD")))
         else:
-            url = "https://" + Configuration.get_value("SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
+            url = "https://" + Configuration.get_value(
+                "SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
             r = requests.post(url, verify=False, data=html_body)
         logger.debug("Splunk " + str(r.text))
     # Email
@@ -42,7 +46,7 @@ def send_notification(title, body, html=False):
                 if user.is_superuser:
                     user.email_user(title, plain_body, html_message=html_body, from_email=None)
         except SMTPException as e:
-            logger.error(e.__str__())
+            logger.error(str(e))
 
 
 @receiver(post_save, sender=User)

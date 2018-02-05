@@ -1,8 +1,10 @@
 """ python manage.py test rules.tests.test_views """
-from django.test import Client, TestCase
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
+from django.test import Client, TestCase
 from django.utils import timezone
+
+
 # from unittest import skip
 
 

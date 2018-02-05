@@ -1,7 +1,7 @@
-from django import template
-from django.conf import settings
 import os
 
+from django import template
+from django.conf import settings
 
 register = template.Library()
 

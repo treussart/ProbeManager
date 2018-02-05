@@ -1,9 +1,10 @@
-from django.conf import settings
 import logging
-from home.utils import decrypt
 import os
-import paramiko
 
+import paramiko
+from django.conf import settings
+
+from home.utils import decrypt
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +70,7 @@ def execute_copy(server, src, dest, put=True, become=False):
             ftp_client.get(dest, src)
     except Exception as e:
         raise Exception("Command scp Failed",
-                        " Message: " + e.__str__()
+                        " Message: " + str(e)
                         )
     result['copy'] = "OK"
     if become:

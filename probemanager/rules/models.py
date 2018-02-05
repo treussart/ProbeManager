@@ -1,8 +1,8 @@
+import logging
+
 from django.db import models
 from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
-import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -141,7 +141,8 @@ class RuleSet(models.Model):
     """
     Set of Rules. Scripts and signatures.
     """
-    name = models.CharField(max_length=100, unique=True, blank=False, null=False, db_index=True, verbose_name="Ruleset name")
+    name = models.CharField(max_length=100, unique=True, blank=False, null=False, db_index=True,
+                            verbose_name="Ruleset name")
     description = models.CharField(max_length=400, blank=True)
     created_date = models.DateTimeField(default=timezone.now, editable=False)
     updated_date = models.DateTimeField(blank=True, null=True, editable=False)
@@ -176,11 +177,11 @@ class Source(models.Model):
     """
     Set of Source. For scheduled upload of rules.
     """
-    method = models.ForeignKey(MethodUpload)
-    data_type = models.ForeignKey(DataTypeUpload)
+    method = models.ForeignKey(MethodUpload, on_delete=models.CASCADE)
+    data_type = models.ForeignKey(DataTypeUpload, on_delete=models.CASCADE)
     uri = models.CharField(max_length=1000, unique=True, blank=True, null=False)
     scheduled_rules_deployment_enabled = models.BooleanField(default=False)
-    scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True)
+    scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True, on_delete=models.CASCADE)
     scheduled_deploy = models.BooleanField(default=False)
     file = models.FileField(name='file', upload_to='tmp/upload/', blank=True)
     type = models.CharField(max_length=100, blank=True, default='', editable=False)
