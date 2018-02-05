@@ -32,8 +32,6 @@ def run(*args):
 
     with open(args[0] + 'conf.ini', 'a') as f:
         f.write(final)
-    f.close()
     with open(args[0] + 'password_email.txt', 'w') as f:
         f.write(encrypt(host_password).decode('utf-8'))
-    f.close()
     sys.exit(0)

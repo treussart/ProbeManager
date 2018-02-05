@@ -8,9 +8,6 @@ from sphinx import main
 
 
 def run(*args):
-    #  from django.core.management import call_command
-    #  call_command('graph_models suricata rules home -g -o docs/data/models_probemanager.png --settings=probemanager.settings.$arg')
-    # Create index file  problem works without (solution le mettre dans script install.sh)
     template = """
 
 {{ name }}
