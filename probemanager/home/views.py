@@ -290,7 +290,7 @@ def get_progress(request):
     Get the progress value for the progress bar.
     """
     if os.path.isfile(settings.BASE_DIR + '/tmp/progress.json'):
-        f = open(settings.BASE_DIR + "/tmp/progress.json", 'r')
+        f = open(settings.BASE_DIR + "/tmp/progress.json", 'r', encoding='utf_8')
         return JsonResponse(json.loads(f.read()))
     else:
         return JsonResponse({'progress': 0})

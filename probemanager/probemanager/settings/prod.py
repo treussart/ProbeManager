@@ -23,13 +23,13 @@ GIT_BINARY = config['GIT']['GIT_BINARY']
 PROJECT_NAME = 'probemanager'
 APACHE_PORT = 80
 
-with open(os.path.join(GIT_ROOT, 'secret_key.txt')) as f:
+with open(os.path.join(GIT_ROOT, 'secret_key.txt'), encoding='utf_8') as f:
     SECRET_KEY = f.read().strip()
-with open(os.path.join(GIT_ROOT, 'fernet_key.txt')) as f:
+with open(os.path.join(GIT_ROOT, 'fernet_key.txt'), encoding='utf_8') as f:
     FERNET_KEY = bytes(f.read().strip(), 'utf-8')
 
 if os.path.isfile(os.path.join(BASE_DIR, 'version.txt')):
-    with open(os.path.join(BASE_DIR, 'version.txt')) as f:
+    with open(os.path.join(BASE_DIR, 'version.txt'), encoding='utf_8') as f:
         VERSION = f.read().strip()
 else:
     VERSION = ""
@@ -42,7 +42,7 @@ def decrypt(cipher_text):
         return fernet_key.decrypt(bytes(cipher_text, 'utf-8'))
 
 
-with open(os.path.join(GIT_ROOT, 'password_db.txt')) as f:
+with open(os.path.join(GIT_ROOT, 'password_db.txt'), encoding='utf_8') as f:
     PASSWORD_DB = decrypt(bytes(f.read().strip(), 'utf-8'))
 
 # Celery settings
@@ -138,7 +138,7 @@ INSTALLED_APPS = BASE_APPS + PROD_APPS
 for app in PROD_APPS:
     LOGGING['loggers'].update({app: {'handlers': ['file'], 'level': 'INFO', 'formatter': 'simple', 'propagate': True}})
     if os.path.isfile(BASE_DIR + "/" + app + "/settings.py"):
-        exec(open(BASE_DIR + "/" + app + "/settings.py").read())
+        exec(open(BASE_DIR + "/" + app + "/settings.py", encoding='utf_8').read())
 
 
 # SMTP
@@ -146,7 +146,7 @@ EMAIL_SUBJECT_PREFIX = '[ProbeManager]'
 EMAIL_HOST = config['EMAIL']['HOST']
 EMAIL_PORT = int(config['EMAIL']['PORT'])
 EMAIL_HOST_USER = config['EMAIL']['USER']
-with open(os.path.join(GIT_ROOT, 'password_email.txt')) as f:
+with open(os.path.join(GIT_ROOT, 'password_email.txt'), encoding='utf_8') as f:
     EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
 DEFAULT_FROM_EMAIL = config['EMAIL']['FROM']
 EMAIL_USE_TLS = config.getboolean('EMAIL', 'TLS')

@@ -167,7 +167,7 @@ def update_progress(value):
     else:
         progress = dict()
         progress['progress'] = value
-        f = open(tmpdir + 'progress.json', 'w')
+        f = open(tmpdir + 'progress.json', 'w', encoding='utf_8')
         f.write(json.dumps(progress))
         f.close()
 

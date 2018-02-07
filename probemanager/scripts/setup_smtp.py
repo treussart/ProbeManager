@@ -30,8 +30,8 @@ def run(*args):
                      use_tls=str(use_tls)
                      )
 
-    with open(args[0] + 'conf.ini', 'a') as f:
+    with open(args[0] + 'conf.ini', 'a', encoding='utf_8') as f:
         f.write(final)
-    with open(args[0] + 'password_email.txt', 'w') as f:
+    with open(args[0] + 'password_email.txt', 'w', encoding='utf_8') as f:
         f.write(encrypt(host_password).decode('utf-8'))
     sys.exit(0)

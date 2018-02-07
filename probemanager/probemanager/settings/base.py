@@ -23,6 +23,7 @@ BASE_APPS = [
     'django_celery_beat',
     'django_extensions',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_swagger',
     'select2',
     'api',
@@ -119,6 +120,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAdminUser',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
 }
 
 SWAGGER_SETTINGS = {
