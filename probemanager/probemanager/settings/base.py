@@ -123,11 +123,12 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     )
 }
 
 SWAGGER_SETTINGS = {
-    'VALIDATOR_URL': None,
+    'USE_SESSION_AUTH': False,
     'SECURITY_DEFINITIONS': {
             'api_key': {
                 'type': 'apiKey',
