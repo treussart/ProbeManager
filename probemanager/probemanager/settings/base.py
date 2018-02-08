@@ -117,6 +117,7 @@ PASSWORD_HASHERS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.StandardResultsSetPagination',
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAdminUser',
     ],
@@ -126,7 +127,14 @@ REST_FRAMEWORK = {
 }
 
 SWAGGER_SETTINGS = {
-    'VALIDATOR_URL': None
+    'VALIDATOR_URL': None,
+    'SECURITY_DEFINITIONS': {
+            'api_key': {
+                'type': 'apiKey',
+                'in': 'header',
+                'name': 'Authorization'
+            }
+        },
 }
 
 FIXTURE_DIRS = [BASE_DIR + '/probemanager/fixtures', ]
