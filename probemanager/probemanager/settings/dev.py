@@ -1,4 +1,4 @@
-from probemanager.settings.base import *
+from probemanager.settings.base import *  # noqa
 from home.git import git_tag
 import configparser
 import os

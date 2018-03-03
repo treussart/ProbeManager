@@ -5,11 +5,13 @@ from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
 
 from home.ssh import execute
+from home.factories import CommonMixin
+
 
 logger = logging.getLogger(__name__)
 
 
-class Job(models.Model):
+class Job(models.Model, CommonMixin):
     STATUS_CHOICES = (
         ('In progress', 'In progress'),
         ('Completed', 'Completed'),
@@ -33,23 +35,6 @@ class Job(models.Model):
         return self.created - self.completed
 
     @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_last(cls, nbr):
-        return cls.objects.all()[:nbr]
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
-
-    @classmethod
     def create_job(cls, name, probe_name):
         job = Job(name=name, probe=probe_name, status='In progress', created=timezone.now())
         job.save()
@@ -62,7 +47,7 @@ class Job(models.Model):
         self.save()
 
 
-class OsSupported(models.Model):
+class OsSupported(models.Model, CommonMixin):
     """
     Set of operating system name. For now, just debian is available.
     """
@@ -70,19 +55,6 @@ class OsSupported(models.Model):
 
     def __str__(self):
         return self.name
-
-    @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
 
 
 class SshKey(models.Model):
@@ -96,7 +68,7 @@ class SshKey(models.Model):
         return self.name
 
 
-class Server(models.Model):
+class Server(models.Model, CommonMixin):
     """
     Server on which is deployed the Probes.
     """
@@ -115,24 +87,11 @@ class Server(models.Model):
         return self.name + ' - ' + self.host + ', Os : ' + str(self.os)
 
     @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            probe = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return probe
-
-    @classmethod
     def get_by_host(cls, host):
         try:
             host = cls.objects.get(host=host)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            cls.get_logger().debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return host
 
@@ -142,7 +101,7 @@ class Server(models.Model):
         try:
             response = execute(self, tasks)
         except Exception as e:
-            logger.error(str(e))
+            self.get_logger().error(str(e))
             return False
         logger.debug("output : " + str(response))
         return True
@@ -159,7 +118,7 @@ class Server(models.Model):
         return True
 
 
-class Probe(models.Model):
+class Probe(models.Model, CommonMixin):
     """
     A probe is an IDS.
     """
@@ -205,9 +164,9 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(str(e))
+            self.get_logger().error(str(e))
             return {'status': False, 'errors': str(e)}
-        logger.debug("output : " + str(response))
+        self.get_logger().debug("output : " + str(response))
         return {'status': True}
 
     def start(self):
@@ -219,9 +178,9 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(str(e))
+            self.get_logger().error(str(e))
             return {'status': False, 'errors': str(e)}
-        logger.debug("output : " + str(response))
+        self.get_logger().debug("output : " + str(response))
         return {'status': True}
 
     def stop(self):
@@ -233,9 +192,9 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(str(e))
+            self.get_logger().error(str(e))
             return {'status': False, 'errors': str(e)}
-        logger.debug("output : " + str(response))
+        self.get_logger().debug("output : " + str(response))
         return {'status': True}
 
     def status(self):
@@ -247,9 +206,9 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error('Failed to get status : ' + str(e))
+            self.get_logger().error('Failed to get status : ' + str(e))
             return 'Failed to get status : ' + str(e)
-        logger.debug("output : " + str(response))
+        self.get_logger().debug("output : " + str(response))
         return response['status']
 
     def reload(self):
@@ -261,9 +220,9 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(str(e))
+            self.get_logger().error(str(e))
             return {'status': False, 'errors': str(e)}
-        logger.debug("output : " + str(response))
+        self.get_logger().debug("output : " + str(response))
         return {'status': True}
 
     def install(self):
@@ -276,38 +235,25 @@ class Probe(models.Model):
         try:
             response = execute(self.server, tasks, become=True)
         except Exception as e:
-            logger.error(str(e))
+            self.get_logger().error(str(e))
             return {'status': False, 'errors': str(e)}
-        logger.debug("output : " + str(response))
+        self.get_logger().debug("output : " + str(response))
         return {'status': True}
 
     def update(self):
         return self.install()
 
     @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            probe = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return probe
-
-    @classmethod
     def get_by_name(cls, name):
         try:
             probe = cls.objects.get(name=name)
         except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
+            cls.get_logger().debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return probe
 
 
-class ProbeConfiguration(models.Model):
+class ProbeConfiguration(models.Model, CommonMixin):
     """
     Configuration for a probe, Allows you to reuse the configuration.
     """
@@ -316,19 +262,6 @@ class ProbeConfiguration(models.Model):
 
     def __str__(self):
         return self.name
-
-    @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
 
 
 class Configuration(models.Model):

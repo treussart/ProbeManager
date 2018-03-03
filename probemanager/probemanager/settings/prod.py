@@ -1,4 +1,4 @@
-from probemanager.settings.base import *
+from probemanager.settings.base import *  # noqa
 from cryptography.fernet import Fernet
 import configparser
 import ast
