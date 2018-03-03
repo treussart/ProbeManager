@@ -8,7 +8,7 @@ class CommonMixin:
     @classmethod
     def get_logger(cls):
         return logging.getLogger(__name__.split('.')[0] + '.' +
-                                 os.path.basename(inspect.getsourcefile(cls)) + '-' + cls.__name__)
+                                 os.path.basename(inspect.getsourcefile(cls)) + ' ' + cls.__name__)
 
     @classmethod
     def get_all(cls):
