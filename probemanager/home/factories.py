@@ -12,12 +12,10 @@ class CommonMixin:
 
     @classmethod
     def get_all(cls):
-        cls.get_logger().debug("######TEST GET ALL")
         return cls.objects.all()
 
     @classmethod
     def get_by_id(cls, id):
-        cls.get_logger().debug("######TEST GET ID")
         try:
             probe = cls.objects.get(id=id)
         except cls.DoesNotExist as e:
