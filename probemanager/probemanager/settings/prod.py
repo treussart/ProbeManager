@@ -50,77 +50,6 @@ CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue'
-        },
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        },
-    },
-    'formatters': {
-        'simple': {
-            'format': '%(asctime)s %(levelname)s %(name)s %(funcName)s %(message)s',
-            'datefmt': '%Y-%m-%d %H:%M:%S'
-        },
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': True
-        },
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'formatter': 'simple',
-            # 'filename': os.path.join(tempfile.gettempdir(), 'probemanager-debug.log'),
-            'filename': os.path.join(BASE_DIR, 'probemanager.log'),
-            'filters': ['require_debug_false']
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['mail_admins', 'file'],
-            'level': 'INFO',
-            'formatter': 'simple'
-        },
-        'django.template': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'django.security': {
-            'handlers': ['mail_admins'],
-            'level': 'INFO',
-            'formatter': 'simple',
-            'propagate': True
-        },
-        'django.db.backends': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'formatter': 'simple',
-            'propagate': True
-        },
-        'home': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'formatter': 'simple',
-            'propagate': True
-        },
-        'rules': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'formatter': 'simple',
-            'propagate': True
-        },
-    },
-}
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -136,7 +65,7 @@ PROD_APPS = ast.literal_eval(config['APPS']['PROD_APPS'])
 INSTALLED_APPS = BASE_APPS + PROD_APPS
 
 for app in PROD_APPS:
-    LOGGING['loggers'].update({app: {'handlers': ['file'], 'level': 'INFO', 'formatter': 'simple', 'propagate': True}})
+    LOGGING['loggers'].update({app: {'handlers': ['file', 'file-error'], 'propagate': True}})
     if os.path.isfile(BASE_DIR + "/" + app + "/settings.py"):
         exec(open(BASE_DIR + "/" + app + "/settings.py", encoding='utf_8').read())
 

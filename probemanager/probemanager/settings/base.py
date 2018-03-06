@@ -128,3 +128,84 @@ REST_FRAMEWORK = {
 }
 
 FIXTURE_DIRS = [BASE_DIR + '/probemanager/fixtures', ]
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+    },
+    'formatters': {
+        'full': {
+            'format': '%(asctime)s %(levelname)s - %(name)s.%(funcName)s %(filename)s:%(lineno)d - %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'full',
+            'filename': os.path.join(BASE_DIR, 'probemanager.log'),
+            'filters': ['require_debug_false']
+        },
+        'file-error': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'full',
+            'filename': os.path.join(BASE_DIR, 'probemanager-error.log'),
+            'filters': ['require_debug_false']
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'full',
+            'filters': ['require_debug_true']
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file', 'file-error'],
+            'level': 'DEBUG',
+        },
+        'django.template': {
+            'handlers': ['console', 'file', 'file-error'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['console', 'file', 'file-error'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'django.db.backends': {
+            'handlers': ['console', 'file', 'file-error'],
+            'level': 'INFO',
+            'propagate': True
+        },
+        'home': {
+            'handlers': ['console', 'file', 'file-error'],
+            'propagate': True
+        },
+        'rules': {
+            'handlers': ['console', 'file', 'file-error'],
+            'propagate': True
+        },
+    },
+
+}
