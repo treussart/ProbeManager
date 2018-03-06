@@ -14,17 +14,17 @@ Probe Manager
 | |Build_Status|   | Linux x86\_64      |
 +------------------+--------------------+
 
-.. |Licence| image:: https://img.shields.io/github/license/matleses/ProbeManager.svg
-.. |Stars| image:: https://img.shields.io/github/stars/matleses/ProbeManager.svg
-.. |Forks| image:: https://img.shields.io/github/forks/matleses/ProbeManager.svg
-.. |Downloads| image:: https://img.shields.io/github/downloads/matleses/ProbeManager/total.svg
-.. |Version| image:: https://img.shields.io/github/tag/matleses/ProbeManager.svg
-.. |Commits| image:: https://img.shields.io/github/commits-since/matleses/ProbeManager/latest.svg
-.. |Coverage_Status| image:: https://coveralls.io/repos/github/matleses/ProbeManager/badge.svg?branch=master
+.. |Licence| image:: https://img.shields.io/github/license/treussart/ProbeManager.svg
+.. |Stars| image:: https://img.shields.io/github/stars/treussart/ProbeManager.svg
+.. |Forks| image:: https://img.shields.io/github/forks/treussart/ProbeManager.svg
+.. |Downloads| image:: https://img.shields.io/github/downloads/treussart/ProbeManager/total.svg
+.. |Version| image:: https://img.shields.io/github/tag/treussart/ProbeManager.svg
+.. |Commits| image:: https://img.shields.io/github/commits-since/treussart/ProbeManager/latest.svg
+.. |Coverage_Status| image:: https://coveralls.io/repos/github/treussart/ProbeManager/badge.svg?branch=master
    :target: https://coveralls.io/github/matleses/ProbeManager?branch=master
-.. |Build_Status| image:: https://travis-ci.org/matleses/ProbeManager.svg?branch=master
+.. |Build_Status| image:: https://travis-ci.org/treussart/ProbeManager.svg?branch=master
    :target: https://travis-ci.org/matleses/ProbeManager
-.. |Code_Health| image:: https://landscape.io/github/matleses/ProbeManager/master/landscape.svg?style=flat
+.. |Code_Health| image:: https://landscape.io/github/treussart/ProbeManager/master/landscape.svg?style=flat
    :target: https://landscape.io/github/matleses/ProbeManager/master
 
 Presentation
