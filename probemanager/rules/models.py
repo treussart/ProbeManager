@@ -181,7 +181,8 @@ class Source(models.Model):
     data_type = models.ForeignKey(DataTypeUpload, on_delete=models.CASCADE)
     uri = models.CharField(max_length=1000, unique=True, blank=True, null=False)
     scheduled_rules_deployment_enabled = models.BooleanField(default=False)
-    scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True, on_delete=models.CASCADE)
+    scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True,
+                                                           on_delete=models.CASCADE)
     scheduled_deploy = models.BooleanField(default=False)
     file = models.FileField(name='file', upload_to='tmp/upload/', blank=True)
     type = models.CharField(max_length=100, blank=True, default='', editable=False)
