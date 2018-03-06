@@ -158,7 +158,7 @@ LOGGING = {
             'include_html': True
         },
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'full',
             'filename': os.path.join(BASE_DIR, 'probemanager.log'),
