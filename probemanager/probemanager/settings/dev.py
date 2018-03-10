@@ -8,7 +8,7 @@ import importlib
 assert importlib
 
 config = configparser.ConfigParser()
-config.read(os.path.join(GIT_ROOT, 'conf.ini'))
+config.read(os.path.join(ROOT_DIR, 'conf.ini'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -19,7 +19,7 @@ FERNET_KEY = b'ly8WTzGyN6Xz23t5yq_s_1Ob-qmccqdi52Baj4ta_qQ='
 
 GIT_BINARY = config['GIT']['GIT_BINARY']
 
-VERSION = git_tag(GIT_ROOT)
+VERSION = git_tag(ROOT_DIR)
 
 # Celery settings
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'

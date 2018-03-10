@@ -12,7 +12,6 @@ class CommonMixin:
 
     @classmethod
     def get_all(cls):
-        cls.get_logger().warning("##########")
         return cls.objects.all()
 
     @classmethod

@@ -5,10 +5,10 @@ import configparser
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-GIT_ROOT = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
+ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
 
 config = configparser.ConfigParser()
-config.read(os.path.join(GIT_ROOT, 'conf.ini'))
+config.read(os.path.join(ROOT_DIR, 'conf.ini'))
 
 MEDIA_ROOT = BASE_DIR
 FILE_UPLOAD_PERMISSIONS = 0o600

@@ -25,7 +25,7 @@ def run(*args):
 """
     t = Template(template)
     t_include = Template(template_include)
-    with open(settings.GIT_ROOT + '/docs/modules/index.rst', 'w') as f:
+    with open(settings.ROOT_DIR + '/docs/modules/index.rst', 'w') as f:
         for app in apps.get_app_configs():
             for model in app.get_models():
                 if issubclass(model, Probe):
@@ -34,7 +34,7 @@ def run(*args):
                         if os.path.isfile(path):
                             template_rendered = t.render(module=app.label, name=app.verbose_name)
                             template_include_rendered = t_include.render(module=app.label)
-                            f_include = open(settings.GIT_ROOT + '/docs/modules/' + app.label + '.rst', 'w')
+                            f_include = open(settings.ROOT_DIR + '/docs/modules/' + app.label + '.rst', 'w')
                             f_include.write(template_include_rendered)
                             f_include.close()
                             f.write(template_rendered)
@@ -42,4 +42,4 @@ def run(*args):
         dest = args[0].rstrip('/')
         sys.exit(main(["-b html", dest + "/docs", dest + "/docs/_build/html"]))
     else:
-        sys.exit(main(["-b html", settings.GIT_ROOT + "/docs", settings.GIT_ROOT + "/docs/_build/html"]))
+        sys.exit(main(["-b html", settings.ROOT_DIR + "/docs", settings.ROOT_DIR + "/docs/_build/html"]))

@@ -35,10 +35,10 @@ class SshTest(TestCase):
     #
     # def test_execute_copy_put(self):
     #     server = Server.get_by_id(1)
-    #     result = execute_copy(server, src=settings.GIT_ROOT + '/LICENSE', dest='LICENSE')
+    #     result = execute_copy(server, src=settings.ROOT_DIR + '/LICENSE', dest='LICENSE')
     #     self.assertEqual(result, {'copy': 'OK'})
     #
     # def test_execute_copy_put_become(self):
     #     server = Server.get_by_id(1)
-    #     result = execute_copy(server, src=settings.GIT_ROOT + '/LICENSE', dest='/tmp/LICENSE', become=True)
+    #     result = execute_copy(server, src=settings.ROOT_DIR + '/LICENSE', dest='/tmp/LICENSE', become=True)
     #     self.assertEqual(result, {'copy': 'OK', 'mv': {'mv': 'OK'}})

@@ -3,7 +3,6 @@ celery==4.1.0
 Django==2.0.3
 django-celery-beat==1.1.1
 django-celery-results==1.0.1
-django-environ==0.4.4
 django-extensions==2.0.3
 django-rest-swagger==2.1.2
 django-select2-forms==2.0.2
