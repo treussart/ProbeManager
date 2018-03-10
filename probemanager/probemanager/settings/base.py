@@ -161,14 +161,12 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'full',
-            'filename': os.path.join(BASE_DIR, 'probemanager.log'),
             'filters': ['require_debug_false']
         },
         'file-error': {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'full',
-            'filename': os.path.join(BASE_DIR, 'probemanager-error.log'),
             'filters': ['require_debug_false']
         },
         'console': {

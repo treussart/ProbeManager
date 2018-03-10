@@ -206,6 +206,7 @@ set_smtp(){
 set_settings() {
     echo '## Set settings ##'
     if [ $arg == 'prod' ]; then
+        echo "[LOG]" >> "$destfull"conf.ini
         export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         # if there is not django settings in activate script
         if ! cat "$destfull"venv/bin/activate | grep -qw DJANGO_SETTINGS_MODULE ; then
@@ -214,6 +215,9 @@ set_settings() {
             echo "export PYTHONPATH=""$destfull""probemanager" >> "$destfull"venv/bin/activate
             echo "export PATH=$PATH:""$destfull""venv/bin" >> "$destfull"venv/bin/activate
         fi
+        echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
+        echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
+
     else
         export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         # if there is not django settings in activate script

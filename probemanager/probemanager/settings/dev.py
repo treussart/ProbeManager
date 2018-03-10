@@ -51,3 +51,5 @@ for app in DEV_APPS:
     if os.path.isfile(BASE_DIR + "/" + app + "/settings.py"):
         exec(open(BASE_DIR + "/" + app + "/settings.py").read())
 
+LOGGING['handlers']['file'].update({'filename': os.path.join(BASE_DIR, 'probemanager.log')})
+LOGGING['handlers']['file-error'].update({'filename': os.path.join(BASE_DIR, 'probemanager-error.log')})

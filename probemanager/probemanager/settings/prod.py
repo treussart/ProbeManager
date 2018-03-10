@@ -69,6 +69,8 @@ for app in PROD_APPS:
     if os.path.isfile(BASE_DIR + "/" + app + "/settings.py"):
         exec(open(BASE_DIR + "/" + app + "/settings.py", encoding='utf_8').read())
 
+LOGGING['handlers']['file'].update({'filename': config['LOG']['FILE_PATH']})
+LOGGING['handlers']['file-error'].update({'filename': config['LOG']['FILE_ERROR_PATH']})
 
 # SMTP
 EMAIL_SUBJECT_PREFIX = '[ProbeManager]'
