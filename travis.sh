@@ -10,7 +10,7 @@ git describe master
 echo $PWD
 
 echo '## Install ##'
-pip install -r requirements.txt
+pip install -r requirements/test.txt
 DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
 export DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
