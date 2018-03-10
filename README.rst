@@ -195,7 +195,10 @@ PIP Packages
     See upgrades :
     pip list --outdated --format=freeze
     Apply upgrades :
-    pip list --outdated | cut -d' ' -f1 | xargs pip install --upgrade
+    pip list --outdated --format=legacy | cut -d' ' -f1 | xargs pip install --upgrade
 
     Upgrade pip :
     pip install --upgrade pip
+
+    Uninstall packages :
+    pip freeze | cut -d'=' -f1 | xargs pip uninstall -y

@@ -1,0 +1,3 @@
+postgresql
+python3
+rabbitmq

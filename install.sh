@@ -80,45 +80,21 @@ copy_files(){
     fi
 }
 
-installDependencies() {
+installOsDependencies() {
     echo '## Install Dependencies ##'
     # Debian
     if [ -f /etc/debian_version ]; then
-        if ! type rabbitmq-server ; then
-            apt install rabbitmq-server
-        fi
-        if ! apt list postgresql | grep -qw [installed] ; then
-            apt install postgresql
-        fi
-        if ! apt list python3-virtualenv | grep -qw [installed] ; then
-            apt install python3-venv
-        fi
-        if !  apt list gcc | grep -qw [installed] ; then
-             apt install gcc
-        fi
-        if !  apt list python3-dev | grep -qw [installed] ; then
-             apt install python3-dev
-        fi
-        if !  apt list make | grep -qw [installed] ; then
-             apt install make
-        fi
+        grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs apt install -y
         if [ $arg == 'prod' ]; then
-            if !  apt list apache2 | grep -qw [installed] ; then
-                 apt install apache2
-            fi
-            if !  apt list libapache2-mod-wsgi-py3 | grep -qw [installed] ; then
-                 apt install libapache2-mod-wsgi-py3
-            fi
+            grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs apt install -y
         fi
     fi
     # OSX with brew
     if [[ $OSTYPE == *"darwin"* ]]; then
         if brew --version | grep -qw Homebrew ; then
-            if ! brew list | grep -qw rabbitmq ; then
-                brew install rabbitmq
-            fi
-            if ! brew list | grep -qw postgresql ; then
-                brew install postgresql
+            grep -v "#" requirements/os/osx.txt | grep -v "^$" | xargs brew install
+            if [ $arg == 'prod' ]; then
+                grep -v "#" requirements/os/osx_prod.txt | grep -v "^$" | xargs brew install
             fi
         fi
     fi
@@ -166,7 +142,7 @@ installVirtualEnv() {
             python3 -m venv "$destfull"venv
             source "$destfull"venv/bin/activate
             "$destfull"venv/bin/pip3 install wheel
-            "$destfull"venv/bin/pip3 install -r requirements.txt
+            "$destfull"venv/bin/pip3 install -r requirements/production.txt
         fi
 
         if [[ "$VIRTUAL_ENV" == "" ]]; then
@@ -180,7 +156,7 @@ installVirtualEnv() {
         if [ ! -d venv ]; then
             python3 -m venv venv
             source venv/bin/activate
-            venv/bin/pip3 install -r requirements.txt
+            venv/bin/pip3 install -r requirements/local.txt
         fi
 
         if [[ "$VIRTUAL_ENV" == "" ]]; then
@@ -402,7 +378,7 @@ if [ $arg == 'prod' ]; then
         clean
 
         copy_files
-        installDependencies
+        installOsDependencies
         installVirtualEnv
         set_host
         set_timezone
@@ -441,7 +417,7 @@ else
     echo 'Install for Development'
 
     clean
-    installDependencies
+    installOsDependencies
     installVirtualEnv
     set_settings
     setGit
