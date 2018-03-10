@@ -1,1 +1,2 @@
-nginx
+apache2
+mod_wsgi
