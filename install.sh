@@ -142,7 +142,7 @@ installVirtualEnv() {
             python3 -m venv "$destfull"venv
             source "$destfull"venv/bin/activate
             "$destfull"venv/bin/pip3 install wheel
-            "$destfull"venv/bin/pip3 install -r requirements/production.txt
+            "$destfull"venv/bin/pip3 install -r requirements/prod.txt
         fi
 
         if [[ "$VIRTUAL_ENV" == "" ]]; then
@@ -156,7 +156,7 @@ installVirtualEnv() {
         if [ ! -d venv ]; then
             python3 -m venv venv
             source venv/bin/activate
-            venv/bin/pip3 install -r requirements/local.txt
+            venv/bin/pip3 install -r requirements/dev.txt
         fi
 
         if [[ "$VIRTUAL_ENV" == "" ]]; then
