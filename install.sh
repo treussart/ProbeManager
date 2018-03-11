@@ -44,7 +44,10 @@ install_modules(){
 clean() {
     echo '## Clean Files ##'
     if [ $arg == 'dev' ]; then
-        git submodule foreach --recursive git checkout develop
+        if [ ! -d venv ]; then # First install in dev mode - for init to develop branch
+            git checkout develop
+            git submodule foreach --recursive git checkout develop
+        fi
     fi
     if [ -f conf.ini ]; then
         rm conf.ini
