@@ -74,7 +74,7 @@ Retrieve the project
 
 .. code-block:: sh
 
-    git clone --recursive https://github.com/matleses/ProbeManager.git
+    git clone --recursive https://github.com/treussart/ProbeManager.git
 
 Install
 =======
@@ -131,7 +131,7 @@ Add a submodule
 
 .. code-block:: sh
 
-    git submodule add -b master --name suricata https://github.com/matleses/ProbeManager_Suricata.git probemanager/suricata
+    git submodule add -b master --name suricata https://github.com/treussart/ProbeManager_Suricata.git probemanager/suricata
 
 Modules must respect a few rules:
  * A file version.txt (generate by install script)
