@@ -323,9 +323,11 @@ check_deployement(){
 generate_doc(){
     echo '## Generate doc ##'
     if [ $arg == 'prod' ]; then
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg --script-args $destfull
+        "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
+        venv/bin/sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
     else
         venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
+        venv/bin/sphinx-build -b html docs docs/_build/html
     fi
 }
 
