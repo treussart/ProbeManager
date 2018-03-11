@@ -38,7 +38,7 @@ def run(*args):
                             f_include.write(template_include_rendered)
                             f_include.close()
                             f.write(template_rendered)
-    if args[0] != "-":
+    if args:
         dest = args[0].rstrip('/')
         sys.exit(main(["-b html", dest + "/docs", dest + "/docs/_build/html"]))
     else:

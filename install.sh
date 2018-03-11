@@ -318,7 +318,7 @@ generate_doc(){
     if [ $arg == 'prod' ]; then
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg --script-args $destfull
     else
-        venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg --script-args -
+        venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
     fi
 }
 
