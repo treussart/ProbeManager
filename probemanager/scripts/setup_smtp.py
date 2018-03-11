@@ -6,10 +6,10 @@ import sys
 template_smtp = """
 
 #SMTP
-EMAIL_HOST = {{ host }}
+EMAIL_HOST = '{{ host }}'
 EMAIL_PORT = {{ port }}
-EMAIL_HOST_USER = {{ host_user }}
-DEFAULT_FROM_EMAI = {{ default_from_email }}
+EMAIL_HOST_USER = '{{ host_user }}'
+DEFAULT_FROM_EMAI = '{{ default_from_email }}'
 EMAIL_USE_TLS = {{ use_tls }}
 with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
     EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
