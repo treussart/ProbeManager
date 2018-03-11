@@ -72,14 +72,4 @@ for app in PROD_APPS:
 LOGGING['handlers']['file'].update({'filename': config['LOG']['FILE_PATH']})
 LOGGING['handlers']['file-error'].update({'filename': config['LOG']['FILE_ERROR_PATH']})
 
-# SMTP
-EMAIL_SUBJECT_PREFIX = '[ProbeManager]'
-EMAIL_HOST = config['EMAIL']['HOST']
-EMAIL_PORT = int(config['EMAIL']['PORT'])
-EMAIL_HOST_USER = config['EMAIL']['USER']
-with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
-    EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
-DEFAULT_FROM_EMAIL = config['EMAIL']['FROM']
-EMAIL_USE_TLS = config.getboolean('EMAIL', 'TLS')
-
 TIME_ZONE = config['DEFAULT']['TIME_ZONE']

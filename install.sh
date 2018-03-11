@@ -251,7 +251,7 @@ create_db() {
         service postgresql restart
         sleep 5
         su postgres -c 'dropdb --if-exists probemanager'
-        su postgres -c 'dropuser probemanager'
+        su postgres -c 'dropuser --if-exists probemanager'
         if [ $arg == 'prod' ]; then
             password=$("$destfull"venv/bin/python probemanager/scripts/db_password.py -d $destfull 2>&1)
             su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';\""
@@ -264,7 +264,7 @@ create_db() {
         brew services restart postgresql
         sleep 5
         dropdb --if-exists probemanager
-        dropuser probemanager
+        dropuser --if-exists probemanager
         if [ $arg == 'prod' ]; then
             password=$("$destfull"venv/bin/python probemanager/scripts/db_password.py -d $destfull 2>&1)
             psql -d postgres -c "CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';"
