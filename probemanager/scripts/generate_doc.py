@@ -2,9 +2,7 @@ from django.apps.registry import apps
 from jinja2 import Template
 from home.models import Probe
 import os
-import sys
 from django.conf import settings
-from sphinx import main
 
 
 def run(*args):
