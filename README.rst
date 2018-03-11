@@ -147,7 +147,7 @@ Respect the standard : reStructuredText (RST).
 
 .. code-block:: sh
 
-    venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev --script-args -
+    venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev
 
 
 Open the file with a web browser :
