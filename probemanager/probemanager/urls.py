@@ -17,7 +17,6 @@ for app in apps.get_app_configs():
 urlpatterns = [
     url(r'^api/v1/doc/$', schema_view),
     url(r'^api/v1/', include('api.urls')),
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^select2/', include('select2.urls')),
     url(r'^rules/', include('rules.urls')),
