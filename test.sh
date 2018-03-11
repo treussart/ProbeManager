@@ -15,7 +15,7 @@ do
 done
 sourcecoverage="--source=""$sourcecoverage"
 if [ ! -d venv ]; then
-    echo 'install before testing'
+    echo 'Install before testing'
     exit
 fi
 
