@@ -91,6 +91,8 @@ For developer :
 For Production :
 ----------------
 
+Default destination path : /usr/local/share
+
 .. code-block:: sh
 
     sudo ./install.sh prod [destination path]
