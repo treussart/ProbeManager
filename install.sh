@@ -43,6 +43,9 @@ install_modules(){
 
 clean() {
     echo '## Clean Files ##'
+    if [ $arg == 'dev' ]; then
+        git submodule foreach --recursive git checkout develop
+    fi
     if [ -f conf.ini ]; then
         rm conf.ini
     fi
