@@ -9,7 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/probemanager/suricata" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.6.1 virtualenv at ~/github/ProbeManager/venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.6.1 virtualenv at ~/git/ProbeManager/venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
