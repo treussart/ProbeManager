@@ -85,7 +85,7 @@ For developer :
 
 .. code-block:: sh
 
-    sudo ./install.sh
+    ./install.sh
     ./start.sh
 
 For Production :

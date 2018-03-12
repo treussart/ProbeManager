@@ -90,9 +90,9 @@ installOsDependencies() {
     echo '## Install Dependencies ##'
     # Debian
     if [ -f /etc/debian_version ]; then
-        grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs apt install -y
+        grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs sudo apt install -y
         if [ $arg == 'prod' ]; then
-            grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs apt install -y
+            grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs sudo apt install -y
         fi
     fi
     # OSX with brew
