@@ -248,17 +248,17 @@ generate_version(){
 create_db() {
     echo '## Create DB ##'
     if [ -f /etc/debian_version ]; then
-        service postgresql restart
+        sudo service postgresql restart
         sleep 5
-        su postgres -c 'dropdb --if-exists probemanager'
-        su postgres -c 'dropuser --if-exists probemanager'
+        sudo su postgres -c 'dropdb --if-exists probemanager'
+        sudo su postgres -c 'dropuser --if-exists probemanager'
         if [ $arg == 'prod' ]; then
             password=$("$destfull"venv/bin/python probemanager/scripts/db_password.py -d $destfull 2>&1)
-            su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';\""
+            sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';\""
         else
-            su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
+            sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
         fi
-        su postgres -c 'createdb -T template0 -O probemanager probemanager'
+        sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
     fi
     if [[ $OSTYPE == *"darwin"* ]]; then
         brew services restart postgresql
