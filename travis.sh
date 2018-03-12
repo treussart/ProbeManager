@@ -10,6 +10,7 @@ git describe master
 echo $PWD
 
 echo '## Install ##'
+pip install -r requirements/base.txt
 pip install -r requirements/test.txt
 DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
 export DJANGO_SETTINGS_MODULE
@@ -19,11 +20,6 @@ echo '## Set Git ##'
 git_bin=$( which git )
 echo "[GIT]"  >> conf.ini
 echo "GIT_BINARY = $git_bin" >> conf.ini
-
-echo '## Set Pushbullet ##'
-key=''
-echo "[PUSH]"  >> conf.ini
-echo "PUSHBULLET_API_KEY = $key" >> conf.ini
 
 echo '## Generate version ##'
 python probemanager/manage.py runscript version --settings=probemanager.settings.dev --script-args -
@@ -53,6 +49,6 @@ for f in probemanager/*; do
 done
 
 echo '## Generate doc ##'
-python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev --script-args -
+python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev
 
 echo '## END  INSTALL##'
