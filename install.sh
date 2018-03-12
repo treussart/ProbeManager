@@ -162,8 +162,9 @@ installVirtualEnv() {
         if [ ! -d venv ]; then
             python3 -m venv venv
             source venv/bin/activate
-            sudo venv/bin/pip3 install -r requirements/dev.txt
-            sudo venv/bin/pip3 install -r requirements/test.txt
+            venv/bin/pip3 install wheel
+            venv/bin/pip3 install -r requirements/dev.txt
+            venv/bin/pip3 install -r requirements/test.txt
         fi
 
         if [[ "$VIRTUAL_ENV" == "" ]]; then
