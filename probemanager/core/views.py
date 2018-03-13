@@ -27,7 +27,7 @@ def index(request):
     for app in apps.get_app_configs():
         for model in app.get_models():
             if issubclass(model, Probe):
-                if app.verbose_name != "Home":
+                if app.verbose_name != "Core":
                     my_class = getattr(importlib.import_module(app.label + ".models"), app.verbose_name)
                     instances[app.label] = my_class.get_all()
     return render(request, 'core/index.html', {'instances': instances})
