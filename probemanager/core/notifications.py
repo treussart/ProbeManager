@@ -44,7 +44,10 @@ def send_notification(title, body, html=False):
         try:
             for user in users:
                 if user.is_superuser:
-                    user.email_user(title, plain_body, html_message=html_body, from_email=None)
+                    try:
+                        user.email_user(title, plain_body, html_message=html_body)
+                    except AttributeError:
+                        logger.exception("Error in sending email")
         except SMTPException as e:
             logger.error(str(e))
 
