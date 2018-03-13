@@ -12,13 +12,13 @@ Source
 Models
 ^^^^^^
 
-.. automodule:: home.models
+.. automodule:: core.models
 :members:
 
 Views
 ^^^^^
 
-.. automodule:: home.views
+.. automodule:: core.views
 :members:
         :undoc-members:
         :special-members:
