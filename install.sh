@@ -211,10 +211,18 @@ set_smtp(){
     fi
 }
 
+set_log() {
+    echo '## Set logs ##'
+    if [ $arg == 'prod' ]; then
+        echo "[LOG]" >> "$destfull"conf.ini
+        echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
+        echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
+    fi
+}
+
 set_settings() {
     echo '## Set settings ##'
     if [ $arg == 'prod' ]; then
-        echo "[LOG]" >> "$destfull"conf.ini
         export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         # if there is not django settings in activate script
         if ! cat "$destfull"venv/bin/activate | grep -qw DJANGO_SETTINGS_MODULE ; then
@@ -400,6 +408,7 @@ if [ $arg == 'prod' ]; then
         set_timezone
         chooseApps
         set_settings
+        set_log
         setGit
         install_modules
         generate_keys
@@ -420,6 +429,7 @@ if [ $arg == 'prod' ]; then
         update_repo
         clean
         copy_files
+        set_settings
         generate_version
         update_db
         collect_static
