@@ -342,9 +342,10 @@ apache_conf(){
     "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript apache --script-args $destfull
 }
 
-update_depot(){
+update_repo(){
     echo '## Update Git repository ##'
-    git pull origin master
+    # branch=$( git branch | grep \* | cut -d ' ' -f2 )
+    git pull origin
     git submodule update --remote
 }
 
@@ -415,7 +416,7 @@ if [ $arg == 'prod' ]; then
     else
         echo 'Update prod install'
 
-        update_depot
+        update_repo
         clean
         copy_files
         set_settings
