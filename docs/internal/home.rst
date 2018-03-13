@@ -1,1 +1,1 @@
-.. include:: ../../probemanager/home/docs/index.rst
+.. include:: ../../probemanager/core/docs/index.rst
