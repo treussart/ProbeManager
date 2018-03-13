@@ -5,13 +5,13 @@ from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
 
 from home.ssh import execute
-from home.factories import CommonMixin
+from home.modelsmixins import CommonMixin
 
 
 logger = logging.getLogger(__name__)
 
 
-class Job(models.Model, CommonMixin):
+class Job(CommonMixin, models.Model):
     STATUS_CHOICES = (
         ('In progress', 'In progress'),
         ('Completed', 'Completed'),
@@ -47,7 +47,7 @@ class Job(models.Model, CommonMixin):
         self.save()
 
 
-class OsSupported(models.Model, CommonMixin):
+class OsSupported(CommonMixin, models.Model):
     """
     Set of operating system name. For now, just debian is available.
     """
@@ -68,7 +68,7 @@ class SshKey(models.Model):
         return self.name
 
 
-class Server(models.Model, CommonMixin):
+class Server(CommonMixin, models.Model):
     """
     Server on which is deployed the Probes.
     """
@@ -118,7 +118,7 @@ class Server(models.Model, CommonMixin):
         return True
 
 
-class Probe(models.Model, CommonMixin):
+class Probe(CommonMixin, models.Model):
     """
     A probe is an IDS.
     """
@@ -253,7 +253,7 @@ class Probe(models.Model, CommonMixin):
         return probe
 
 
-class ProbeConfiguration(models.Model, CommonMixin):
+class ProbeConfiguration(CommonMixin, models.Model):
     """
     Configuration for a probe, Allows you to reuse the configuration.
     """
