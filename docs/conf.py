@@ -3,7 +3,7 @@ import sys
 import re
 import datetime
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'probemanager.settings.prod'
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import django
 django.setup()
