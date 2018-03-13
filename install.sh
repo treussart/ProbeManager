@@ -400,8 +400,8 @@ if [ $arg == 'prod' ]; then
         echo 'Install in dir : '$destfull
         mkdir $dest/ProbeManager
 
+        update_repo
         clean
-
         copy_files
         installOsDependencies
         installVirtualEnv
