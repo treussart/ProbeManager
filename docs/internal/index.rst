@@ -14,4 +14,4 @@ Core
 .. toctree::
    :maxdepth: 2
 
-   home
+   core
