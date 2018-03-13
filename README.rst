@@ -138,7 +138,8 @@ Add a submodule
 Modules must respect a few rules:
  * A file version.txt (generate by install script)
  * A file README.rst
- * A folder api with a variable urls_to_register into urls.py
+ * A folder api with a variable urls_to_register into urls.py (Optional)
+ * A install script install.sh (Optional)
 
 
 Documentation
