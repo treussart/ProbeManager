@@ -7,7 +7,8 @@ import datetime
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import django
 django.setup()
-from django.conf import settings
+#from django.conf import settings
+from probemanager.settings.prod import DEBUG, ALLOWED_HOSTS, VERSION
 
 
 def get_infos():
@@ -22,10 +23,10 @@ def get_infos():
 last_reviewed = datetime.date.today().strftime('%d, %b %Y')
 rst_epilog = '.. |last_reviewed| replace:: %s' % last_reviewed
 
-if settings.DEBUG:
+if DEBUG:
     extlinks = {'site_url': ('http://localhost:8000' + '%s', None)}
 else:
-    extlinks = {'site_url': ('https://' + settings.ALLOWED_HOSTS[0] + '%s', None)}
+    extlinks = {'site_url': ('https://' + ALLOWED_HOSTS[0] + '%s', None)}
 
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -63,7 +64,7 @@ author = get_infos()['author']
 # built documents.
 #
 # The short X.Y version.
-version = settings.VERSION
+version = VERSION
 
 # The full version, including alpha/beta/rc tags.
 release = version
