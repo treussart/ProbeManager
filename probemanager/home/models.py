@@ -5,7 +5,7 @@ from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
 
 from home.ssh import execute
-from home.modelsmixins import CommonMixin
+from .modelsmixins import CommonMixin
 
 
 logger = logging.getLogger(__name__)
