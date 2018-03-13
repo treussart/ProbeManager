@@ -344,9 +344,10 @@ apache_conf(){
 
 update_repo(){
     echo '## Update Git repository ##'
-    # branch=$( git branch | grep \* | cut -d ' ' -f2 )
-    git pull origin
-    git submodule update --remote
+    branch=$( git branch | grep \* | cut -d ' ' -f2 )
+    git pull origin $branch
+    git submodule foreach --recursive git checkout $branch
+    # git submodule update --remote
 }
 
 launch_celery(){
