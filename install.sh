@@ -419,7 +419,6 @@ if [ $arg == 'prod' ]; then
         update_repo
         clean
         copy_files
-        set_settings
         generate_version
         update_db
         collect_static
