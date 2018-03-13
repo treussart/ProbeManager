@@ -3,9 +3,9 @@ import logging
 from django.contrib import admin
 from django.contrib import messages
 
-from home.forms import ServerForm
-from home.models import SshKey, Server, Job, Configuration
-from home.utils import encrypt
+from .forms import ServerForm
+from .models import SshKey, Server, Job, Configuration
+from .utils import encrypt
 
 logger = logging.getLogger(__name__)
 

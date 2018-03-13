@@ -4,8 +4,8 @@ import traceback
 from celery import task
 from celery.utils.log import get_task_logger
 
-from home.models import Probe, Job
-from home.notifications import send_notification
+from .models import Probe, Job
+from .notifications import send_notification
 from rules.models import Source
 from suricata.models import RuleSetSuricata
 

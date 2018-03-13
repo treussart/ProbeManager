@@ -1,6 +1,6 @@
 from django.forms import ModelForm, PasswordInput
 
-from home.models import Server
+from .models import Server
 
 
 class ServerForm(ModelForm):

@@ -8,6 +8,7 @@ from django_celery_beat.models import PeriodicTask, CrontabSchedule
 
 from probemanager.settings import BASE_DIR
 
+
 fernet_key = Fernet(settings.FERNET_KEY)
 logger = logging.getLogger(__name__)
 

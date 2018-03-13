@@ -7,6 +7,7 @@ from django.shortcuts import render
 
 from rules.models import Rule
 
+
 logger = logging.getLogger(__name__)
 
 

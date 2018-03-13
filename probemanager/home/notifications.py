@@ -9,7 +9,7 @@ from django.dispatch import receiver
 from lxml import html as html_lxml
 from pushbullet import Pushbullet
 
-from home.models import Configuration
+from .models import Configuration
 
 logger = logging.getLogger('home')
 

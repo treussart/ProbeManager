@@ -12,8 +12,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
-from home.models import Probe
-from home.tasks import deploy_rules as deploy_rules_probe, install_probe, update_probe
+from .models import Probe
+from .tasks import deploy_rules as deploy_rules_probe, install_probe, update_probe
 
 logger = logging.getLogger(__name__)
 

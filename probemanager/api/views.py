@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rules.models import ClassType
-from api.serializers import UserSerializer, GroupSerializer, ClassTypeSerializer
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+
+from rules.models import ClassType
+from .serializers import UserSerializer, GroupSerializer, ClassTypeSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):

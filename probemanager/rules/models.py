@@ -6,6 +6,7 @@ from django_celery_beat.models import CrontabSchedule
 
 from home.modelsmixins import CommonMixin
 
+
 logger = logging.getLogger(__name__)
 
 

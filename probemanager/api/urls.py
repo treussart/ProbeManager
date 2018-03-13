@@ -1,9 +1,11 @@
-from django.apps.registry import apps
-from rest_framework import routers
-from django.conf import settings
-from api import views
 import importlib
 import os
+
+from django.apps.registry import apps
+from django.conf import settings
+from rest_framework import routers
+
+from . import views
 
 
 router = routers.DefaultRouter()
