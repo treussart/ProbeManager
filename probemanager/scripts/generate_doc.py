@@ -27,7 +27,7 @@ def run(*args):
         for app in apps.get_app_configs():
             for model in app.get_models():
                 if issubclass(model, Probe):
-                    if app.verbose_name != "Core":
+                    if app.verbose_name != "Home":
                         path = settings.BASE_DIR + "/" + app.label + "/README.rst"
                         if os.path.isfile(path):
                             template_rendered = t.render(module=app.label, name=app.verbose_name)
