@@ -351,13 +351,13 @@ update_depot(){
 launch_celery(){
     if [ ! -f "$destfull"probemanager/celery.pid ]; then
         echo '## Start Celery ##'
-        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
     else
         echo '## Restart Celery ##'
         kill $( cat "$destfull"probemanager/celery.pid)
         pkill -f celery
         sleep 5
-        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
     fi
 }
 
