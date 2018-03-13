@@ -389,6 +389,10 @@ post_install() {
         mkdir /var/www/.ansible
         chown www-data:www-data /var/www/.ansible
     fi
+    touch /var/log/probemanager.log
+    touch /var/log/probemanager-error.log
+    chown www-data /var/log/probemanager.log
+    chown www-data /var/log/probemanager-error.log
     a2dissite 000-default.conf
     a2dismod deflate -f
     systemctl restart apache2
