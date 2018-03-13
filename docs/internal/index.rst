@@ -8,7 +8,7 @@ Rules
 
    rules
 
-Home
+Core
 ----
 
 .. toctree::
