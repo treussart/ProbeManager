@@ -1,6 +1,6 @@
 from django.apps.registry import apps
 from jinja2 import Template
-from home.models import Probe
+from core.models import Probe
 import os
 from django.conf import settings
 

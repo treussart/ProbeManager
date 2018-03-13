@@ -3,8 +3,8 @@ from django.test import TestCase
 
 
 # from django.conf import settings
-# from home.ssh import connection, execute, execute_copy
-# from home.models import Server
+# from core.ssh import connection, execute, execute_copy
+# from core.models import Server
 
 
 class SshTest(TestCase):

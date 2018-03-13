@@ -1,5 +1,5 @@
 from jinja2 import Template
-from home.utils import encrypt
+from core.utils import encrypt
 import os
 import sys
 from getpass import getpass
@@ -10,7 +10,7 @@ from django.conf import settings
 template_server_test = """
 [
 {
-    "model": "home.sshkey",
+    "model": "core.sshkey",
     "pk": 1,
     "fields": {
         "name": "test",
@@ -18,7 +18,7 @@ template_server_test = """
     }
 },
 {
-    "model": "home.server",
+    "model": "core.server",
     "pk": 1,
     "fields": {
         "host": "{{ host }}",
@@ -69,7 +69,7 @@ def run():
                                remote_port=remote_port,
                                ssh_private_key_file=ssh_private_key_file_basename
                                )
-        with open(settings.BASE_DIR + '/home/fixtures/test-home-server.json', 'w') as f:
+        with open(settings.BASE_DIR + '/core/fixtures/test-core-server.json', 'w') as f:
             f.write(server_test)
         f.close()
         sys.exit(0)

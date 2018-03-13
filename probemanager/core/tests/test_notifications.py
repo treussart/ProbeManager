@@ -2,8 +2,8 @@
 from django.test import TestCase
 from pushbullet.errors import InvalidKeyError
 
-from home.models import Configuration
-from home.notifications import send_notification
+from core.models import Configuration
+from core.notifications import send_notification
 
 
 class NotificationsTest(TestCase):

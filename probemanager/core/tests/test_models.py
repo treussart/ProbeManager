@@ -2,7 +2,7 @@
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from home.models import OsSupported, Probe, ProbeConfiguration, SshKey
+from core.models import OsSupported, Probe, ProbeConfiguration, SshKey
 
 
 # from unittest import skip
@@ -26,14 +26,14 @@ class OsSupportedTest(TestCase):
         self.assertEqual(os_supported, None)
         with self.assertRaises(AttributeError):
             os_supported.name
-        with self.assertLogs('home.models', level='DEBUG'):
+        with self.assertLogs('core.models', level='DEBUG'):
             OsSupported.get_by_id(99)
         with self.assertRaises(IntegrityError):
             OsSupported.objects.create(name="debian")
 
 
 class ProbeConfigurationTest(TestCase):
-    fixtures = ['init', 'test-home-probeconfiguration']
+    fixtures = ['init', 'test-core-probeconfiguration']
 
     @classmethod
     def setUpTestData(cls):
@@ -49,14 +49,14 @@ class ProbeConfigurationTest(TestCase):
         self.assertEqual(probe_configuration, None)
         with self.assertRaises(AttributeError):
             probe_configuration.name
-        with self.assertLogs('home.models', level='DEBUG'):
+        with self.assertLogs('core.models', level='DEBUG'):
             ProbeConfiguration.get_by_id(99)
         with self.assertRaises(IntegrityError):
             ProbeConfiguration.objects.create(name="conf1")
 
 
 class SshKeyTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-home-sshkey']
+    fixtures = ['init', 'crontab', 'test-core-sshkey']
 
     @classmethod
     def setUpTestData(cls):
@@ -73,7 +73,7 @@ class SshKeyTest(TestCase):
 
 
 class ProbeTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-home-server', 'test-home-probe']
+    fixtures = ['init', 'crontab', 'test-core-server', 'test-core-probe']
 
     @classmethod
     def setUpTestData(cls):
@@ -95,9 +95,9 @@ class ProbeTest(TestCase):
         self.assertEqual(probe, None)
         with self.assertRaises(AttributeError):
             probe.name
-        with self.assertLogs('home.models', level='DEBUG'):
+        with self.assertLogs('core.models', level='DEBUG'):
             Probe.get_by_id(99)
-        with self.assertLogs('home.models', level='DEBUG'):
+        with self.assertLogs('core.models', level='DEBUG'):
             Probe.get_by_name('probe99')
         with self.assertRaises(IntegrityError):
             Probe.objects.create(name="suricata1")

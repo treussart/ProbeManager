@@ -2,14 +2,14 @@
 from django.test import TestCase
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
-from home.models import Probe
-from home.utils import create_upload_task, create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, \
+from core.models import Probe
+from core.utils import create_upload_task, create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, \
     add_1_hour
 from rules.models import Source
 
 
 class TasksRulesTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-rules-source', 'test-home-server', 'test-home-probe']
+    fixtures = ['init', 'crontab', 'test-rules-source', 'test-core-server', 'test-core-probe']
 
     @classmethod
     def setUpTestData(cls):
@@ -18,13 +18,13 @@ class TasksRulesTest(TestCase):
     def test_create_upload_task(self):
         create_upload_task(Source.get_by_id(1))
         periodic_task = PeriodicTask.objects.get(name='https://sslbl.abuse.ch/blacklist/sslblacklist.rules_upload_task')
-        self.assertEqual(periodic_task.task, 'home.tasks.upload_url_http')
+        self.assertEqual(periodic_task.task, 'core.tasks.upload_url_http')
         self.assertEqual(periodic_task.args, str([Source.get_by_id(1).uri, ]).replace("'", '"'))
 
     def test_create_reload_task(self):
         create_reload_task(Probe.get_by_id(1))
         periodic_task = PeriodicTask.objects.get(name=Probe.get_by_id(1).name + '_reload_task')
-        self.assertEqual(periodic_task.task, 'home.tasks.reload_probe')
+        self.assertEqual(periodic_task.task, 'core.tasks.reload_probe')
         self.assertEqual(periodic_task.args, str([Probe.get_by_id(1).name, ]).replace("'", '"'))
 
     def test_create_deploy_rules_task(self):
@@ -32,7 +32,7 @@ class TasksRulesTest(TestCase):
         create_deploy_rules_task(probe)
         periodic_task = PeriodicTask.objects.get(
             name=probe.name + '_deploy_rules_' + str(probe.scheduled_rules_deployment_crontab))
-        self.assertEqual(periodic_task.task, 'home.tasks.deploy_rules')
+        self.assertEqual(periodic_task.task, 'core.tasks.deploy_rules')
         self.assertEqual(periodic_task.args, str([probe.name, ]).replace("'", '"'))
 
     def test_create_deploy_rules_task_with_schedule(self):
@@ -41,7 +41,7 @@ class TasksRulesTest(TestCase):
         source = Source.objects.get(id=1)
         create_deploy_rules_task(probe, schedule, source)
         periodic_task = PeriodicTask.objects.get(name=probe.name + '_' + source.uri + '_deploy_rules_' + str(schedule))
-        self.assertEqual(periodic_task.task, 'home.tasks.deploy_rules')
+        self.assertEqual(periodic_task.task, 'core.tasks.deploy_rules')
         self.assertEqual(periodic_task.args, str([probe.name, ]).replace("'", '"'))
 
     def test_encrypt_decrypt(self):

@@ -30,7 +30,7 @@ def index(request):
                 if app.verbose_name != "Home":
                     my_class = getattr(importlib.import_module(app.label + ".models"), app.verbose_name)
                     instances[app.label] = my_class.get_all()
-    return render(request, 'home/index.html', {'instances': instances})
+    return render(request, 'core/index.html', {'instances': instances})
 
 
 @login_required
@@ -198,7 +198,7 @@ def install(request, id):
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the install : ' + str(e))
         messages.add_message(request, messages.SUCCESS,
-                             mark_safe("Install probe launched with succeed. <a href='/admin/home/job/'>View Job</a>"))
+                             mark_safe("Install probe launched with succeed. <a href='/admin/core/job/'>View Job</a>"))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -221,7 +221,7 @@ def update(request, id):
         except Exception as e:
             messages.add_message(request, messages.ERROR, 'Error during the update : ' + str(e))
         messages.add_message(request, messages.SUCCESS,
-                             mark_safe("Update probe launched with succeed. <a href='/admin/home/job/'>View Job</a>"))
+                             mark_safe("Update probe launched with succeed. <a href='/admin/core/job/'>View Job</a>"))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -281,7 +281,7 @@ def deploy_rules(request, id):
     else:
         deploy_rules_probe.delay(probe.name)
         messages.add_message(request, messages.SUCCESS,
-                             mark_safe("Deployed rules launched with succeed. <a href='/admin/home/job/'>View Job</a>"))
+                             mark_safe("Deployed rules launched with succeed. <a href='/admin/core/job/'>View Job</a>"))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 

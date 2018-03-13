@@ -31,5 +31,5 @@ install:
 script:
   - flake8 probemanager/ --config=.flake8
   - coverage erase
-  - coverage run --source=probemanager/home,probemanager/rules probemanager/runtests.py --app home rules
+  - coverage run --source=probemanager/core,probemanager/rules probemanager/runtests.py --app core rules
   - coverage report -i --skip-covered

@@ -1,8 +1,8 @@
 """ python manage.py test home.tests.test_tasks """
 from django.test import TestCase
 
-from home.models import Probe
-from home.tasks import upload_url_http, deploy_rules, reload_probe
+from core.models import Probe
+from core.tasks import upload_url_http, deploy_rules, reload_probe
 from rules.models import Source
 
 
@@ -10,7 +10,7 @@ from rules.models import Source
 
 
 class TasksRulesTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-rules-source', 'test-home-server', 'test-home-probe']
+    fixtures = ['init', 'crontab', 'test-rules-source', 'test-core-server', 'test-core-probe']
 
     @classmethod
     def setUpTestData(cls):

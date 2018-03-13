@@ -3,7 +3,7 @@ import logging
 
 from django import template
 
-from home.models import Probe
+from core.models import Probe
 
 logger = logging.getLogger(__name__)
 register = template.Library()

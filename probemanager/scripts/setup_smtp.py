@@ -1,4 +1,4 @@
-from home.utils import encrypt
+from core.utils import encrypt
 from jinja2 import Template
 from getpass import getpass
 import sys

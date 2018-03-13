@@ -1,5 +1,5 @@
 from probemanager.settings.base import *  # noqa
-from home.git import git_tag
+from core.git import git_tag
 import configparser
 import os
 import importlib

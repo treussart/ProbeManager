@@ -55,9 +55,9 @@ class ViewsHomeTest(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertIn('<title>Home</title>', str(response.content))
-        self.assertEqual('home/index.html', response.templates[0].name)
-        self.assertIn('home', response.resolver_match.app_names)
+        self.assertEqual('core/index.html', response.templates[0].name)
+        self.assertIn('core', response.resolver_match.app_names)
         self.assertIn('function index', str(response.resolver_match.func))
         self.assertEqual(str(response.context['user']), 'testuser')
-        with self.assertTemplateUsed('home/index.html'):
+        with self.assertTemplateUsed('core/index.html'):
             self.client.get('/')

@@ -11,7 +11,7 @@ from pushbullet import Pushbullet
 
 from .models import Configuration
 
-logger = logging.getLogger('home')
+logger = logging.getLogger('core')
 
 
 def send_notification(title, body, html=False):

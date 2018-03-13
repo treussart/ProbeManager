@@ -34,7 +34,7 @@ class JobAdmin(admin.ModelAdmin):
 
     class Media:
         js = (
-            'home/js/reload.js',
+            'core/js/reload.js',
         )
 
     def has_add_permission(self, request):

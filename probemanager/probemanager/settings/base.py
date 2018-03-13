@@ -28,7 +28,7 @@ BASE_APPS = [
     'select2',
     'api',
     'rules',
-    'home',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -196,7 +196,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True
         },
-        'home': {
+        'core': {
             'handlers': ['console', 'file', 'file-error'],
             'propagate': True
         },
