@@ -231,9 +231,6 @@ set_settings() {
             echo "export PYTHONPATH=""$destfull""probemanager" >> "$destfull"venv/bin/activate
             echo "export PATH=$PATH:""$destfull""venv/bin" >> "$destfull"venv/bin/activate
         fi
-        echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
-        echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
-
     else
         export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         # if there is not django settings in activate script
@@ -429,7 +426,6 @@ if [ $arg == 'prod' ]; then
         update_repo
         clean
         copy_files
-        set_settings
         generate_version
         update_db
         collect_static
