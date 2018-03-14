@@ -100,8 +100,8 @@ class Server(CommonMixin, models.Model):
         tasks = {"test": command}
         try:
             response = execute(self, tasks)
-        except Exception as e:
-            self.get_logger().error(str(e))
+        except Exception:
+            logger.exception("Error connecting to the server")
             return False
         logger.debug("output : " + str(response))
         return True
@@ -111,8 +111,8 @@ class Server(CommonMixin, models.Model):
         tasks = {"test_root": command}
         try:
             response = execute(self, tasks, become=True)
-        except Exception as e:
-            logger.error(str(e))
+        except Exception:
+            logger.exception("Error connecting to the server")
             return False
         logger.debug("output : " + str(response))
         return True
