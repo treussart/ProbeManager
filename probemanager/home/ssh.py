@@ -27,7 +27,7 @@ def execute(server, commands, become=False):
         if become:
             if server.become:
                 if server.become_pass is not None:
-                    command = " echo '" + decrypt(server.become_pass).decode('utf-8') + \
+                    command = " echo '" + decrypt(server.become_pass) + \
                               "' | " + server.become_method + " -S " + \
                               command
                 else:
