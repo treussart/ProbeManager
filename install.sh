@@ -418,7 +418,6 @@ if [ $arg == 'prod' ]; then
         update_depot
         clean
         copy_files
-        set_settings
         generate_version
         update_db
         collect_static
