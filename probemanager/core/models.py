@@ -91,7 +91,7 @@ class Server(CommonMixin, models.Model):
         try:
             host = cls.objects.get(host=host)
         except cls.DoesNotExist as e:
-            cls.get_logger().debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return host
 
@@ -163,10 +163,10 @@ class Probe(CommonMixin, models.Model):
         tasks = {"restart": command}
         try:
             response = execute(self.server, tasks, become=True)
-        except Exception as e:
-            self.get_logger().error(str(e))
-            return {'status': False, 'errors': str(e)}
-        self.get_logger().debug("output : " + str(response))
+        except Exception:
+            logger.exception("Error during restart")
+            return {'status': False, 'errors': "Error during restart"}
+        logger.debug("output : " + str(response))
         return {'status': True}
 
     def start(self):
@@ -177,10 +177,10 @@ class Probe(CommonMixin, models.Model):
         tasks = {"start": command}
         try:
             response = execute(self.server, tasks, become=True)
-        except Exception as e:
-            self.get_logger().error(str(e))
-            return {'status': False, 'errors': str(e)}
-        self.get_logger().debug("output : " + str(response))
+        except Exception:
+            logger.exception("Error during start")
+            return {'status': False, 'errors': "Error during start"}
+        logger.debug("output : " + str(response))
         return {'status': True}
 
     def stop(self):
@@ -191,9 +191,9 @@ class Probe(CommonMixin, models.Model):
         tasks = {"stop": command}
         try:
             response = execute(self.server, tasks, become=True)
-        except Exception as e:
-            self.get_logger().error(str(e))
-            return {'status': False, 'errors': str(e)}
+        except Exception:
+            logger.exception("Error during stop")
+            return {'status': False, 'errors': "Error during stop"}
         self.get_logger().debug("output : " + str(response))
         return {'status': True}
 
@@ -205,10 +205,10 @@ class Probe(CommonMixin, models.Model):
         tasks = {"status": command}
         try:
             response = execute(self.server, tasks, become=True)
-        except Exception as e:
-            self.get_logger().error('Failed to get status : ' + str(e))
-            return 'Failed to get status : ' + str(e)
-        self.get_logger().debug("output : " + str(response))
+        except Exception:
+            logger.exception('Failed to get status')
+            return 'Failed to get status'
+        logger.debug("output : " + str(response))
         return response['status']
 
     def reload(self):
@@ -219,10 +219,10 @@ class Probe(CommonMixin, models.Model):
         tasks = {"reload": command}
         try:
             response = execute(self.server, tasks, become=True)
-        except Exception as e:
-            self.get_logger().error(str(e))
-            return {'status': False, 'errors': str(e)}
-        self.get_logger().debug("output : " + str(response))
+        except Exception:
+            logger.exception("Error during reload")
+            return {'status': False, 'errors': "Error during reload"}
+        logger.debug("output : " + str(response))
         return {'status': True}
 
     def install(self):
@@ -234,10 +234,10 @@ class Probe(CommonMixin, models.Model):
         tasks = {"update": command1, "install": command2}
         try:
             response = execute(self.server, tasks, become=True)
-        except Exception as e:
-            self.get_logger().error(str(e))
-            return {'status': False, 'errors': str(e)}
-        self.get_logger().debug("output : " + str(response))
+        except Exception:
+            logger.exception("Error during install")
+            return {'status': False, 'errors': "Error during install"}
+        logger.debug("output : " + str(response))
         return {'status': True}
 
     def update(self):
@@ -248,7 +248,7 @@ class Probe(CommonMixin, models.Model):
         try:
             probe = cls.objects.get(name=name)
         except cls.DoesNotExist as e:
-            cls.get_logger().debug('Tries to access an object that does not exist : ' + str(e))
+            logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
         return probe
 
