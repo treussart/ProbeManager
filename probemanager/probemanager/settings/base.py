@@ -207,3 +207,7 @@ LOGGING = {
     },
 
 }
+
+SWAGGER_SETTINGS = {
+    "VALIDATOR_URL": False,
+}
