@@ -27,8 +27,8 @@ script:
 - coverage report -i --skip-covered
 before_install:
 - openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv
-  -in matthieu@treussart.com_rsa.enc -out probemanager/ssh_keys/matthieu@treussart.com_rsa
+  -in test-core-secret-server.json.enc -out probemanager/core/fixtures/test-core-secret-server.json
   -d
 - openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv
-  -in test-core-secret-server.json.enc -out probemanager/core/fixtures/test-core-secret-server.json
+  -in matthieu@treussart.com_rsa.enc -out probemanager/ssh_keys/matthieu@treussart.com_rsa
   -d
