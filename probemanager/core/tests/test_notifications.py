@@ -7,7 +7,7 @@ from core.notifications import send_notification
 
 
 class NotificationsTest(TestCase):
-    fixtures = ['init']
+    fixtures = ['init', 'test-core-secrets']
 
     @classmethod
     def setUpTestData(cls):

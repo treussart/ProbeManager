@@ -82,7 +82,7 @@ def run():
                                ssh_private_key_file=ssh_private_key_file_basename,
                                pushbullet_key=pushbullet_key
                                )
-        with open(settings.BASE_DIR + '/core/fixtures/test-core-secret-server.json', 'w') as f:
+        with open(settings.BASE_DIR + '/core/fixtures/test-core-secrets.json', 'w') as f:
             f.write(server_test)
         f.close()
         sys.exit(0)
