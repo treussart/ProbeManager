@@ -1,35 +1,34 @@
 notifications:
   email:
     recipients:
-      - matleses0@gmail.com
-    on_success: change # default: change
-    on_failure: always # default: always
-
+    - matleses0@gmail.com
+    on_success: change
+    on_failure: always
 language: python
-
 python:
-  - "3.5"
-
+- '3.5'
 env:
-  - DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
-
+- DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
 os:
-  - linux
-
+- linux
 sudo: required
-
 branches:
   only:
-    - master
-
+  - master
 services:
-  - postgresql
-
+- postgresql
 install:
-  - ./travis.sh
-
+- "./travis.sh"
 script:
-  - flake8 probemanager/ --config=.flake8
-  - coverage erase
-  - coverage run --source=probemanager/core,probemanager/rules probemanager/runtests.py --app core rules
-  - coverage report -i --skip-covered
+- flake8 probemanager/ --config=.flake8
+- coverage erase
+- coverage run --source=probemanager/core,probemanager/rules probemanager/runtests.py
+  --app core rules
+- coverage report -i --skip-covered
+before_install:
+- openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv
+  -in matthieu@treussart.com_rsa.enc -out probemanager/ssh_keys/matthieu@treussart.com_rsa
+  -d
+- openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv
+  -in test-core-secret-server.json.enc -out probemanager/core/fixtures/test-core-secret-server.json
+  -d
