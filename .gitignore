@@ -172,3 +172,4 @@ probemanager/static/
 /probemanager/core/version.txt
 /probemanager/core/migrations/0*
 /probemanager/core/fixtures/test-core-secrets.json
+/probemanager/core/fixtures/test-core-email.ini
