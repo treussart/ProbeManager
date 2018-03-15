@@ -1,11 +1,32 @@
 """ venv/bin/python probemanager/manage.py test core.tests.test_models --settings=probemanager.settings.dev """
 from django.db.utils import IntegrityError
 from django.test import TestCase
-
-from core.models import OsSupported, Probe, ProbeConfiguration, SshKey
+from django.utils import timezone
+from datetime import timedelta, datetime
+from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job
 
 
 # from unittest import skip
+class JobTest(TestCase):
+    fixtures = ['init']
+
+    @classmethod
+    def setUpTestData(cls):
+        now = datetime(year=2017, month=5, day=5, hour=12).astimezone(timezone.get_current_timezone())
+        before = now - timedelta(minutes=30)
+        cls.job1 = Job.objects.create(name="test", probe="test", status='Error', result="",
+                                      created=before, completed=now)
+        cls.job2 = Job.create_job('test2', 'probe1')
+
+    def test_job(self):
+        self.assertEqual(str(self.job1), 'test')
+        self.assertEqual(str(self.job1.get_duration()), '-1 day, 23:30:00')
+        self.assertEqual(str(self.job2), 'test2')
+        self.assertEqual(self.job2.status, 'In progress')
+        self.job2.update_job('test model', 'Completed')
+        self.assertEqual(self.job2.status, 'Completed')
+        jobs = Job.get_all()
+        self.assertTrue(jobs[0].created > jobs[1].created)
 
 
 class OsSupportedTest(TestCase):
