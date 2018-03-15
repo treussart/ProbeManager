@@ -27,6 +27,9 @@ script:
 - coverage report -i --skip-covered
 before_install:
 - openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv
+  -in test-core-secrets.ini.enc -out probemanager/core/fixtures/test-core-secrets.ini
+  -d
+- openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv
   -in test-core-secrets.json.enc -out probemanager/core/fixtures/test-core-secrets.json
   -d
 - openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv

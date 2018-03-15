@@ -1,4 +1,7 @@
 """ venv/bin/python probemanager/manage.py test core.tests.test_notifications --settings=probemanager.settings.dev """
+import configparser
+import os
+
 from django.test import TestCase
 from django.conf import settings
 from pushbullet.errors import InvalidKeyError
@@ -12,6 +15,8 @@ class NotificationsTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        config = configparser.ConfigParser()
+        config.read(os.path.join(settings.BASE_DIR, 'core/fixtures/test-core-secrets.ini'))
         settings.configure(DEBUG=True)
 
     def test_push_empty(self):
