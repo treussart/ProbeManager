@@ -157,7 +157,6 @@ migrations/*
 probemanager/bro/migrations/0*
 core/migrations/0*
 probemanager/rules/migrations/0*
-probemanager/suricata/migrations/0*
 probemanager/Probe_Manager.egg-info
 probemanager/build
 probemanager/static/
@@ -171,3 +170,5 @@ probemanager/static/
 .coveralls.yml
 /core/fixtures/init-test.json
 /probemanager/core/version.txt
+/probemanager/core/fixtures/test-core-secret-server.json
+/probemanager/core/migrations/0*

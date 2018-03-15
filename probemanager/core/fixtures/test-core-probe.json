@@ -1,6 +1,6 @@
 [
   {
-    "model": "home.probe",
+    "model": "core.probe",
     "pk": 1,
     "fields": {
       "name": "probe1",

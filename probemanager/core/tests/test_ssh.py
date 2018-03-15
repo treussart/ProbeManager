@@ -1,4 +1,4 @@
-""" python probemanager/manage.py test home.tests.test_ssh """
+""" venv/bin/python probemanager/manage.py test core.tests.test_ssh --settings=probemanager.settings.dev """
 from django.test import TestCase
 
 

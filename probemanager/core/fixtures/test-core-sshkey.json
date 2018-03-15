@@ -1,6 +1,6 @@
 [
   {
-    "model": "home.sshkey",
+    "model": "core.sshkey",
     "pk": 1,
     "fields": {
       "name": "test",

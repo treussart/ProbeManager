@@ -1,4 +1,4 @@
-""" python manage.py test home.tests.test_models --settings=probemanager.settings.dev """
+""" venv/bin/python probemanager/manage.py test core.tests.test_models --settings=probemanager.settings.dev """
 from django.db.utils import IntegrityError
 from django.test import TestCase
 

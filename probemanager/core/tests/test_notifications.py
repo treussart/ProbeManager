@@ -1,4 +1,4 @@
-""" python probemanager/manage.py test home.tests.test_notifications """
+""" venv/bin/python probemanager/manage.py test core.tests.test_notifications --settings=probemanager.settings.dev """
 from django.test import TestCase
 from pushbullet.errors import InvalidKeyError
 
@@ -16,11 +16,11 @@ class NotificationsTest(TestCase):
     def test_push_empty(self):
         send_notification("test", "test")
 
-    # def test_push_ok(self):
-    #     api = Configuration.objects.get(key="PUSHBULLET_API_KEY")
-    #     api.value = "Put your API key here"
-    #     api.save()
-    #     send_notification("test", "test")
+    def test_push_ok(self):
+        api = Configuration.objects.get(key="PUSHBULLET_API_KEY")
+        api.value = "Put your API key here"
+        api.save()
+        send_notification("test", "test")
 
     def test_push_fail(self):
         api = Configuration.objects.get(key="PUSHBULLET_API_KEY")

@@ -1,4 +1,4 @@
-""" python manage.py test home.tests.test_views --settings=probemanager.settings.dev """
+""" venv/bin/python probemanager/manage.py test core.tests.test_views --settings=probemanager.settings.dev """
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 

@@ -1,4 +1,4 @@
-""" venv/bin/python probemanager/manage.py test home.tests.test_utils """
+""" venv/bin/python probemanager/manage.py test core.tests.test_utils --settings=probemanager.settings.dev """
 from django.test import TestCase
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 

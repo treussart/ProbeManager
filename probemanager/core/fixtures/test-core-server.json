@@ -1,13 +1,13 @@
 [
   {
-    "model": "home.ossupported",
+    "model": "core.ossupported",
     "pk": 1,
     "fields": {
       "name": "debian"
     }
   },
   {
-    "model": "home.sshkey",
+    "model": "core.sshkey",
     "pk": 1,
     "fields": {
       "name": "matthieu",
@@ -15,7 +15,7 @@
     }
   },
   {
-    "model": "home.server",
+    "model": "core.server",
     "pk": 1,
     "fields": {
       "host": "localhost",
