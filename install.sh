@@ -129,7 +129,7 @@ chooseApps(){
     echo "PROD_APPS = ["$text"]" >> "$destfull"conf.ini
 }
 
-setGit(){
+set_git(){
     echo '## Set Git ##'
     git_bin=$( which git )
     if [ $arg == 'prod' ]; then
@@ -409,7 +409,7 @@ if [ $arg == 'prod' ]; then
         set_host
         set_timezone
         set_log
-        setGit
+        set_git
         generate_keys
         set_smtp
         chooseApps
@@ -446,7 +446,7 @@ else
     installOsDependencies
     installVirtualEnv
     set_settings
-    setGit
+    set_git
     set_smtp
     install_modules
     generate_version

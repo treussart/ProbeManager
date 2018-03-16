@@ -43,7 +43,7 @@ def decrypt(cipher_text):
         return fernet_key.decrypt(bytes(cipher_text, 'utf-8'))
 
 
-if os.path.isfile(ROOT_DIR + '/password_db.txt'):
+if os.path.isfile(os.path.join(ROOT_DIR, 'password_db.txt')):
     with open(os.path.join(ROOT_DIR, 'password_db.txt'), encoding='utf_8') as f:
         PASSWORD_DB = decrypt(bytes(f.read().strip(), 'utf-8'))
 else:
@@ -83,7 +83,7 @@ EMAIL_PORT = int(config['EMAIL']['EMAIL_PORT'])
 EMAIL_HOST_USER = config['EMAIL']['EMAIL_HOST_USER']
 DEFAULT_FROM_EMAIL = config['EMAIL']['DEFAULT_FROM_EMAIL']
 EMAIL_USE_TLS = config.getboolean('EMAIL', 'EMAIL_USE_TLS')
-if os.path.isfile(ROOT_DIR + '/password_email.txt'):
+if os.path.isfile(os.path.join(ROOT_DIR, 'password_email.txt')):
     with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
         EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
 else:
