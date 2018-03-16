@@ -352,14 +352,14 @@ apache_conf(){
 update_repo(){
     echo '## Update Git repository ##'
     branch=$( git branch | grep \* | cut -d ' ' -f2 )
-    if [ $branch == 'develop' ]; then
-        git pull origin $branch
-        git submodule foreach --recursive git checkout $branch
-        git submodule foreach --recursive git pull origin $branch
-    else
+#    if [ $branch == 'develop' ]; then
+#        git pull origin $branch
+#        git submodule foreach --recursive git checkout $branch
+#        git submodule foreach --recursive git pull origin $branch
+#    else
         git pull origin $branch
         git submodule update --remote
-    fi
+    #fi
 }
 
 launch_celery(){
