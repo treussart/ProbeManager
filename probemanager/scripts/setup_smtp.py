@@ -8,7 +8,6 @@ template_smtp = """
 EMAIL_HOST = {{ host }}
 EMAIL_PORT = {{ port }}
 EMAIL_HOST_USER = {{ host_user }}
-EMAIL_HOST_PASSWORD = {{ password }}
 DEFAULT_FROM_EMAIL = {{ default_from_email }}
 EMAIL_USE_TLS = {{ use_tls }}
 """
@@ -28,10 +27,11 @@ def run(*args):
                      port=port,
                      host_user=host_user,
                      default_from_email=default_from_email,
-                     use_tls=str(use_tls),
-                     password=encrypt(host_password).decode('utf-8')
+                     use_tls=str(use_tls)
                      )
 
     with open(args[0] + 'conf.ini', 'a', encoding='utf_8') as f:
         f.write(final)
+    with open(args[0] + 'password_email.txt', 'w', encoding='utf_8') as f:
+        f.write(encrypt(host_password).decode('utf-8'))
     sys.exit(0)
