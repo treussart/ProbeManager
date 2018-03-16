@@ -4,7 +4,7 @@ import os
 
 from django.test import TestCase
 from django.conf import settings
-from pushbullet.errors import InvalidKeyError
+from django.contrib.auth.models import User
 
 from core.models import Configuration
 from core.notifications import send_notification
@@ -23,19 +23,15 @@ class NotificationsTest(TestCase):
         settings.DEFAULT_FROM_EMAIL=config['EMAIL']['DEFAULT_FROM_EMAIL']
         settings.EMAIL_USE_TLS=config.getboolean('EMAIL', 'EMAIL_USE_TLS')
         settings.EMAIL_HOST_PASSWORD=config['EMAIL']['EMAIL_HOST_PASSWORD']
+        User.objects.create_superuser(username='usertest', password='12345', email='matthieu@treussart.com')
 
-    def test_push_empty(self):
-        send_notification("test", "test")
-
-    def test_push_ok(self):
-        send_notification("test", "test")
+    def test_notifications(self):
+        with self.assertLogs('core.notifications', level='DEBUG'):
+            send_notification("test", "test")
 
     def test_push_fail(self):
         api = Configuration.objects.get(key="PUSHBULLET_API_KEY")
         api.value = "o.nkN6cvwybstW58"
         api.save()
-        with self.assertRaises(InvalidKeyError):
+        with self.assertLogs('core.notifications', level='ERROR'):
             send_notification("test", "test")
-
-    def test_email(self):
-        pass
