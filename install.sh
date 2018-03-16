@@ -410,11 +410,11 @@ if [ $arg == 'prod' ]; then
         set_timezone
         set_log
         setGit
+        generate_keys
         set_smtp
         chooseApps
         set_settings
         install_modules
-        generate_keys
         create_db
         generate_version
         create_superuser
