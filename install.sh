@@ -408,11 +408,11 @@ if [ $arg == 'prod' ]; then
         installVirtualEnv
         set_host
         set_timezone
+        set_log
+        setGit
         set_smtp
         chooseApps
         set_settings
-        set_log
-        setGit
         install_modules
         generate_keys
         create_db
