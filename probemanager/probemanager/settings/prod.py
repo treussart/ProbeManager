@@ -34,6 +34,7 @@ if os.path.isfile(os.path.join(BASE_DIR, 'version.txt')):
 else:
     VERSION = ""
 
+
 def decrypt(cipher_text):
     fernet_key = Fernet(FERNET_KEY)
     if isinstance(cipher_text, bytes):
@@ -73,3 +74,11 @@ LOGGING['handlers']['file'].update({'filename': config['LOG']['FILE_PATH']})
 LOGGING['handlers']['file-error'].update({'filename': config['LOG']['FILE_ERROR_PATH']})
 
 TIME_ZONE = config['DEFAULT']['TIME_ZONE']
+
+EMAIL_HOST = config['EMAIL']['EMAIL_HOST']
+EMAIL_PORT = int(config['EMAIL']['EMAIL_PORT'])
+EMAIL_HOST_USER = config['EMAIL']['EMAIL_HOST_USER']
+DEFAULT_FROM_EMAIL = config['EMAIL']['DEFAULT_FROM_EMAIL']
+EMAIL_USE_TLS = config.getboolean('EMAIL', 'EMAIL_USE_TLS')
+with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
+    EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
