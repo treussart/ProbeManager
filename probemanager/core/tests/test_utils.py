@@ -3,7 +3,7 @@ from django.test import TestCase
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
 from core.models import Probe
-from core.utils import create_upload_task, create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, \
+from core.utils import create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, \
     add_1_hour
 from rules.models import Source
 
@@ -14,12 +14,6 @@ class TasksRulesTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test = 'test'
-
-    def test_create_upload_task(self):
-        create_upload_task(Source.get_by_id(1))
-        periodic_task = PeriodicTask.objects.get(name='https://sslbl.abuse.ch/blacklist/sslblacklist.rules_upload_task')
-        self.assertEqual(periodic_task.task, 'core.tasks.upload_url_http')
-        self.assertEqual(periodic_task.args, str([Source.get_by_id(1).uri, ]).replace("'", '"'))
 
     def test_create_reload_task(self):
         create_reload_task(Probe.get_by_id(1))

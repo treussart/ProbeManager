@@ -13,14 +13,6 @@ fernet_key = Fernet(settings.FERNET_KEY)
 logger = logging.getLogger(__name__)
 
 
-def create_upload_task(source):
-    PeriodicTask.objects.create(crontab=source.scheduled_rules_deployment_crontab,
-                                name=str(source.uri) + "_upload_task",
-                                task='core.tasks.upload_url_http',
-                                args=json.dumps([source.uri, ])
-                                )
-
-
 def create_reload_task(probe):
     try:
         PeriodicTask.objects.get(name=probe.name + "_reload_task")
