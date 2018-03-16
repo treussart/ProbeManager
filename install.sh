@@ -414,6 +414,7 @@ if [ $arg == 'prod' ]; then
         installVirtualEnv
         set_host
         set_timezone
+        set_smtp
         chooseApps
         set_settings
         set_log
@@ -422,7 +423,6 @@ if [ $arg == 'prod' ]; then
         generate_keys
         create_db
         generate_version
-        set_smtp
         create_superuser
         collect_static
         check_deployement
@@ -453,6 +453,7 @@ else
     installVirtualEnv
     set_settings
     setGit
+    set_smtp
     install_modules
     generate_version
     create_db
