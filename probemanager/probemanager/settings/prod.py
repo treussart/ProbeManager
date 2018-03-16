@@ -80,5 +80,4 @@ EMAIL_PORT = int(config['EMAIL']['EMAIL_PORT'])
 EMAIL_HOST_USER = config['EMAIL']['EMAIL_HOST_USER']
 DEFAULT_FROM_EMAIL = config['EMAIL']['DEFAULT_FROM_EMAIL']
 EMAIL_USE_TLS = config.getboolean('EMAIL', 'EMAIL_USE_TLS')
-with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
-    EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
+EMAIL_HOST_PASSWORD = decrypt(config['EMAIL']['EMAIL_HOST_PASSWORD'])
