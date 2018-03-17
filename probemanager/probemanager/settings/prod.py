@@ -86,5 +86,7 @@ EMAIL_USE_TLS = config.getboolean('EMAIL', 'EMAIL_USE_TLS')
 if os.path.isfile(os.path.join(ROOT_DIR, 'password_email.txt')):
     with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
         EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
+elif config.has_option('EMAIL','EMAIL_HOST_PASSWORD'):
+    EMAIL_HOST_PASSWORD = config['EMAIL']['EMAIL_HOST_PASSWORD']
 else:
     EMAIL_HOST_PASSWORD = ""

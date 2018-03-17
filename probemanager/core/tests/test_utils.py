@@ -41,6 +41,7 @@ class TasksRulesTest(TestCase):
     def test_encrypt_decrypt(self):
         test = encrypt(self.test)
         self.assertEqual(decrypt(test), self.test)
+        self.assertTrue(isinstance(decrypt(test), str))
 
     def test_add_10_min(self):
         self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='*',
