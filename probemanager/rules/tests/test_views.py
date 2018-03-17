@@ -1,15 +1,12 @@
-""" python manage.py test rules.tests.test_views """
+""" venv/bin/python probemanager/manage.py test rules.tests.test_views --settings=probemanager.settings.dev """
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from django.test import Client, TestCase
 from django.utils import timezone
 
 
-# from unittest import skip
-
-
 class ViewsRulesTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-suricata-signature', 'test-suricata-script']
+    fixtures = ['init', 'test-suricata-signature', 'test-suricata-script']
 
     def setUp(self):
         self.client = Client()
@@ -17,10 +14,6 @@ class ViewsRulesTest(TestCase):
         if not self.client.login(username='testuser', password='12345'):
             self.assertRaises(Exception("Not logged"))
         self.date_now = timezone.now()
-
-    def tearDown(self):
-        pass
-        # self.client.logout()
 
     def test_search(self):
         """
