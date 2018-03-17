@@ -10,7 +10,7 @@
       "scheduled_rules_deployment_crontab": 1,
       "scheduled_deploy": true,
       "file": "",
-      "type": ""
+      "type": "SourceSuricata"
     }
   },
   {
@@ -24,7 +24,7 @@
       "scheduled_rules_deployment_crontab": 1,
       "scheduled_deploy": true,
       "file": "",
-      "type": ""
+      "type": "SourceSuricata"
     }
   }
 ]
