@@ -4,7 +4,7 @@ from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
 from core.models import Probe
 from core.utils import create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, \
-    add_1_hour
+    add_1_hour, create_check_task
 from rules.models import Source
 
 
@@ -14,6 +14,12 @@ class TasksRulesTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test = 'test'
+
+    def test_create_check_task(self):
+        create_check_task(Probe.get_by_id(1))
+        periodic_task = PeriodicTask.objects.get(name=Probe.get_by_id(1).name + '_check_task')
+        self.assertEqual(periodic_task.task, 'core.tasks.check_probe')
+        self.assertEqual(periodic_task.args, str([Probe.get_by_id(1).name, ]).replace("'", '"'))
 
     def test_create_reload_task(self):
         create_reload_task(Probe.get_by_id(1))
