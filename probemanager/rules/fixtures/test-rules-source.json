@@ -12,5 +12,19 @@
       "file": "",
       "type": ""
     }
+  },
+  {
+    "model": "rules.source",
+    "pk": 2,
+    "fields": {
+      "method": 0,
+      "data_type": 0,
+      "uri": "https://rules.emergingthreats.net/open/suricata-3.3.1/emerging.rules.tar.gz",
+      "scheduled_rules_deployment_enabled": true,
+      "scheduled_rules_deployment_crontab": 1,
+      "scheduled_deploy": true,
+      "file": "",
+      "type": ""
+    }
   }
 ]

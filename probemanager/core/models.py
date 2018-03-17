@@ -150,7 +150,7 @@ class Probe(CommonMixin, models.Model):
         try:
             response = execute(self.server, tasks)
         except Exception as e:
-            logger.error(str(e))
+            logger.exception("Error during the uptime")
             return 'Failed to get the uptime on the host : ' + str(e)
         logger.debug("output : " + str(response))
         return response['uptime']
