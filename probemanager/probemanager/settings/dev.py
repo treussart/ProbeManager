@@ -53,3 +53,5 @@ for app in DEV_APPS:
 
 LOGGING['handlers']['file'].update({'filename': os.path.join(BASE_DIR, 'probemanager.log')})
 LOGGING['handlers']['file-error'].update({'filename': os.path.join(BASE_DIR, 'probemanager-error.log')})
+
+TEMPLATES[0]['OPTIONS']['debug'] = True
