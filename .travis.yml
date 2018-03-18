@@ -17,6 +17,7 @@ branches:
   - master
 services:
 - postgresql
+- rabbitmq
 install:
 - "./install.sh travis"
 script:
