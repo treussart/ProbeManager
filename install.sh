@@ -207,7 +207,7 @@ set_timezone(){
 set_smtp(){
     if [ $arg == 'prod' ]; then
         echo '## Set SMTP settings ##'
-        "$destfull"venv/bin/python probemanager/scripts/setup_smtp -d $destfull
+        "$destfull"venv/bin/python probemanager/scripts/setup_smtp.py -d $destfull
     fi
 }
 
