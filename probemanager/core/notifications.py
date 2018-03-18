@@ -55,6 +55,8 @@ def send_notification(title, body, html=False):
                         logger.exception("Error in sending email")
         except SMTPException:
             logger.exception("Error in sending email")
+        except ConnectionRefusedError:
+            logger.exception("Error in sending email")
 
 
 @receiver(post_save, sender=User)

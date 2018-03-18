@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 HELP="
-First argument : dev or prod
+First argument : dev, prod or travis
 Second argument : path to the install destination (Only with prod argument)
 dev : For local devlopement.
+travis : For test platform.
 prod : For use in production.
 Example :
 ./install.sh dev
@@ -13,6 +14,8 @@ Example :
 # Get args
 if [ -z $1 ] || [ $1 == 'dev' ]; then
     arg="dev"
+    dest=""
+elif [ $1 == 'travis' ]; then
     dest=""
 elif [ $1 == 'prod' ]; then
     arg=$1
@@ -439,7 +442,7 @@ if [ $arg == 'prod' ]; then
         post_install
         launch_celery
     fi
-else
+elif [ $arg == 'dev' ]; then
     echo 'Install for Development'
 
     clean
@@ -447,13 +450,23 @@ else
     installVirtualEnv
     set_settings
     set_git
-    set_smtp
     install_modules
     generate_version
     create_db
     create_superuser
     generate_doc
     setup_tests
+
+elif [ $arg == 'travis' ]; then
+    clean
+    installOsDependencies
+    installVirtualEnv
+    set_settings
+    set_git
+    install_modules
+    generate_version
+    create_db
+    generate_doc
 fi
 
 exit

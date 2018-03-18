@@ -18,7 +18,7 @@ branches:
 services:
 - postgresql
 install:
-- "./install.sh"
+- "./install.sh travis"
 script:
 - "./test.sh"
 before_install:
