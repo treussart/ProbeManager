@@ -11,7 +11,8 @@ from django.conf import settings
 
 
 def get_infos():
-    filename = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)) + '/probemanager/probemanager/__init__.py'
+    filename = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)) + \
+               '/probemanager/probemanager/__init__.py'
     with open(filename) as fh:
         metadata = dict(re.findall("__([a-z]+)__ = '([^']+)'", fh.read()))
     return metadata
