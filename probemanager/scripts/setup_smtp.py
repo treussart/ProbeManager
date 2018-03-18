@@ -1,8 +1,9 @@
-from jinja2 import Template
-from getpass import getpass
+import argparse
 import sys
-from cryptography.fernet import Fernet
+from getpass import getpass
 
+from cryptography.fernet import Fernet
+from jinja2 import Template
 
 template_smtp = """
 ['EMAIL']
@@ -21,7 +22,10 @@ def encrypt(plain_text, dest):
     return fernet_key.encrypt(plain_text.encode('utf-8'))
 
 
-def run(*args):
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--dest", help="", default='/etc/')
+    args = parser.parse_args()
     print("Server SMTP :")
     host = input('host : ')
     port = input('port : ')
@@ -38,8 +42,8 @@ def run(*args):
                      use_tls=str(use_tls)
                      )
 
-    with open(args[0] + 'conf.ini', 'a', encoding='utf_8') as f:
+    with open(args.dest + 'conf.ini', 'a', encoding='utf_8') as f:
         f.write(final)
-    with open(args[0] + 'password_email.txt', 'w', encoding='utf_8') as f:
-        f.write(encrypt(host_password, args[0]).decode('utf-8'))
+    with open(args.dest + 'password_email.txt', 'w', encoding='utf_8') as f:
+        f.write(encrypt(host_password, args.dest).decode('utf-8'))
     sys.exit(0)
