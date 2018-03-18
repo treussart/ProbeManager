@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from lxml import html as html_lxml
 from pushbullet import Pushbullet
-from pushbullet.errors import InvalidKeyError
+from pushbullet.errors import InvalidKeyError, PushError
 
 from .models import Configuration
 
@@ -30,6 +30,8 @@ def send_notification(title, body, html=False):
             logger.debug(push)
         except InvalidKeyError:
             logger.exception('Wrong PUSHBULLET_API_KEY')
+        except PushError:
+            logger.exception('Pushbullet pro required - too many notifications generated')
     # Splunk
     if Configuration.get_value("SPLUNK_HOST"):
         if Configuration.get_value("SPLUNK_USER") and Configuration.get_value("SPLUNK_PASSWORD"):

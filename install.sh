@@ -458,7 +458,7 @@ elif [ $arg == 'dev' ]; then
     setup_tests
 
 elif [ $arg == 'travis' ]; then
-    clean
+
     installOsDependencies
     installVirtualEnv
     set_settings
@@ -467,6 +467,7 @@ elif [ $arg == 'travis' ]; then
     generate_version
     create_db
     generate_doc
+
 fi
 
 exit
