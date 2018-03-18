@@ -23,6 +23,7 @@ install:
 script:
 - "./test.sh"
 before_install:
+- mkdir probemanager/ssh_keys
 - openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv
   -in .coveralls.yml.enc -out .coveralls.yml -d
 - openssl aes-256-cbc -K $encrypted_0112b2c0954f_key -iv $encrypted_0112b2c0954f_iv
