@@ -19,19 +19,19 @@ class SshCoreTest(TestCase):
         client = connection(server)
         stdin, stdout, stderr = client.exec_command("hostname")
         self.assertEqual(stdout.channel.recv_exit_status(), 0)
-        self.assertEqual(stdout.read().decode('utf-8'), 'server\n')
+        self.assertEqual(stdout.read().decode('utf-8'), 'test-travis\n')
         self.assertEqual(stderr.readlines(), [])
         client.close()
 
     def test_execute(self):
         server = Server.get_by_id(1)
         result = execute(server, {'test_hostame': "hostname"}, become=False)
-        self.assertEqual(result, {'test_hostame': 'server'})
+        self.assertEqual(result, {'test_hostame': 'test-travis'})
 
     def test_execute_become(self):
         server = Server.get_by_id(1)
         result = execute(server, {'test_hostame': "hostname"}, become=True)
-        self.assertEqual(result, {'test_hostame': 'server'})
+        self.assertEqual(result, {'test_hostame': 'test-travis'})
 
     def test_execute_copy_put(self):
         server = Server.get_by_id(1)
