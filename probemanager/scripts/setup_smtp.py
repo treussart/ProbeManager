@@ -6,7 +6,7 @@ from cryptography.fernet import Fernet
 from jinja2 import Template
 
 template_smtp = """
-['EMAIL']
+[EMAIL]
 EMAIL_HOST = {{ host }}
 EMAIL_PORT = {{ port }}
 EMAIL_HOST_USER = {{ host_user }}
