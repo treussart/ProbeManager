@@ -1,0 +1,10 @@
+[
+  {
+    "model": "core.sshkey",
+    "pk": 1,
+    "fields": {
+      "name": "test",
+      "file": "ssh_keys/test.com_rsa"
+    }
+  }
+]

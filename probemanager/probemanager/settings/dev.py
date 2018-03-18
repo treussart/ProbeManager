@@ -1,5 +1,5 @@
 from probemanager.settings.base import *  # noqa
-from home.git import git_tag
+from core.git import git_tag
 import configparser
 import os
 import importlib
@@ -53,3 +53,5 @@ for app in DEV_APPS:
 
 LOGGING['handlers']['file'].update({'filename': os.path.join(BASE_DIR, 'probemanager.log')})
 LOGGING['handlers']['file-error'].update({'filename': os.path.join(BASE_DIR, 'probemanager-error.log')})
+
+TEMPLATES[0]['OPTIONS']['debug'] = True

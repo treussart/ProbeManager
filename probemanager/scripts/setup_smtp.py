@@ -1,23 +1,31 @@
-from home.utils import encrypt
-from jinja2 import Template
-from getpass import getpass
+import argparse
 import sys
+from getpass import getpass
+
+from cryptography.fernet import Fernet
+from jinja2 import Template
 
 template_smtp = """
-
-#SMTP
-EMAIL_HOST = '{{ host }}'
+[EMAIL]
+EMAIL_HOST = {{ host }}
 EMAIL_PORT = {{ port }}
-EMAIL_HOST_USER = '{{ host_user }}'
-DEFAULT_FROM_EMAI = '{{ default_from_email }}'
+EMAIL_HOST_USER = {{ host_user }}
+DEFAULT_FROM_EMAIL = {{ default_from_email }}
 EMAIL_USE_TLS = {{ use_tls }}
-with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
-    EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
-
 """
 
 
-def run(*args):
+def encrypt(plain_text, dest):
+    with open(dest + 'fernet_key.txt') as f:
+        fernet_key_bytes = bytes(f.read().strip(), 'utf-8')
+    fernet_key = Fernet(fernet_key_bytes)
+    return fernet_key.encrypt(plain_text.encode('utf-8'))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--dest", help="", default='/etc/')
+    args = parser.parse_args()
     print("Server SMTP :")
     host = input('host : ')
     port = input('port : ')
@@ -34,8 +42,8 @@ def run(*args):
                      use_tls=str(use_tls)
                      )
 
-    with open(args[0] + 'probemanager/probemanager/settings/prod.py', 'a', encoding='utf_8') as f:
+    with open(args.dest + 'conf.ini', 'a', encoding='utf_8') as f:
         f.write(final)
-    with open(args[0] + 'password_email.txt', 'w', encoding='utf_8') as f:
-        f.write(encrypt(host_password).decode('utf-8'))
+    with open(args.dest + 'password_email.txt', 'w', encoding='utf_8') as f:
+        f.write(encrypt(host_password, args.dest).decode('utf-8'))
     sys.exit(0)

@@ -1,5 +1,5 @@
 from jinja2 import Template
-from home.utils import encrypt
+from core.utils import encrypt
 import os
 import sys
 from getpass import getpass
@@ -10,7 +10,15 @@ from django.conf import settings
 template_server_test = """
 [
 {
-    "model": "home.sshkey",
+    "model": "core.configuration",
+    "pk": 1,
+    "fields": {
+        "key": "PUSHBULLET_API_KEY",
+        "value": "{{ pushbullet_key }}"
+    }
+},
+{
+    "model": "core.sshkey",
     "pk": 1,
     "fields": {
         "name": "test",
@@ -18,7 +26,7 @@ template_server_test = """
     }
 },
 {
-    "model": "home.server",
+    "model": "core.server",
     "pk": 1,
     "fields": {
         "host": "{{ host }}",
@@ -27,7 +35,7 @@ template_server_test = """
         "remote_port": {{ remote_port }},
         "become": {{ become }},
         "become_method": "{{ become_method }}",
-        "become_user": "{{ remote_user }}",
+        "become_user": "{{ become_user }}",
         "become_pass": "{{ become_pass }}",
         "ssh_private_key_file": 1
     }
@@ -41,10 +49,13 @@ def run():
     if skip.lower() == 'n' or not skip:
         sys.exit(0)
     else:
+        print("Conf for tests")
+        pushbullet_key = input("PushBullet API key : ")
         print("Server for tests")
         host = input('host : ')
         become = input('become : (true/false) ')
         become_method = input('become_method : ')
+        become_user = input('become_user : ')
         become_pass = getpass('become_pass : ')
         remote_user = input('remote_user : ')
         remote_port = input('remote_port : (0-65535) ')
@@ -63,13 +74,15 @@ def run():
         t = Template(template_server_test)
         server_test = t.render(host=host,
                                become=become,
+                               become_user=become_user,
                                become_method=become_method,
                                become_pass=encrypt(become_pass).decode('utf-8'),
                                remote_user=remote_user,
                                remote_port=remote_port,
-                               ssh_private_key_file=ssh_private_key_file_basename
+                               ssh_private_key_file=ssh_private_key_file_basename,
+                               pushbullet_key=pushbullet_key
                                )
-        with open(settings.BASE_DIR + '/home/fixtures/test-home-server.json', 'w') as f:
+        with open(settings.BASE_DIR + '/core/fixtures/test-core-secrets.json', 'w') as f:
             f.write(server_test)
         f.close()
         sys.exit(0)

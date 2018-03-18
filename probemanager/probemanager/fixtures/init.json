@@ -1,13 +1,13 @@
 [
 {
-    "model": "home.ossupported",
+    "model": "core.ossupported",
     "pk": 1,
     "fields": {
         "name": "debian"
     }
 },
 {
-    "model": "home.configuration",
+    "model": "core.configuration",
     "pk": 1,
     "fields": {
         "key": "PUSHBULLET_API_KEY",
@@ -15,7 +15,7 @@
     }
 },
 {
-    "model": "home.configuration",
+    "model": "core.configuration",
     "pk": 2,
     "fields": {
         "key": "SPLUNK_HOST",
@@ -23,7 +23,7 @@
     }
 },
 {
-    "model": "home.configuration",
+    "model": "core.configuration",
     "pk": 3,
     "fields": {
         "key": "SPLUNK_USER",
@@ -31,7 +31,7 @@
     }
 },
 {
-    "model": "home.configuration",
+    "model": "core.configuration",
     "pk": 4,
     "fields": {
         "key": "SPLUNK_PASSWORD",

@@ -4,10 +4,13 @@ from django.db import models
 from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
 
+from core.modelsmixins import CommonMixin
+
+
 logger = logging.getLogger(__name__)
 
 
-class ClassType(models.Model):
+class ClassType(CommonMixin, models.Model):
     """
     Set of Classification for a signature.
     The classtype keyword gives information about the classification of rules and alerts.
@@ -20,19 +23,6 @@ class ClassType(models.Model):
         return self.name
 
     @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
-
-    @classmethod
     def get_by_name(cls, name):
         try:
             object = cls.objects.get(name=name)
@@ -42,7 +32,7 @@ class ClassType(models.Model):
         return object
 
 
-class Rule(models.Model):
+class Rule(CommonMixin, models.Model):
     """
     Represent a rule, who can be a script or a signature.
     """
@@ -55,25 +45,12 @@ class Rule(models.Model):
     updated_date = models.DateTimeField(default=timezone.now, editable=False)
 
     @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
-
-    @classmethod
     def find(cls, pattern):
         """Search the pattern in all the scripts and signatures"""
         return cls.objects.filter(rule_full__contains=pattern)
 
 
-class DataTypeUpload(models.Model):
+class DataTypeUpload(CommonMixin, models.Model):
     """
     Data type, for differentiate the uploaded file (compressed, uncompressed, multiple files, one file).
     """
@@ -83,19 +60,6 @@ class DataTypeUpload(models.Model):
         return self.name
 
     @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
-
-    @classmethod
     def get_by_name(cls, name):
         try:
             object = cls.objects.get(name=name)
@@ -105,7 +69,7 @@ class DataTypeUpload(models.Model):
         return object
 
 
-class MethodUpload(models.Model):
+class MethodUpload(CommonMixin, models.Model):
     """
     Method use for the upload. By URL, File
     """
@@ -115,19 +79,6 @@ class MethodUpload(models.Model):
         return self.name
 
     @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
-
-    @classmethod
     def get_by_name(cls, name):
         try:
             object = cls.objects.get(name=name)
@@ -137,7 +88,7 @@ class MethodUpload(models.Model):
         return object
 
 
-class RuleSet(models.Model):
+class RuleSet(CommonMixin, models.Model):
     """
     Set of Rules. Scripts and signatures.
     """
@@ -151,19 +102,6 @@ class RuleSet(models.Model):
         return self.name
 
     @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
-
-    @classmethod
     def get_by_name(cls, name):
         try:
             object = cls.objects.get(name=name)
@@ -173,7 +111,7 @@ class RuleSet(models.Model):
         return object
 
 
-class Source(models.Model):
+class Source(CommonMixin, models.Model):
     """
     Set of Source. For scheduled upload of rules.
     """
@@ -189,19 +127,6 @@ class Source(models.Model):
 
     def __str__(self):
         return self.uri
-
-    @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-
-    @classmethod
-    def get_by_id(cls, id):
-        try:
-            object = cls.objects.get(id=id)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return object
 
     @classmethod
     def get_by_uri(cls, uri):

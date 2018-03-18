@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 HELP="
-First argument : dev or prod
+First argument : dev, prod or travis
 Second argument : path to the install destination (Only with prod argument)
 dev : For local devlopement.
+travis : For test platform.
 prod : For use in production.
 Example :
 ./install.sh dev
@@ -13,6 +14,8 @@ Example :
 # Get args
 if [ -z $1 ] || [ $1 == 'dev' ]; then
     arg="dev"
+    dest=""
+elif [ $1 == 'travis' ]; then
     dest=""
 elif [ $1 == 'prod' ]; then
     arg=$1
@@ -129,7 +132,7 @@ chooseApps(){
     echo "PROD_APPS = ["$text"]" >> "$destfull"conf.ini
 }
 
-setGit(){
+set_git(){
     echo '## Set Git ##'
     git_bin=$( which git )
     if [ $arg == 'prod' ]; then
@@ -207,14 +210,22 @@ set_timezone(){
 set_smtp(){
     if [ $arg == 'prod' ]; then
         echo '## Set SMTP settings ##'
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript setup_smtp --settings=probemanager.settings.$arg --script-args $destfull
+        "$destfull"venv/bin/python probemanager/scripts/setup_smtp.py -d $destfull
+    fi
+}
+
+set_log() {
+    echo '## Set logs ##'
+    if [ $arg == 'prod' ]; then
+        echo "[LOG]" >> "$destfull"conf.ini
+        echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
+        echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
     fi
 }
 
 set_settings() {
     echo '## Set settings ##'
     if [ $arg == 'prod' ]; then
-        echo "[LOG]" >> "$destfull"conf.ini
         export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         # if there is not django settings in activate script
         if ! cat "$destfull"venv/bin/activate | grep -qw DJANGO_SETTINGS_MODULE ; then
@@ -223,9 +234,6 @@ set_settings() {
             echo "export PYTHONPATH=""$destfull""probemanager" >> "$destfull"venv/bin/activate
             echo "export PATH=$PATH:""$destfull""venv/bin" >> "$destfull"venv/bin/activate
         fi
-        echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
-        echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
-
     else
         export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         # if there is not django settings in activate script
@@ -324,9 +332,11 @@ check_deployement(){
 generate_doc(){
     echo '## Generate doc ##'
     if [ $arg == 'prod' ]; then
+        export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
         "$destfull"venv/bin/sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
     else
+        export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
         venv/bin/sphinx-build -b html docs docs/_build/html
     fi
@@ -342,22 +352,23 @@ apache_conf(){
     "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript apache --script-args $destfull
 }
 
-update_depot(){
+update_repo(){
     echo '## Update Git repository ##'
-    git pull origin master
+    branch=$( git branch | grep \* | cut -d ' ' -f2 )
+    git pull origin $branch
     git submodule update --remote
 }
 
 launch_celery(){
     if [ ! -f "$destfull"probemanager/celery.pid ]; then
         echo '## Start Celery ##'
-        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
     else
         echo '## Restart Celery ##'
         kill $( cat "$destfull"probemanager/celery.pid)
         pkill -f celery
         sleep 5
-        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
     fi
 }
 
@@ -377,6 +388,10 @@ post_install() {
         mkdir /var/www/.ansible
         chown www-data:www-data /var/www/.ansible
     fi
+    touch /var/log/probemanager.log
+    touch /var/log/probemanager-error.log
+    chown www-data /var/log/probemanager.log
+    chown www-data /var/log/probemanager-error.log
     a2dissite 000-default.conf
     a2dismod deflate -f
     systemctl restart apache2
@@ -389,21 +404,22 @@ if [ $arg == 'prod' ]; then
         echo 'Install in dir : '$destfull
         mkdir $dest/ProbeManager
 
+        update_repo
         clean
-
         copy_files
         installOsDependencies
         installVirtualEnv
         set_host
         set_timezone
-        chooseApps
-        set_settings
-        setGit
-        install_modules
+        set_log
+        set_git
         generate_keys
+        chooseApps
+        set_smtp
+        set_settings
+        install_modules
         create_db
         generate_version
-        set_smtp
         create_superuser
         collect_static
         check_deployement
@@ -415,7 +431,7 @@ if [ $arg == 'prod' ]; then
     else
         echo 'Update prod install'
 
-        update_depot
+        update_repo
         clean
         copy_files
         generate_version
@@ -426,20 +442,31 @@ if [ $arg == 'prod' ]; then
         post_install
         launch_celery
     fi
-else
+elif [ $arg == 'dev' ]; then
     echo 'Install for Development'
 
     clean
     installOsDependencies
     installVirtualEnv
     set_settings
-    setGit
+    set_git
     install_modules
     generate_version
     create_db
     create_superuser
     generate_doc
     setup_tests
+
+elif [ $arg == 'travis' ]; then
+    clean
+    installOsDependencies
+    installVirtualEnv
+    set_settings
+    set_git
+    install_modules
+    generate_version
+    create_db
+    generate_doc
 fi
 
 exit

@@ -1,6 +1,6 @@
 from django.apps.registry import apps
 from jinja2 import Template
-from home.models import Probe
+from core.models import Probe
 import os
 from django.conf import settings
 
@@ -27,7 +27,7 @@ def run(*args):
         for app in apps.get_app_configs():
             for model in app.get_models():
                 if issubclass(model, Probe):
-                    if app.verbose_name != "Home":
+                    if app.verbose_name != "Core":
                         path = settings.BASE_DIR + "/" + app.label + "/README.rst"
                         if os.path.isfile(path):
                             template_rendered = t.render(module=app.label, name=app.verbose_name)

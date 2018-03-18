@@ -155,9 +155,8 @@ probemanager/celerybeat-schedule.db
 geckodriver.log
 migrations/*
 probemanager/bro/migrations/0*
-probemanager/home/migrations/0*
+core/migrations/0*
 probemanager/rules/migrations/0*
-probemanager/suricata/migrations/0*
 probemanager/Probe_Manager.egg-info
 probemanager/build
 probemanager/static/
@@ -169,4 +168,8 @@ probemanager/static/
 /docs/modules/*.rst
 /probemanager/version.txt
 .coveralls.yml
-/probemanager/home/fixtures/init-test.json
+/core/fixtures/init-test.json
+/probemanager/core/version.txt
+/probemanager/core/migrations/0*
+/probemanager/core/fixtures/test-core-secrets.json
+/probemanager/core/fixtures/test-core-secrets.ini

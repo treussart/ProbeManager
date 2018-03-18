@@ -1,4 +1,4 @@
-""" python manage.py test rules.tests.test_models """
+""" venv/bin/python probemanager/manage.py test rules.tests.test_models  --settings=probemanager.settings.dev """
 from django.db.utils import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
@@ -29,8 +29,6 @@ class ClassTypeTest(TestCase):
         self.assertEqual(class_type, None)
         with self.assertRaises(AttributeError):
             class_type.name
-        with self.assertLogs('rules.models', level='DEBUG'):
-            ClassType.get_by_id(99)
         with self.assertRaises(IntegrityError):
             ClassType.objects.create(name="unknown")
 
@@ -58,8 +56,6 @@ class DataTypeUploadTest(TestCase):
         self.assertEqual(data_type_upload, None)
         with self.assertRaises(AttributeError):
             data_type_upload.name
-        with self.assertLogs('rules.models', level='DEBUG'):
-            DataTypeUpload.get_by_id(99)
         with self.assertRaises(IntegrityError):
             DataTypeUpload.objects.create(name="one file not compressed")
 
@@ -87,8 +83,6 @@ class MethodUploadTest(TestCase):
         self.assertEqual(method_upload, None)
         with self.assertRaises(AttributeError):
             method_upload.name
-        with self.assertLogs('rules.models', level='DEBUG'):
-            MethodUpload.get_by_id(99)
         with self.assertRaises(IntegrityError):
             MethodUpload.objects.create(name="Upload file")
 
@@ -114,9 +108,6 @@ class RuleTest(TestCase):
         self.assertEqual(rule, None)
         with self.assertRaises(AttributeError):
             rule.reference
-        with self.assertLogs('rules.models', level='DEBUG'):
-            Rule.get_by_id(99)
-
         rules = Rule.find("tes")
         self.assertEqual(len(rules), 1)
         self.assertEqual(rules[0].reference, "http://www.exemple.com")
@@ -140,8 +131,6 @@ class RuleSetTest(TestCase):
         self.assertEqual(ruleset, None)
         with self.assertRaises(AttributeError):
             ruleset.name
-        with self.assertLogs('rules.models', level='DEBUG'):
-            RuleSet.get_by_id(99)
         with self.assertRaises(IntegrityError):
             RuleSet.objects.create(name="ruleset1",
                                    description="",
@@ -159,7 +148,7 @@ class SourceTest(TestCase):
     def test_source(self):
         all_source = Source.get_all()
         source = Source.get_by_id(1)
-        self.assertEqual(len(all_source), 1)
+        self.assertEqual(len(all_source), 2)
         self.assertEqual(source.method.name, "URL HTTP")
         self.assertEqual(source.data_type.name, "one file not compressed")
         self.assertEqual(source.uri, "https://sslbl.abuse.ch/blacklist/sslblacklist.rules")
@@ -173,8 +162,6 @@ class SourceTest(TestCase):
         self.assertEqual(source, None)
         with self.assertRaises(AttributeError):
             source.uri
-        with self.assertLogs('rules.models', level='DEBUG'):
-            Source.get_by_id(99)
         with self.assertRaises(IntegrityError):
             Source.objects.create(method=MethodUpload.get_by_id(1),
                                   uri="https://sslbl.abuse.ch/blacklist/sslblacklist.rules",

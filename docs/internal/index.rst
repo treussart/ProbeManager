@@ -8,10 +8,10 @@ Rules
 
    rules
 
-Home
+Core
 ----
 
 .. toctree::
    :maxdepth: 2
 
-   home
+   core

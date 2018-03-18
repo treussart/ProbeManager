@@ -19,13 +19,13 @@ if [[ "$VIRTUAL_ENV" == "" ]]; then
 fi
 
 if [ ! -f probemanager/celery.pid ]; then
-    (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+    (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
 else
     kill $( cat probemanager/celery.pid)
     sleep 3
     pkill -f celery
     sleep 3
-    (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+    (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
 fi
 
 venv/bin/python probemanager/manage.py runserver --settings=probemanager.settings.$arg
