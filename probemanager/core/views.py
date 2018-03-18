@@ -39,6 +39,8 @@ def probe_index(request, id):
     Display an individual Probe instance.
     """
     probe = Probe.get_by_id(id)
+    if probe is None:
+        return HttpResponseNotFound('<h1>Page not found</h1>')
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
