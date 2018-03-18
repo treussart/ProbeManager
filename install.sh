@@ -411,8 +411,8 @@ if [ $arg == 'prod' ]; then
         set_log
         set_git
         generate_keys
-        set_smtp
         chooseApps
+        set_smtp
         set_settings
         install_modules
         create_db
