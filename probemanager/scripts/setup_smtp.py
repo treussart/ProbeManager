@@ -1,7 +1,8 @@
-from core.utils import encrypt
 from jinja2 import Template
 from getpass import getpass
 import sys
+from cryptography.fernet import Fernet
+
 
 template_smtp = """
 ['EMAIL']
@@ -11,6 +12,13 @@ EMAIL_HOST_USER = {{ host_user }}
 DEFAULT_FROM_EMAIL = {{ default_from_email }}
 EMAIL_USE_TLS = {{ use_tls }}
 """
+
+
+def encrypt(plain_text, dest):
+    with open(dest + 'fernet_key.txt') as f:
+        fernet_key_bytes = bytes(f.read().strip(), 'utf-8')
+    fernet_key = Fernet(fernet_key_bytes)
+    return fernet_key.encrypt(plain_text.encode('utf-8'))
 
 
 def run(*args):
@@ -33,5 +41,5 @@ def run(*args):
     with open(args[0] + 'conf.ini', 'a', encoding='utf_8') as f:
         f.write(final)
     with open(args[0] + 'password_email.txt', 'w', encoding='utf_8') as f:
-        f.write(encrypt(host_password).decode('utf-8'))
+        f.write(encrypt(host_password, args[0]).decode('utf-8'))
     sys.exit(0)
