@@ -10,7 +10,7 @@ from core.models import Configuration
 from core.notifications import send_notification
 
 
-class NotificationsTest(TestCase):
+class NotificationsCoreTest(TestCase):
     fixtures = ['init', 'test-core-secrets']
 
     @classmethod

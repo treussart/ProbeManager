@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.test import Client, TestCase
 
 
-class ViewsHomeTest(TestCase):
+class ViewsCoreTest(TestCase):
     fixtures = ['init', 'crontab', 'test-rules-source']
 
     def setUp(self):

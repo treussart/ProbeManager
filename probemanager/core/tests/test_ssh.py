@@ -7,7 +7,7 @@ from core.ssh import connection, execute, execute_copy
 from core.models import Server
 
 
-class SshTest(TestCase):
+class SshCoreTest(TestCase):
     fixtures = ['init', 'test-core-secrets']
 
     @classmethod

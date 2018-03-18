@@ -8,7 +8,7 @@ from core.utils import create_deploy_rules_task, create_reload_task, encrypt, de
 from rules.models import Source
 
 
-class TasksRulesTest(TestCase):
+class UtilsCoreTest(TestCase):
     fixtures = ['init', 'crontab', 'test-rules-source', 'test-core-server', 'test-core-probe']
 
     @classmethod

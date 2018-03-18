@@ -5,7 +5,7 @@ from core.models import Probe
 from core.tasks import deploy_rules, reload_probe, install_probe, update_probe, check_probe
 
 
-class TasksRulesTest(TestCase):
+class TasksCoreTest(TestCase):
     fixtures = ['init', 'crontab', 'test-rules-source', 'test-core-secrets', 'test-core-probe']
 
     @classmethod
