@@ -23,6 +23,8 @@ if [[ "$TRAVIS" = true ]]; then
     if [ -f .coveralls.yml ]; then
         coveralls
     fi
+    echo "LOGS"
+    cat probemanager/probemanager-error.log
 else
     if [ ! -d venv ]; then
         echo 'Install before testing'
