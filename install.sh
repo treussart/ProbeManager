@@ -457,7 +457,8 @@ elif [[ "$arg" = 'dev' ]]; then
     generate_doc
     setup_tests
 
-elif [ "$arg" == 'travis' ]; then
+elif [[ "$arg" = 'travis' ]]; then
+    echo 'Install for Travis env'
 
     installOsDependencies
     installVirtualEnv
