@@ -364,6 +364,7 @@ generate_doc(){
         venv/bin/sphinx-build -b html docs docs/_build/html
     elif [[ "$arg" = 'travis' ]]; then
         python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev
+        sphinx-build -b html docs docs/_build/html
     fi
 }
 
