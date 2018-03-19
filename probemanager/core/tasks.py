@@ -34,7 +34,7 @@ def deploy_rules(probe_name):
                 return {"message": "Error for probe " + str(probe.name) + " to deploy rules",
                         "exception": str(response_deploy_rules['errors'])}
             else:
-                job.update_job('Error during the rules deployed', 'Error: ' + str(probe_name)))
+                job.update_job('Error during the rules deployed', 'Error: ' + str(probe_name))
                 logger.error("task - deploy_rules : " + str(probe_name))
                 return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": " "}
         elif not response_reload['status']:
