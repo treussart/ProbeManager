@@ -14,21 +14,27 @@ do
     sourcecoverage="$sourcecoverage""probemanager/""$app"","
 done
 sourcecoverage="--source=""$sourcecoverage"
-if [ ! -d venv ]; then
-    echo 'Install before testing'
-    exit
+
+echo "$TRAVIS""##############" 
+if [[ "$TRAVIS" != "" ]]; then
+    flake8 $source --config=.flake8
+    coverage erase
+    coverage run $sourcecoverage probemanager/runtests.py $arg
+    coverage report -i --skip-covered
+else
+    if [ ! -d venv ]; then
+        echo 'Install before testing'
+        exit
+    fi
+    if [[ "$VIRTUAL_ENV" = "" ]]; then
+        source venv/bin/activate
+    fi
+    venv/bin/flake8 $source --config=.flake8
+    venv/bin/coverage erase
+    venv/bin/coverage run $sourcecoverage probemanager/runtests.py $arg
+    venv/bin/coverage report -i --skip-covered
+    venv/bin/coverage html
 fi
-
-if [[ "$VIRTUAL_ENV" = "" ]]; then
-    source venv/bin/activate
-fi
-
-venv/bin/flake8 $source --config=.flake8
-
-venv/bin/coverage erase
-venv/bin/coverage run $sourcecoverage probemanager/runtests.py $arg
-venv/bin/coverage report -i --skip-covered
-venv/bin/coverage html
 
 if [ -f .coveralls.yml ]; then
     venv/bin/coveralls
