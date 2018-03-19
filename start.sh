@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-if [ -z $1 ] || [ $1 == 'dev' ]; then
+if [ -z $1 ] || [[ "$1" = 'dev' ]]; then
     arg="dev"
-elif [ $1 == 'prod' ]; then
+elif [[ "$1" = 'prod' ]]; then
     arg=$1
 else
     echo 'Bad argument'
     exit 1
 fi
 
-if [[ "$VIRTUAL_ENV" == "" ]]; then
+if [[ "$VIRTUAL_ENV" = "" ]]; then
     if [ ! -d venv ]; then
         echo 'install before starting the server'
         exit
