@@ -16,6 +16,8 @@ done
 sourcecoverage="--source=""$sourcecoverage"
 
 if [[ "$TRAVIS" = true ]]; then
+    ls -la
+    pwd
     flake8 $source --config=.flake8
     coverage erase
     coverage run $sourcecoverage probemanager/runtests.py $arg
