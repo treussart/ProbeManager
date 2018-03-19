@@ -6,8 +6,8 @@ notifications:
     on_failure: always
 language: python
 python:
-- "3.5"
-- "3.6"
+- '3.5'
+- '3.6'
 env:
 - DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
 os:
