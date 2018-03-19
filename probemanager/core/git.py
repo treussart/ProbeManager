@@ -13,7 +13,7 @@ def git_tag(git_root):
                          universal_newlines=True)
     out, err = p.communicate()
     if err:  # pragma: no cover
-        logger.exception(str(err)
+        logger.exception(str(err))
     p_date = subprocess.Popen(command_date, shell=True, cwd=git_root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                               universal_newlines=True)
     out_date, err_date = p_date.communicate()
