@@ -39,7 +39,7 @@ install_modules(){
     for f in probemanager/*; do
         if [[ -d $f ]]; then
             if test -f "$f"/install.sh ; then
-                ./"$f"/install.sh $arg $destfull
+                ./"$f"/install.sh "$arg" "$destfull"
             fi
         fi
     done
@@ -162,7 +162,7 @@ installVirtualEnv() {
         DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         export DJANGO_SETTINGS_MODULE
         export PYTHONPATH=$PYTHONPATH:"$destfull"/probemanager
-    else
+    elif [[ "$arg" = 'dev' ]]; then
         if [ ! -d venv ]; then
             python3 -m venv venv
             source venv/bin/activate
@@ -176,6 +176,12 @@ installVirtualEnv() {
         fi
 
         DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
+        export DJANGO_SETTINGS_MODULE
+        export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
+    elif [[ "$arg" = 'travis' ]]; then
+        pip install -r requirements/base.txt
+        pip install -r requirements/test.txt
+        DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
         export DJANGO_SETTINGS_MODULE
         export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
     fi
@@ -463,7 +469,6 @@ elif [[ "$arg" = 'travis' ]]; then
 
     installOsDependencies
     installVirtualEnv
-    set_settings
     set_git
     install_modules
     generate_version
