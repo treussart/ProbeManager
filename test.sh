@@ -15,8 +15,7 @@ do
 done
 sourcecoverage="--source=""$sourcecoverage"
 
-echo "$TRAVIS""##############" 
-if [[ "$TRAVIS" != "" ]]; then
+if [[ "$TRAVIS" = true ]]; then
     flake8 $source --config=.flake8
     coverage erase
     coverage run $sourcecoverage probemanager/runtests.py $arg
