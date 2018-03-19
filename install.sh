@@ -329,7 +329,7 @@ create_db() {
         for f in probemanager/*; do
             if [[ -d $f ]]; then
                 if test -f "$f"/init_db.sh ; then
-                    ./"$f"/init_db.sh dev
+                    ./"$f"/init_db.sh $arg
                 fi
             fi
         done
