@@ -256,8 +256,10 @@ generate_version(){
     echo '## Generate version ##'
     if [[ "$arg" = 'prod' ]]; then
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args $destfull $(pwd)
-    else
+    elif [[ "$arg" = 'dev' ]]; then
         venv/bin/python probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args -
+    elif [[ "$arg" = 'travis' ]]; then
+        python probemanager/manage.py runscript version --settings=probemanager.settings.dev --script-args -
     fi
 }
 
@@ -308,6 +310,30 @@ create_db() {
             fi
         fi
     done
+
+    if [[ "$arg" = 'travis' ]]; then
+        for f in probemanager/*; do
+            if [[ -d $f ]]; then
+                if test -d "$f"/migrations ; then
+                    rm "$f"/migrations/00*.py
+                fi
+            fi
+        done
+        sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
+        sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
+
+        python probemanager/manage.py makemigrations --settings=probemanager.settings.dev
+        python probemanager/manage.py migrate --settings=probemanager.settings.dev
+        python probemanager/manage.py loaddata init.json --settings=probemanager.settings.dev
+        python probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.dev
+        for f in probemanager/*; do
+            if [[ -d $f ]]; then
+                if test -f "$f"/init_db.sh ; then
+                    ./"$f"/init_db.sh dev
+                fi
+            fi
+        done
+    fi
 }
 
 update_db(){
@@ -342,10 +368,12 @@ generate_doc(){
         export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
         "$destfull"venv/bin/sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
-    else
+    elif [[ "$arg" = 'dev' ]]; then
         export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
         venv/bin/sphinx-build -b html docs docs/_build/html
+    elif [[ "$arg" = 'travis' ]]; then
+        python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev
     fi
 }
 
