@@ -3,7 +3,6 @@ import pytz
 
 from django.db.utils import IntegrityError
 from django.test import TestCase
-from django.utils import timezone
 from datetime import timedelta, datetime
 from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job
 
