@@ -21,9 +21,9 @@ services:
 - postgresql
 - rabbitmq
 install:
-- "./install.sh travis"
+- bash install.sh travis
 script:
-- "./test.sh"
+- bash test.sh
 before_install:
 - mkdir probemanager/ssh_keys
 - openssl aes-256-cbc -K $encrypted_d9bd8970c4fe_key -iv $encrypted_d9bd8970c4fe_iv
