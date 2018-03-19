@@ -4,7 +4,7 @@ plugins =
 [report]
 omit =  */tests/*
         venv/*
-        virtualenv/*
+        /home/travis/virtualenv/*
         */apps.py
         probemanager/probemanager/celery.py
         probemanager/probemanager/settings/*
