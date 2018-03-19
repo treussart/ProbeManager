@@ -19,7 +19,7 @@ if [ ! -d venv ]; then
     exit
 fi
 
-if [[ "$VIRTUAL_ENV" == "" ]]; then
+if [[ "$VIRTUAL_ENV" = "" ]]; then
     source venv/bin/activate
 fi
 
