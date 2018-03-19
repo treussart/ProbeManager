@@ -46,7 +46,7 @@ install_modules(){
 
 clean() {
     echo '## Clean Files ##'
-    if [ $arg == 'dev' ]; then
+    if [ "$arg" == 'dev' ]; then
         if [ ! -d venv ]; then # First install in dev mode - for init to develop branch
             git checkout develop
             git submodule foreach --recursive git checkout develop
@@ -94,7 +94,7 @@ installOsDependencies() {
     # Debian
     if [ -f /etc/debian_version ]; then
         grep -v "#" requirements/os/debian.txt | grep -v "^$" | sudo xargs apt install -y
-        if [ $arg == 'prod' ]; then
+        if [ "$arg" == 'prod' ]; then
             grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs apt install -y
         fi
     fi
@@ -102,7 +102,7 @@ installOsDependencies() {
     if [[ $OSTYPE == *"darwin"* ]]; then
         if brew --version | grep -qw Homebrew ; then
             grep -v "#" requirements/os/osx.txt | grep -v "^$" | xargs brew install
-            if [ $arg == 'prod' ]; then
+            if [ "$arg" == 'prod' ]; then
                 grep -v "#" requirements/os/osx_prod.txt | grep -v "^$" | xargs brew install
             fi
         fi
@@ -135,7 +135,7 @@ chooseApps(){
 set_git(){
     echo '## Set Git ##'
     git_bin=$( which git )
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         echo "[GIT]" >> "$destfull"conf.ini
         echo "GIT_BINARY = $git_bin" >> "$destfull"conf.ini
     else
@@ -146,7 +146,7 @@ set_git(){
 
 installVirtualEnv() {
     echo '## Create Virtualenv ##'
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         if [ ! -d "$destfull"venv ]; then
             python3 -m venv "$destfull"venv
             source "$destfull"venv/bin/activate
@@ -186,7 +186,7 @@ generate_keys(){
 }
 
 set_host(){
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         echo '## Set Host file ##'
         echo "Give the host, followed by [ENTER]:"
         read host
@@ -202,13 +202,13 @@ set_timezone(){
     if [ "$timezone" == "" ]; then
         $timezone='UTC'
     fi
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         echo "TIME_ZONE = $timezone" >> "$destfull"conf.ini
     fi
 }
 
 set_smtp(){
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         echo '## Set SMTP settings ##'
         "$destfull"venv/bin/python probemanager/scripts/setup_smtp.py -d $destfull
     fi
@@ -216,7 +216,7 @@ set_smtp(){
 
 set_log() {
     echo '## Set logs ##'
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         echo "[LOG]" >> "$destfull"conf.ini
         echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
         echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
@@ -225,7 +225,7 @@ set_log() {
 
 set_settings() {
     echo '## Set settings ##'
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         # if there is not django settings in activate script
         if ! cat "$destfull"venv/bin/activate | grep -qw DJANGO_SETTINGS_MODULE ; then
@@ -247,7 +247,7 @@ set_settings() {
 
 generate_version(){
     echo '## Generate version ##'
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args $destfull $(pwd)
     else
         venv/bin/python probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args -
@@ -261,7 +261,7 @@ create_db() {
         sleep 5
         sudo su postgres -c 'dropdb --if-exists probemanager'
         sudo su postgres -c 'dropuser --if-exists probemanager'
-        if [ $arg == 'prod' ]; then
+        if [ "$arg" == 'prod' ]; then
             password=$("$destfull"venv/bin/python probemanager/scripts/db_password.py -d $destfull 2>&1)
             sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';\""
         else
@@ -274,7 +274,7 @@ create_db() {
         sleep 5
         dropdb --if-exists probemanager
         dropuser --if-exists probemanager
-        if [ $arg == 'prod' ]; then
+        if [ "$arg" == 'prod' ]; then
             password=$("$destfull"venv/bin/python probemanager/scripts/db_password.py -d $destfull 2>&1)
             psql -d postgres -c "CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';"
         else
@@ -283,7 +283,7 @@ create_db() {
         createdb -T template0 -O probemanager probemanager
     fi
 
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
@@ -311,7 +311,7 @@ update_db(){
 
 create_superuser(){
     echo '## Create Super user ##'
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
     else
         venv/bin/python probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
@@ -331,7 +331,7 @@ check_deployement(){
 
 generate_doc(){
     echo '## Generate doc ##'
-    if [ $arg == 'prod' ]; then
+    if [ "$arg" == 'prod' ]; then
         export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
         "$destfull"venv/bin/sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
@@ -398,7 +398,7 @@ post_install() {
 }
 
 # Install or update ?
-if [ $arg == 'prod' ]; then
+if [ "$arg" == 'prod' ]; then
     if [ ! -d $dest'/ProbeManager' ]; then
         echo 'First prod install'
         echo 'Install in dir : '$destfull
@@ -442,7 +442,7 @@ if [ $arg == 'prod' ]; then
         post_install
         launch_celery
     fi
-elif [ $arg == 'dev' ]; then
+elif [ "$arg" == 'dev' ]; then
     echo 'Install for Development'
 
     clean
@@ -457,7 +457,7 @@ elif [ $arg == 'dev' ]; then
     generate_doc
     setup_tests
 
-elif [ $arg == 'travis' ]; then
+elif [ "$arg" == 'travis' ]; then
 
     installOsDependencies
     installVirtualEnv
