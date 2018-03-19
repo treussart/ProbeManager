@@ -13,7 +13,7 @@ class JobTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        now = datetime(year=2017, month=5, day=5, hour=12, pytz.UTC)
+        now = datetime(year=2017, month=5, day=5, hour=12, tzinfo=pytz.UTC)
         before = now - timedelta(minutes=30)
         cls.job1 = Job.objects.create(name="test", probe="test", status='Error', result="",
                                       created=before, completed=now)
