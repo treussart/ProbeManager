@@ -25,10 +25,6 @@ class NotificationsCoreTest(TestCase):
         settings.EMAIL_HOST_PASSWORD=config['EMAIL']['EMAIL_HOST_PASSWORD']
         User.objects.create_superuser(username='usertest', password='12345', email='matthieu@treussart.com')
 
-    def test_notifications(self):
-        with self.assertLogs('core.notifications', level='DEBUG'):
-            send_notification("test", "test")
-
     def test_push_fail(self):
         api = Configuration.objects.get(key="PUSHBULLET_API_KEY")
         api.value = "o.nkN6cvwybstW58"
