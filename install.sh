@@ -265,7 +265,22 @@ generate_version(){
 
 create_db() {
     echo '## Create DB ##'
-    if [ -f /etc/debian_version ]; then
+    if [[ "$arg" = 'travis' ]]; then
+        for f in probemanager/*; do
+            if [[ -d $f ]]; then
+                if test -d "$f"/migrations ; then
+                    rm "$f"/migrations/00*.py
+                fi
+            fi
+        done
+        sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
+        sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
+
+        python probemanager/manage.py makemigrations --settings=probemanager.settings.dev
+        python probemanager/manage.py migrate --settings=probemanager.settings.dev
+        python probemanager/manage.py loaddata init.json --settings=probemanager.settings.dev
+        python probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.dev
+    elif [ -f /etc/debian_version ]; then
         sudo service postgresql restart
         sleep 5
         sudo su postgres -c 'dropdb --if-exists probemanager'
@@ -277,8 +292,7 @@ create_db() {
             sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
         fi
         sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
-    fi
-    if [[ $OSTYPE == *"darwin"* ]]; then
+    elif [[ $OSTYPE == *"darwin"* ]]; then
         brew services restart postgresql
         sleep 5
         dropdb --if-exists probemanager
@@ -297,7 +311,7 @@ create_db() {
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.$arg
-    else
+    elif [[ "$arg" = 'dev' ]]; then
         venv/bin/python probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py migrate --settings=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
@@ -310,30 +324,6 @@ create_db() {
             fi
         fi
     done
-
-    if [[ "$arg" = 'travis' ]]; then
-        for f in probemanager/*; do
-            if [[ -d $f ]]; then
-                if test -d "$f"/migrations ; then
-                    rm "$f"/migrations/00*.py
-                fi
-            fi
-        done
-        sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
-        sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
-
-        python probemanager/manage.py makemigrations --settings=probemanager.settings.dev
-        python probemanager/manage.py migrate --settings=probemanager.settings.dev
-        python probemanager/manage.py loaddata init.json --settings=probemanager.settings.dev
-        python probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.dev
-        for f in probemanager/*; do
-            if [[ -d $f ]]; then
-                if test -f "$f"/init_db.sh ; then
-                    ./"$f"/init_db.sh $arg
-                fi
-            fi
-        done
-    fi
 }
 
 update_db(){
