@@ -20,6 +20,9 @@ if [[ "$TRAVIS" = true ]]; then
     coverage erase
     coverage run $sourcecoverage probemanager/runtests.py $arg
     coverage report -i --skip-covered
+    if [ -f .coveralls.yml ]; then
+        coveralls
+    fi
 else
     if [ ! -d venv ]; then
         echo 'Install before testing'
@@ -33,8 +36,9 @@ else
     venv/bin/coverage run $sourcecoverage probemanager/runtests.py $arg
     venv/bin/coverage report -i --skip-covered
     venv/bin/coverage html
+    if [ -f .coveralls.yml ]; then
+        venv/bin/coveralls
+    fi
 fi
 
-if [ -f .coveralls.yml ]; then
-    venv/bin/coveralls
-fi
+
