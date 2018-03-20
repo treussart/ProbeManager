@@ -25,7 +25,10 @@ if [[ "$TRAVIS" = true ]]; then
     fi
     if [ -f probemanager/probemanager-error.log ]; then
         echo "#### LOGS ####"
+        echo "## ERROR ##"
         cat probemanager/probemanager-error.log
+        echo "## CELERY ##"
+        cat probemanager/probemanager-celery.log
     fi
 else
     if [ ! -d venv ]; then
