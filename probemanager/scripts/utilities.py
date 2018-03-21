@@ -11,12 +11,12 @@ from cryptography.fernet import Fernet
 def encrypt(plain_text, dest):
     if os.path.exists(dest + 'fernet_key.txt'):
         with open(dest + 'fernet_key.txt') as f:
-            fernet_key_bytes = bytes(f.read().strip(), 'utf-8')
+            fernet_key_bytes = f.read().strip().encode('utf-8')
     else:
         from django.conf import settings
         fernet_key_bytes = settings.FERNET_KEY
     fernet_key = Fernet(fernet_key_bytes)
-    return fernet_key.encrypt(plain_text.encode('utf-8'))
+    return fernet_key.encrypt(plain_text.encode('utf-8')).decode('utf-8')
 
 
 if __name__ == "__main__":
@@ -25,5 +25,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     password = getpass('Type the password, followed by [ENTER]: ')
     password_encrypted = encrypt(password, args.dest)
-    print("Password encrypted : " + password_encrypted.decode('utf-8'))
+    print("Password encrypted : " + password_encrypted)
     sys.exit(0)

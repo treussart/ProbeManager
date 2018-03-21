@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 def git_tag(git_root):
-    command = settings.GIT_BINARY + ' describe --tags'
+    command = settings.GIT_BINARY + ' describe --tags --always'
     command_date = settings.GIT_BINARY + ' log -n 1 --date=short --pretty=%ad'
     p = subprocess.Popen(command, shell=True, cwd=git_root, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          universal_newlines=True)

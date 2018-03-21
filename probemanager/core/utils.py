@@ -72,19 +72,21 @@ def create_deploy_rules_task(probe, schedule=None, source=None):
                                             enabled=probe.scheduled_rules_deployment_enabled,
                                             args=json.dumps([probe.name, ]))
     except Exception as e:
-        # Error if 2 sources have the same crontab on the same probe -> useless
-        logger.debug(str(e))
+        logger.warning("Error if 2 sources have the same crontab on the same probe -> useless")
 
 
 def decrypt(cipher_text):
     if isinstance(cipher_text, bytes):
-        return fernet_key.decrypt(cipher_text).decode('utf-8')
+        return fernet_key.decrypt(cipher_text)
     else:
-        return fernet_key.decrypt(bytes(cipher_text, 'utf-8'))
+        return fernet_key.decrypt(cipher_text.encode('utf-8')).decode('utf-8')
 
 
 def encrypt(plain_text):
-    return fernet_key.encrypt(plain_text.encode('utf-8'))
+    if isinstance(plain_text, bytes):
+        return fernet_key.encrypt(plain_text)
+    else:
+        return fernet_key.encrypt(plain_text.encode('utf-8')).decode('utf-8')
 
 
 def add_10_min(crontab):

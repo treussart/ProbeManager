@@ -14,6 +14,7 @@ class UtilsCoreTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.test = 'test'
+        cls.test_bytes = 'test'.encode('utf-8')
 
     def test_create_check_task(self):
         create_check_task(Probe.get_by_id(1))
@@ -48,6 +49,9 @@ class UtilsCoreTest(TestCase):
         test = encrypt(self.test)
         self.assertEqual(decrypt(test), self.test)
         self.assertTrue(isinstance(decrypt(test), str))
+        test = encrypt(self.test_bytes)
+        self.assertEqual(decrypt(test), self.test_bytes)
+        self.assertTrue(isinstance(decrypt(test), bytes))
 
     def test_add_10_min(self):
         self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='*',

@@ -19,7 +19,7 @@ def encrypt(plain_text, dest):
     with open(dest + 'fernet_key.txt') as f:
         fernet_key_bytes = bytes(f.read().strip(), 'utf-8')
     fernet_key = Fernet(fernet_key_bytes)
-    return fernet_key.encrypt(plain_text.encode('utf-8'))
+    return fernet_key.encrypt(plain_text.encode('utf-8')).decode('utf-8')
 
 
 if __name__ == "__main__":
@@ -45,5 +45,5 @@ if __name__ == "__main__":
     with open(args.dest + 'conf.ini', 'a', encoding='utf_8') as f:
         f.write(final)
     with open(args.dest + 'password_email.txt', 'w', encoding='utf_8') as f:
-        f.write(encrypt(host_password, args.dest).decode('utf-8'))
+        f.write(encrypt(host_password, args.dest))
     sys.exit(0)
