@@ -72,8 +72,7 @@ def create_deploy_rules_task(probe, schedule=None, source=None):
                                             enabled=probe.scheduled_rules_deployment_enabled,
                                             args=json.dumps([probe.name, ]))
     except Exception as e:
-        # Error if 2 sources have the same crontab on the same probe -> useless
-        logger.debug(str(e))
+        logger.warning("Error if 2 sources have the same crontab on the same probe -> useless")
 
 
 def decrypt(cipher_text):

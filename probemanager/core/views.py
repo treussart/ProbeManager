@@ -74,6 +74,7 @@ def start(request, id):
                 messages.add_message(request, messages.ERROR,
                                      'Error during the start: ' + str(response_start['errors']))
         except Exception as e:
+            logger.exception('Error during the start : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the start : ' + str(e))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
@@ -99,6 +100,7 @@ def stop(request, id):
             else:
                 messages.add_message(request, messages.ERROR, 'Error during the stop: ' + str(response_stop['errors']))
         except Exception as e:
+            logger.exception('Error during the stop : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the stop : ' + str(e))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
@@ -125,6 +127,7 @@ def restart(request, id):
                 messages.add_message(request, messages.ERROR,
                                      'Error during the restart: ' + str(response_restart['errors']))
         except Exception as e:
+            logger.exception('Error during the restart : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the restart : ' + str(e))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
@@ -151,6 +154,7 @@ def reload(request, id):
                 messages.add_message(request, messages.ERROR,
                                      'Error during the reload: ' + str(response_reload['errors']))
         except Exception as e:
+            logger.exception('Error during the reload : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the reload : ' + str(e))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
@@ -177,6 +181,7 @@ def status(request, id):
             else:
                 messages.add_message(request, messages.ERROR, 'Error during the status')
         except Exception as e:
+            logger.exception('Error during the status : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the status : ' + str(e))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
@@ -198,6 +203,7 @@ def install(request, id):
         try:
             install_probe.delay(probe.name)
         except Exception as e:
+            logger.exception('Error during the install : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the install : ' + str(e))
         messages.add_message(request, messages.SUCCESS,
                              mark_safe("Install probe launched with succeed. <a href='/admin/core/job/'>View Job</a>"))
@@ -221,6 +227,7 @@ def update(request, id):
         try:
             update_probe.delay(probe.name)
         except Exception as e:
+            logger.exception('Error during the update : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the update : ' + str(e))
         messages.add_message(request, messages.SUCCESS,
                              mark_safe("Update probe launched with succeed. <a href='/admin/core/job/'>View Job</a>"))
@@ -263,6 +270,7 @@ def deploy_conf(request, id):
                 messages.add_message(request, messages.ERROR,
                                      'Error during the configuration deployed: ' + str(response_restart['errors']))
         except Exception as e:
+            logger.exception('Error during the configuration deployed : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the configuration deployed : ' + str(e))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
@@ -281,9 +289,13 @@ def deploy_rules(request, id):
     if probe is None:
         return HttpResponseNotFound
     else:
-        deploy_rules_probe.delay(probe.name)
-        messages.add_message(request, messages.SUCCESS,
-                             mark_safe("Deployed rules launched with succeed. <a href='/admin/core/job/'>View Job</a>"))
+        try:
+            deploy_rules_probe.delay(probe.name)
+            messages.add_message(request, messages.SUCCESS,
+                                 mark_safe("Deployed rules launched with succeed. <a href='/admin/core/job/'>View Job</a>"))
+        except Exception as e:
+            logger.exception('Error during the rules deployment : ' + str(e))
+            messages.add_message(request, messages.ERROR, 'Error during the rules deployment : ' + str(e))
         return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
