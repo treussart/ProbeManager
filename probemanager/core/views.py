@@ -249,7 +249,7 @@ def deploy_conf(request, id):
         return HttpResponseNotFound
     else:
         response_test = probe.configuration.test()
-        logger.error(str(response_test))
+        logger.debug(str(response_test))
         if probe.secure_deployment:
             if not response_test['status']:
                 messages.add_message(request, messages.ERROR, 'Error during the test configuration')
