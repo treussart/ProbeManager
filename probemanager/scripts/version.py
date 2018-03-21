@@ -20,7 +20,7 @@ def run(*args):
     for app in apps.get_app_configs():
         for model in app.get_models():
             if issubclass(model, Probe):
-                if app.verbose_name != "Home":
+                if app.verbose_name != "Core":
                     dest_app = dest + "/" + app.label + '/'
                     source_app = source + "/" + app.label + '/'
                     with open(dest_app + 'version.txt', 'w') as f:

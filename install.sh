@@ -16,6 +16,7 @@ if [ -z $1 ] || [[ "$1" = 'dev' ]]; then
     arg="dev"
     dest=""
 elif [[ "$1" = 'travis' ]]; then
+    arg=$1
     dest=""
 elif [[ "$1" = 'prod' ]]; then
     arg=$1
@@ -38,7 +39,7 @@ install_modules(){
     for f in probemanager/*; do
         if [[ -d $f ]]; then
             if test -f "$f"/install.sh ; then
-                ./"$f"/install.sh $arg $destfull
+                ./"$f"/install.sh "$arg" "$destfull"
             fi
         fi
     done
@@ -161,7 +162,7 @@ installVirtualEnv() {
         DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         export DJANGO_SETTINGS_MODULE
         export PYTHONPATH=$PYTHONPATH:"$destfull"/probemanager
-    else
+    elif [[ "$arg" = 'dev' ]]; then
         if [ ! -d venv ]; then
             python3 -m venv venv
             source venv/bin/activate
@@ -175,6 +176,12 @@ installVirtualEnv() {
         fi
 
         DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
+        export DJANGO_SETTINGS_MODULE
+        export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
+    elif [[ "$arg" = 'travis' ]]; then
+        pip install -r requirements/base.txt
+        pip install -r requirements/test.txt
+        DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
         export DJANGO_SETTINGS_MODULE
         export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
     fi
@@ -249,14 +256,31 @@ generate_version(){
     echo '## Generate version ##'
     if [[ "$arg" = 'prod' ]]; then
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args $destfull $(pwd)
-    else
+    elif [[ "$arg" = 'dev' ]]; then
         venv/bin/python probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args -
+    elif [[ "$arg" = 'travis' ]]; then
+        python probemanager/manage.py runscript version --settings=probemanager.settings.dev --script-args -
     fi
 }
 
 create_db() {
     echo '## Create DB ##'
-    if [ -f /etc/debian_version ]; then
+    if [[ "$arg" = 'travis' ]]; then
+        for f in probemanager/*; do
+            if [[ -d $f ]]; then
+                if test -d "$f"/migrations ; then
+                    rm "$f"/migrations/00*.py
+                fi
+            fi
+        done
+        sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
+        sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
+
+        python probemanager/manage.py makemigrations --settings=probemanager.settings.dev
+        python probemanager/manage.py migrate --settings=probemanager.settings.dev
+        python probemanager/manage.py loaddata init.json --settings=probemanager.settings.dev
+        python probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.dev
+    elif [ -f /etc/debian_version ]; then
         sudo service postgresql restart
         sleep 5
         sudo su postgres -c 'dropdb --if-exists probemanager'
@@ -268,8 +292,7 @@ create_db() {
             sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
         fi
         sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
-    fi
-    if [[ $OSTYPE == *"darwin"* ]]; then
+    elif [[ $OSTYPE == *"darwin"* ]]; then
         brew services restart postgresql
         sleep 5
         dropdb --if-exists probemanager
@@ -288,7 +311,7 @@ create_db() {
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.$arg
-    else
+    elif [[ "$arg" = 'dev' ]]; then
         venv/bin/python probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py migrate --settings=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
@@ -335,10 +358,13 @@ generate_doc(){
         export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
         "$destfull"venv/bin/sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
-    else
+    elif [[ "$arg" = 'dev' ]]; then
         export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
         venv/bin/sphinx-build -b html docs docs/_build/html
+    elif [[ "$arg" = 'travis' ]]; then
+        python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev
+        sphinx-build -b html docs docs/_build/html
     fi
 }
 
@@ -462,7 +488,6 @@ elif [[ "$arg" = 'travis' ]]; then
 
     installOsDependencies
     installVirtualEnv
-    set_settings
     set_git
     install_modules
     generate_version

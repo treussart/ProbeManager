@@ -1,7 +1,8 @@
 """ venv/bin/python probemanager/manage.py test core.tests.test_models --settings=probemanager.settings.dev """
+import pytz
+
 from django.db.utils import IntegrityError
 from django.test import TestCase
-from django.utils import timezone
 from datetime import timedelta, datetime
 from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job
 
@@ -12,7 +13,7 @@ class JobTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        now = datetime(year=2017, month=5, day=5, hour=12).astimezone(timezone.get_current_timezone())
+        now = datetime(year=2017, month=5, day=5, hour=12, tzinfo=pytz.UTC)
         before = now - timedelta(minutes=30)
         cls.job1 = Job.objects.create(name="test", probe="test", status='Error', result="",
                                       created=before, completed=now)
