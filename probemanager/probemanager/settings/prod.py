@@ -40,12 +40,12 @@ def decrypt(cipher_text):
     if isinstance(cipher_text, bytes):
         return fernet_key.decrypt(cipher_text).decode('utf-8')
     else:
-        return fernet_key.decrypt(bytes(cipher_text, 'utf-8'))
+        return fernet_key.decrypt(cipher_text.encode('utf-8')).decode('utf-8')
 
 
 if os.path.isfile(os.path.join(ROOT_DIR, 'password_db.txt')):
     with open(os.path.join(ROOT_DIR, 'password_db.txt'), encoding='utf_8') as f:
-        PASSWORD_DB = decrypt(bytes(f.read().strip(), 'utf-8'))
+        PASSWORD_DB = decrypt(f.read().strip())
 else:
     PASSWORD_DB = ""
 

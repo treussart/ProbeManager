@@ -27,10 +27,7 @@ def execute(server, commands, become=False):
         if become:
             if server.become:
                 if server.become_pass is not None:
-                    if isinstance(decrypt(server.become_pass), bytes):
-                        password = decrypt(server.become_pass).decode('utf-8')
-                    else:
-                        password = decrypt(server.become_pass)
+                    password = decrypt(server.become_pass)
                     command = " echo '" + password + \
                               "' | " + server.become_method + " -S " + command
                 else:
@@ -39,7 +36,7 @@ def execute(server, commands, become=False):
                 raise Exception("Server cannot become", server.name)
         client = connection(server)
         stdin, stdout, stderr = client.exec_command(command)
-        # stdin.write(decrypt(server.become_pass).decode('utf-8') + '\n')
+        # stdin.write(decrypt(server.become_pass) + '\n')
         if stdout.channel.recv_exit_status() != 0:
             raise Exception("Command Failed",
                             "Command: " + command_name +

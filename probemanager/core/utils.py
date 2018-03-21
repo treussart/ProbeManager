@@ -79,11 +79,11 @@ def decrypt(cipher_text):
     if isinstance(cipher_text, bytes):
         return fernet_key.decrypt(cipher_text).decode('utf-8')
     else:
-        return fernet_key.decrypt(bytes(cipher_text, 'utf-8'))
+        return fernet_key.decrypt(cipher_text.encode('utf-8')).decode('utf-8')
 
 
 def encrypt(plain_text):
-    return fernet_key.encrypt(plain_text.encode('utf-8'))
+    return fernet_key.encrypt(plain_text.encode('utf-8')).decode('utf-8')
 
 
 def add_10_min(crontab):

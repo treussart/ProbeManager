@@ -76,7 +76,7 @@ def run():
                                become=become,
                                become_user=become_user,
                                become_method=become_method,
-                               become_pass=encrypt(become_pass).decode('utf-8'),
+                               become_pass=encrypt(become_pass),
                                remote_user=remote_user,
                                remote_port=remote_port,
                                ssh_private_key_file=ssh_private_key_file_basename,
