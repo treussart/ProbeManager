@@ -156,21 +156,25 @@ def check_probe(probe_name):
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_name(probe_name)
-    try:
-        response_status = probe.status()
-    except Exception as e:
-        logger.exception("Error for probe to check status")
-        job.update_job(str(e), 'Error')
-        send_notification("Error for probe " + str(probe.name), str(e))
-        return {"message": "Error for probe " + str(probe.name) + " to check status", "exception": str(e)}
-    if response_status:
-        if 'active (running)' in response_status:
-            job.update_job("OK probe " + str(probe.name) + " is running", 'Completed')
-            return {"message": "OK probe " + str(probe.name) + " is running"}
+    if probe.installed:
+        try:
+            response_status = probe.status()
+        except Exception as e:
+            logger.exception("Error for probe to check status")
+            job.update_job(str(e), 'Error')
+            send_notification("Error for probe " + str(probe.name), str(e))
+            return {"message": "Error for probe " + str(probe.name) + " to check status", "exception": str(e)}
+        if response_status:
+            if 'active (running)' in response_status:
+                job.update_job("OK probe " + str(probe.name) + " is running", 'Completed')
+                return {"message": "OK probe " + str(probe.name) + " is running"}
+            else:
+                job.update_job("KO probe " + str(probe.name) + " is not running", 'Completed')
+                send_notification("probe KO", "Probe " + str(probe.name) + " is not running")
+                return {"message": "KO probe " + str(probe.name) + " is not running"}
         else:
-            job.update_job("KO probe " + str(probe.name) + " is not running", 'Completed')
-            send_notification("probe KO", "Probe " + str(probe.name) + " is not running")
-            return {"message": "KO probe " + str(probe.name) + " is not running"}
+            job.update_job("Error for probe " + str(probe.name) + " to check status", 'Error')
+            return {"message": "Error for probe " + str(probe.name) + " to check status"}
     else:
-        job.update_job("Error for probe " + str(probe.name) + " to check status", 'Error')
-        return {"message": "Error for probe " + str(probe.name) + " to check status"}
+        job.update_job("Probe " + str(probe.name) + " not installed", 'Completed')
+        return {"message": "Probe " + str(probe.name) + " not installed"}
