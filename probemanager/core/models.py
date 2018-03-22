@@ -152,7 +152,7 @@ class Probe(CommonMixin, models.Model):
                 raise Exception("Not yet implemented")
             tasks = {"uptime": command}
             try:
-                response = execute(self.server, tasks)
+                response = execute(self.server, tasks, become=True)
             except Exception as e:
                 logger.exception("Error during the uptime")
                 return 'Failed to get the uptime on the host : ' + str(e)
