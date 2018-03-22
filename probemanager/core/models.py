@@ -138,7 +138,7 @@ class Probe(CommonMixin, models.Model):
     scheduled_check_crontab = models.ForeignKey(CrontabSchedule, related_name='crontabschedule_check', blank=True,
                                                 null=True, on_delete=models.CASCADE)
     server = models.ForeignKey(Server, on_delete=models.CASCADE)
-    installed = models.BooleanField('Probe Already installed', default=False, )
+    installed = models.BooleanField('Probe Already installed', default=False)
 
     def __str__(self):
         return self.name
