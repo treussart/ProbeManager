@@ -1,7 +1,7 @@
 notifications:
   email:
     recipients:
-    - matleses0@gmail.com
+    - matthieu@treussart.com
     on_success: change
     on_failure: always
 language: python
