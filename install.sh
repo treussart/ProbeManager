@@ -393,6 +393,7 @@ launch_celery(){
         echo '## Restart Celery ##'
         kill $( cat "$destfull"probemanager/celery.pid)
         pkill -f celery
+        rm "$destfull"probemanager/celery.pid
         sleep 8
         (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
     fi
