@@ -56,8 +56,6 @@
         {% endif %}
         <br>
         <div class="list-group">
-            <a class="list-group-item list-group-item-action list-group-item-secondary"
-               href="/{{ probe.type|lower }}/install/{{ probe.id }}">Install {{ probe.type }} Instance</a>
           {% if probe.installed %}
             <a class="list-group-item list-group-item-action list-group-item-secondary"
                href="/{{ probe.type|lower }}/update/{{ probe.id }}">Update {{ probe.type }} Instance</a>
@@ -65,6 +63,9 @@
                href="/{{ probe.type|lower }}/deploy-conf/{{ probe.id }}">Deploy Configuration</a>
             <a class="list-group-item list-group-item-action list-group-item-secondary"
                href="/{{ probe.type|lower }}/deploy-rules/{{ probe.id }}">Deploy Rules</a>
+          {% else %}
+            <a class="list-group-item list-group-item-action list-group-item-secondary"
+               href="/{{ probe.type|lower }}/install/{{ probe.id }}">Install {{ probe.type }} Instance</a>
           {% endif %}
         </div>
     </div>
