@@ -155,7 +155,7 @@ class Probe(CommonMixin, models.Model):
             except Exception as e:
                 logger.exception("Error during the uptime")
                 return 'Failed to get the uptime on the host : ' + str(e)
-            logger.debug("output : " + str(response))
+            logger.warning("output : " + str(response))
             return response['uptime']
         else:
             return 'Not installed'
