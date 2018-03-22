@@ -55,3 +55,13 @@ LOGGING['handlers']['file'].update({'filename': os.path.join(BASE_DIR, 'probeman
 LOGGING['handlers']['file-error'].update({'filename': os.path.join(BASE_DIR, 'probemanager-error.log')})
 
 TEMPLATES[0]['OPTIONS']['debug'] = True
+
+if os.path.isfile(os.path.join(BASE_DIR, 'core/fixtures/test-core-secrets.ini')):
+    config_secrets = configparser.ConfigParser()
+    config_secrets.read(os.path.join(BASE_DIR, 'core/fixtures/test-core-secrets.ini'))
+    EMAIL_HOST = config_secrets['EMAIL']['EMAIL_HOST']
+    EMAIL_PORT = int(config_secrets['EMAIL']['EMAIL_PORT'])
+    EMAIL_HOST_USER = config_secrets['EMAIL']['EMAIL_HOST_USER']
+    DEFAULT_FROM_EMAIL = config_secrets['EMAIL']['DEFAULT_FROM_EMAIL']
+    EMAIL_USE_TLS = config_secrets.getboolean('EMAIL', 'EMAIL_USE_TLS')
+    EMAIL_HOST_PASSWORD = config_secrets['EMAIL']['EMAIL_HOST_PASSWORD']
