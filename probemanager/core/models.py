@@ -239,7 +239,7 @@ class Probe(CommonMixin, models.Model):
             command2 = "apt install " + self.__class__.__name__.lower()
         else:
             raise Exception("Not yet implemented")
-        tasks = OrderedDict({"1_update": command1, "2_install": command2})
+        tasks = OrderedDict(sorted({"1_update": command1, "2_install": command2}.items(), key=lambda t: t[0]))
         try:
             response = execute(self.server, tasks, become=True)
             self.installed = True
