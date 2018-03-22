@@ -137,23 +137,27 @@ class Probe(CommonMixin, models.Model):
     scheduled_check_crontab = models.ForeignKey(CrontabSchedule, related_name='crontabschedule_check', blank=True,
                                                 null=True, on_delete=models.CASCADE)
     server = models.ForeignKey(Server, on_delete=models.CASCADE)
+    installed = models.BooleanField('Probe Already installed ?', default=False, )
 
     def __str__(self):
         return self.name
 
     def uptime(self):
-        if self.server.os.name == 'debian':
-            command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
+        if self.installed:
+            if self.server.os.name == 'debian':
+                command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
+            else:
+                raise Exception("Not yet implemented")
+            tasks = {"uptime": command}
+            try:
+                response = execute(self.server, tasks)
+            except Exception as e:
+                logger.exception("Error during the uptime")
+                return 'Failed to get the uptime on the host : ' + str(e)
+            logger.debug("output : " + str(response))
+            return response['uptime']
         else:
-            raise Exception("Not yet implemented")
-        tasks = {"uptime": command}
-        try:
-            response = execute(self.server, tasks)
-        except Exception as e:
-            logger.exception("Error during the uptime")
-            return 'Failed to get the uptime on the host : ' + str(e)
-        logger.debug("output : " + str(response))
-        return response['uptime']
+            return 'Not installed'
 
     def restart(self):
         if self.server.os.name == 'debian':
@@ -198,18 +202,21 @@ class Probe(CommonMixin, models.Model):
         return {'status': True}
 
     def status(self):
-        if self.server.os.name == 'debian':
-            command = "service " + self.__class__.__name__.lower() + " status"
+        if self.installed:
+            if self.server.os.name == 'debian':
+                command = "service " + self.__class__.__name__.lower() + " status"
+            else:
+                raise Exception("Not yet implemented")
+            tasks = {"status": command}
+            try:
+                response = execute(self.server, tasks, become=True)
+            except Exception:
+                logger.exception('Failed to get status')
+                return 'Failed to get status'
+            logger.debug("output : " + str(response))
+            return response['status']
         else:
-            raise Exception("Not yet implemented")
-        tasks = {"status": command}
-        try:
-            response = execute(self.server, tasks, become=True)
-        except Exception:
-            logger.exception('Failed to get status')
-            return 'Failed to get status'
-        logger.debug("output : " + str(response))
-        return response['status']
+            return False
 
     def reload(self):
         if self.server.os.name == 'debian':
@@ -234,6 +241,8 @@ class Probe(CommonMixin, models.Model):
         tasks = {"update": command1, "install": command2}
         try:
             response = execute(self.server, tasks, become=True)
+            self.installed = True
+            self.save()
         except Exception:
             logger.exception("Error during install")
             return {'status': False, 'errors': "Error during install"}

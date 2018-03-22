@@ -15,32 +15,34 @@
         Os : {{ probe.server.os }} <br>
         Host : {{ probe.server.host }}<br>
         Created date : {{ probe.created_date }}<br>
-        {% if probe.rules_updated_date %}
-        Rules updated date : {{ probe.rules_updated_date }}
-        {% else %}
-        Rules updated date : Never
+        {% if probe.installed %}
+          {% if probe.rules_updated_date %}
+          Rules updated date : {{ probe.rules_updated_date }}
+          {% else %}
+          Rules updated date : Never
+          {% endif %}
+          <br>
+          Uptime {{ probe.type }} : {{ probe.uptime }}
+          <br><br>{% load status %}
+          <a class="list-group-item list-group-item-action list-group-item-{{ probe.id|status }}"
+             href="/{{ probe.type|lower }}/status/{{ probe.id }}">Refresh Instance Status</a>
+          <br>
+          <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-success"
+                      onclick="window.location.href='/{{ probe.type|lower }}/start/{{ probe.id }}'">Start
+              </button>
+              <button type="button" class="btn btn-outline-danger"
+                      onclick="window.location.href='/{{ probe.type|lower }}/stop/{{ probe.id }}'">Stop
+              </button>
+              <button type="button" class="btn btn-outline-secondary"
+                      onclick="window.location.href='/{{ probe.type|lower }}/reload/{{ probe.id }}'">Reload
+              </button>
+              <button type="button" class="btn btn-outline-primary"
+                      onclick="window.location.href='/{{ probe.type|lower }}/restart/{{ probe.id }}'">Restart
+              </button>
+          </div>
+          <br>
         {% endif %}
-        <br>
-        Uptime {{ probe.type }} : {{ probe.uptime }}
-        <br><br>{% load status %}
-        <a class="list-group-item list-group-item-action list-group-item-{{ probe.id|status }}"
-           href="/{{ probe.type|lower }}/status/{{ probe.id }}">Refresh Instance Status</a>
-        <br>
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-success"
-                    onclick="window.location.href='/{{ probe.type|lower }}/start/{{ probe.id }}'">Start
-            </button>
-            <button type="button" class="btn btn-outline-danger"
-                    onclick="window.location.href='/{{ probe.type|lower }}/stop/{{ probe.id }}'">Stop
-            </button>
-            <button type="button" class="btn btn-outline-secondary"
-                    onclick="window.location.href='/{{ probe.type|lower }}/reload/{{ probe.id }}'">Reload
-            </button>
-            <button type="button" class="btn btn-outline-primary"
-                    onclick="window.location.href='/{{ probe.type|lower }}/restart/{{ probe.id }}'">Restart
-            </button>
-        </div>
-        <br>
         {% if messages %}
         <br>
         <ul class="messages">
@@ -56,13 +58,14 @@
         <div class="list-group">
             <a class="list-group-item list-group-item-action list-group-item-secondary"
                href="/{{ probe.type|lower }}/install/{{ probe.id }}">Install {{ probe.type }} Instance</a>
+          {% if probe.installed %}
             <a class="list-group-item list-group-item-action list-group-item-secondary"
                href="/{{ probe.type|lower }}/update/{{ probe.id }}">Update {{ probe.type }} Instance</a>
             <a class="list-group-item list-group-item-action list-group-item-secondary"
                href="/{{ probe.type|lower }}/deploy-conf/{{ probe.id }}">Deploy Configuration</a>
             <a class="list-group-item list-group-item-action list-group-item-secondary"
                href="/{{ probe.type|lower }}/deploy-rules/{{ probe.id }}">Deploy Rules</a>
-
+          {% endif %}
         </div>
     </div>
 </div>
