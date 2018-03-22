@@ -146,7 +146,8 @@ class Probe(CommonMixin, models.Model):
     def uptime(self):
         if self.installed:
             if self.server.os.name == 'debian':
-                command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
+                #command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
+                command = "sudo service " + self.type.lower() + " status | grep since"
             else:
                 raise Exception("Not yet implemented")
             tasks = {"uptime": command}
