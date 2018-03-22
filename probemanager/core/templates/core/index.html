@@ -11,17 +11,14 @@
     {% endfor %}
 </ul>
 {% endif %}
-<div class="row">
-    <div class="col">
-        <div class="col-8">
-            {% for instance in instances %}
-            {% with instance|add:"/home.html" as template %}
-            {% include template %}
-            {% endwith %}
-            <hr/>
-            {% endfor %}
-        </div>
-    </div>
+<div class="row">    
+  {% for instance in instances %}
+  <div class="col-sm" style="padding: 50px;">
+    {% with instance|add:"/home.html" as template %}
+    {% include template %}
+    {% endwith %}
+  </div>
+  {% endfor %}
 </div>
 
 {% endblock %}
