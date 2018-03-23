@@ -5,10 +5,9 @@ import datetime
 
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-#import django
-#django.setup()
-#from django.conf import settings
-from probemanager.settings import dev as settings
+import django
+django.setup()
+from django.conf import settings
 
 
 def get_infos():
