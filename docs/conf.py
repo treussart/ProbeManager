@@ -7,8 +7,8 @@ if 'DJANGO_SETTINGS_MODULE' not in os.environ:
     os.environ['DJANGO_SETTINGS_MODULE'] = 'probemanager.settings.dev'
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import django
-django.setup()
+#import django
+#django.setup()
 from django.conf import settings
 
 
