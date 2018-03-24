@@ -95,9 +95,9 @@ install_os_dependencies() {
     # Debian
     if [ -f /etc/debian_version ]; then
         apt update
-        grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs apt install -y
+        grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs sudo apt install -y
         if [[ "$arg" = 'prod' ]]; then
-            grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs apt install -y
+            grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs sudo apt install -y
         fi
     fi
     # OSX with brew
@@ -342,22 +342,22 @@ launch_celery(){
 post_install() {
     if [[ "$arg" = 'prod' ]]; then
         echo '## Post Install ##'
-        chown -R www-data:www-data "$destfull"
+        sudo chown -R www-data:www-data "$destfull"
         if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
-             chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
+             sudo chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
         fi
-        chmod 400 "$destfull"fernet_key.txt
-        chmod 400 "$destfull"secret_key.txt
-        chmod 400 "$destfull"password_db.txt
-        chmod 400 "$destfull"conf.ini
+        sudo chmod 400 "$destfull"fernet_key.txt
+        sudo chmod 400 "$destfull"secret_key.txt
+        sudo chmod 400 "$destfull"password_db.txt
+        sudo chmod 400 "$destfull"conf.ini
 
-        touch /var/log/probemanager.log
-        touch /var/log/probemanager-error.log
-        chown www-data /var/log/probemanager.log
-        chown www-data /var/log/probemanager-error.log
-        a2dissite 000-default.conf
-        a2dismod deflate -f
-        systemctl restart apache2
+        sudo touch /var/log/probemanager.log
+        sudo touch /var/log/probemanager-error.log
+        sudo chown www-data /var/log/probemanager.log
+        sudo chown www-data /var/log/probemanager-error.log
+        sudo a2dissite 000-default.conf
+        sudo a2dismod deflate -f
+        sudo service apache2 restart
     fi
 }
 
