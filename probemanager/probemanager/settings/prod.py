@@ -47,7 +47,7 @@ if os.path.isfile(os.path.join(ROOT_DIR, 'password_db.txt')):
     with open(os.path.join(ROOT_DIR, 'password_db.txt'), encoding='utf_8') as f:
         PASSWORD_DB = decrypt(f.read().strip())
 else:
-    PASSWORD_DB = ""
+    PASSWORD_DB = "probemanager"
 
 # Celery settings
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
