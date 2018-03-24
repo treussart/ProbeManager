@@ -314,6 +314,8 @@ setup_tests(){
 apache_conf(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Create Apache configuration ##'
+        sudo touch /etc/apache2/sites-enabled/probemanager.conf
+        sudo chown $(whoami) /etc/apache2/sites-enabled/probemanager.conf
         python "$destfull"probemanager/manage.py runscript apache --script-args $destfull
     fi
 }
