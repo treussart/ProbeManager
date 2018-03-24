@@ -8,6 +8,10 @@ else
     echo 'Bad argument'
     exit 1
 fi
+
+export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
+export PYTHONPATH=$PYTHONPATH:"$destfull"/probemanager
+
 # Virtualenv
 if [[ "$VIRTUAL_ENV" = "" ]]; then
     if [ ! -d venv ]; then

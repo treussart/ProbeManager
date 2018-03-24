@@ -364,8 +364,12 @@ if [ ! -d "$destfull" ]; then
 elif [ ! -f "$destfull"probemanager/version.txt ]; then
     first=true
 fi
+
+export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
+export PYTHONPATH=$PYTHONPATH:"$destfull"/probemanager
+
 if [ "$first" = true ]; then
-    echo 'First prod install'
+    echo 'First install'
     echo 'Install in dir : '$destfull
 
     update_repo
@@ -393,7 +397,7 @@ if [ "$first" = true ]; then
     launch_celery
 
 else
-    echo 'Update prod install'
+    echo 'Update install'
 
     update_repo
     clean
