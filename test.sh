@@ -23,7 +23,11 @@ if [[ "$VIRTUAL_ENV" = "" ]]; then
         source venv/bin/activate
     fi
 fi
-
+# test if fixtures secrets files are here
+if [ ! -f probemanager/core/fixtures/test-core-secrets.json ]; then
+    echo 'Secrets fixtures not found'
+    exit 1
+fi
 flake8 $source --config=.flake8
 coverage erase
 coverage run $sourcecoverage probemanager/runtests.py $arg
@@ -36,3 +40,5 @@ if [ -f probemanager/probemanager-error.log ]; then
     echo "#### LOGS ####"
     cat probemanager/probemanager-error.log
 fi
+
+exit
