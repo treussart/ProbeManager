@@ -21,6 +21,9 @@ elif [[ "$1" = 'prod' ]]; then
     else
         dest=$2
     fi
+    if [[ "$TRAVIS" = true ]]; then
+        dest='/home/travis/build'
+    fi
 elif [[ "$1" = 'help' ]]; then
     echo "$HELP"
     exit
@@ -180,7 +183,7 @@ installVirtualEnv() {
 
 generate_keys(){
     echo '## Generate secret_key and fernet_key ##'
-    "$destfull"venv/bin/python "$destfull"probemanager/scripts/secrets.py -d $destfull
+    python "$destfull"probemanager/scripts/secrets.py -d $destfull
 }
 
 set_host(){
@@ -216,7 +219,7 @@ set_timezone(){
 set_smtp(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Set SMTP settings ##'
-        "$destfull"venv/bin/python probemanager/scripts/setup_smtp.py -d $destfull
+        python probemanager/scripts/setup_smtp.py -d $destfull
     fi
 }
 
@@ -254,7 +257,7 @@ set_settings() {
 generate_version(){
     echo '## Generate version ##'
     if [[ "$arg" = 'prod' ]]; then
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args $destfull $(pwd)
+        python "$destfull"probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args $destfull $(pwd)
     elif [[ "$arg" = 'dev' ]]; then
         venv/bin/python probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args -
     fi
@@ -268,7 +271,7 @@ create_db() {
         sudo su postgres -c 'dropdb --if-exists probemanager'
         sudo su postgres -c 'dropuser --if-exists probemanager'
         if [[ "$arg" = 'prod' ]]; then
-            password=$("$destfull"venv/bin/python probemanager/scripts/db_password.py -d $destfull 2>&1)
+            password=$(python probemanager/scripts/db_password.py -d $destfull 2>&1)
             sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';\""
         else
             sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
@@ -280,7 +283,7 @@ create_db() {
         dropdb --if-exists probemanager
         dropuser --if-exists probemanager
         if [[ "$arg" = 'prod' ]]; then
-            password=$("$destfull"venv/bin/python probemanager/scripts/db_password.py -d $destfull 2>&1)
+            password=$(python probemanager/scripts/db_password.py -d $destfull 2>&1)
             psql -d postgres -c "CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';"
         else
             psql -d postgres -c "CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';"
@@ -289,10 +292,10 @@ create_db() {
     fi
 
     if [[ "$arg" = 'prod' ]]; then
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.$arg
+        python "$destfull"probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
+        python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
+        python "$destfull"probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
+        python "$destfull"probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.$arg
     elif [[ "$arg" = 'dev' ]]; then
         venv/bin/python probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py migrate --settings=probemanager.settings.$arg
@@ -317,7 +320,7 @@ update_db(){
 create_superuser(){
     echo '## Create Super user ##'
     if [[ "$arg" = 'prod' ]]; then
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
+        python "$destfull"probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
     else
         venv/bin/python probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
     fi
@@ -325,21 +328,21 @@ create_superuser(){
 
 collect_static(){
     echo '## Collect static ##'
-    "$destfull"venv/bin/python "$destfull"probemanager/manage.py collectstatic --noinput --settings=probemanager.settings.$arg
+    python "$destfull"probemanager/manage.py collectstatic --noinput --settings=probemanager.settings.$arg
 }
 
 check_deployement(){
     echo '## Check deployment ##'
-    result=$( "$destfull"venv/bin/python "$destfull"probemanager/manage.py check --deploy --settings=probemanager.settings.$arg )
-    result=$( "$destfull"venv/bin/python "$destfull"probemanager/manage.py validate_templates --settings=probemanager.settings.$arg )
+    result=$( python "$destfull"probemanager/manage.py check --deploy --settings=probemanager.settings.$arg )
+    result=$( python "$destfull"probemanager/manage.py validate_templates --settings=probemanager.settings.$arg )
 }
 
 generate_doc(){
     echo '## Generate doc ##'
     if [[ "$arg" = 'prod' ]]; then
         export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
-        "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
-        "$destfull"venv/bin/sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
+        python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
+        sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
     elif [[ "$arg" = 'dev' ]]; then
         export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
@@ -354,7 +357,7 @@ setup_tests(){
 
 apache_conf(){
     echo '## Create Apache configuration ##'
-    "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript apache --script-args $destfull
+    python "$destfull"probemanager/manage.py runscript apache --script-args $destfull
 }
 
 update_repo(){
@@ -367,7 +370,7 @@ update_repo(){
 launch_celery(){
     if [ ! -f "$destfull"probemanager/celery.pid ]; then
         echo '## Start Celery ##'
-        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+        (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
     else
         echo '## Restart Celery ##'
         kill $( cat "$destfull"probemanager/celery.pid)
@@ -376,7 +379,7 @@ launch_celery(){
             rm "$destfull"probemanager/celery.pid
         fi
         sleep 8
-        (cd "$destfull"probemanager/ && "$destfull"venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+        (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
     fi
 }
 
@@ -414,9 +417,13 @@ if [[ "$arg" = 'prod' ]]; then
 
         update_repo
         clean
-        copy_files
+        if [[ ! "$TRAVIS" = true ]]; then
+            copy_files
+        fi
         installOsDependencies
-        installVirtualEnv
+        if [[ ! "$TRAVIS" = true ]]; then
+            installVirtualEnv
+        fi
         set_host
         set_timezone
         set_log

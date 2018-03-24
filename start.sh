@@ -8,7 +8,7 @@ else
     echo 'Bad argument'
     exit 1
 fi
-
+# Virtualenv
 if [[ "$VIRTUAL_ENV" = "" ]]; then
     if [ ! -d venv ]; then
         echo 'install before starting the server'
@@ -17,7 +17,7 @@ if [[ "$VIRTUAL_ENV" = "" ]]; then
         source venv/bin/activate
     fi
 fi
-
+# Celery
 if [ ! -f probemanager/celery.pid ]; then
     (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
 else
@@ -27,5 +27,5 @@ else
     sleep 3
     (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
 fi
-
+# Server
 venv/bin/python probemanager/manage.py runserver --settings=probemanager.settings.$arg
