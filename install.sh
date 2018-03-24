@@ -206,7 +206,7 @@ set_timezone(){
 }
 
 set_smtp(){
-    if [[ "$arg" = 'prod' ]]; then
+    if [[ "$arg" = 'prod' ]] && [[ "$TRAVIS" != true ]]; then
         echo '## Set SMTP settings ##'
         python "$destfull"probemanager/scripts/setup_smtp.py -d $destfull
     fi
