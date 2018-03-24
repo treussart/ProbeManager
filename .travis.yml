@@ -23,7 +23,7 @@ services:
 - postgresql
 - rabbitmq
 install:
-- "./install.sh travis"
+- "sudo ./install.sh prod"
 script:
 - "./test.sh"
 before_install:
@@ -35,7 +35,5 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
-  - "./start.sh travis" # start a Web server
-  - sleep 3 # give Web server some time to bind to sockets, etc
 addons:
   firefox: latest
