@@ -218,6 +218,12 @@ set_logs(){
         echo "[LOG]" >> "$destfull"conf.ini
         echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
         echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
+        sudo touch /var/log/probemanager.log
+        sudo touch /var/log/probemanager-error.log
+        if [[ "$TRAVIS" != true ]]; then
+            sudo chown travis /var/log/probemanager.log
+            sudo chown travis /var/log/probemanager-error.log
+        fi
     fi
 }
 
@@ -342,7 +348,7 @@ launch_celery(){
 post_install() {
     if [[ "$arg" = 'prod' ]]; then
         echo '## Post Install ##'
-        sudo chown -R www-data:www-data "$destfull"
+        sudo chown -R www-data "$destfull"
         if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
              sudo chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
         fi
@@ -351,8 +357,6 @@ post_install() {
         sudo chmod 400 "$destfull"password_db.txt
         sudo chmod 400 "$destfull"conf.ini
 
-        sudo touch /var/log/probemanager.log
-        sudo touch /var/log/probemanager-error.log
         sudo chown www-data /var/log/probemanager.log
         sudo chown www-data /var/log/probemanager-error.log
         sudo a2dissite 000-default.conf
