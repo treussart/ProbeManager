@@ -153,7 +153,7 @@ install_virtualenv() {
     fi
     echo '## Install Pip package ##'
     pip install wheel
-    if [[ "$arg" = 'prod' ]]; then
+    if [[ "$arg" = 'prod' ]] && [[ "$TRAVIS" != true ]]; then
         pip install -r requirements/prod.txt
     elif [[ "$TRAVIS" = true ]]; then
         echo "TRAVIS PIP"
