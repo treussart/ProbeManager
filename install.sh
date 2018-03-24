@@ -78,14 +78,16 @@ clean() {
 
 copy_files(){
     echo '## Copy files in install dir ##'
-    if [ -d $2 ]; then
-        # copy the project
-        cp -r probemanager $destfull
-        # copy the doc
-        cp -r docs $destfull
-        # copy the start script for test
-        cp start.sh $destfull
-        cp README.rst $destfull
+    if [ "$2" != "" ] && [ "$2" != " " ] && [ "$2" != "." ] && [[ ! "$TRAVIS" = true ]] ; then # Don't copy in the same directory
+        if [ -d $dest ]; then
+            # copy the project
+            cp -r probemanager $destfull
+            # copy the doc
+            cp -r docs $destfull
+            # copy the start script for test
+            cp start.sh $destfull
+            cp README.rst $destfull
+        fi
     fi
 }
 
@@ -147,38 +149,40 @@ set_git(){
 
 installVirtualEnv() {
     echo '## Create Virtualenv ##'
-    if [[ "$arg" = 'prod' ]]; then
-        if [ ! -d "$destfull"venv ]; then
-            python3 -m venv "$destfull"venv
-            source "$destfull"venv/bin/activate
-            "$destfull"venv/bin/pip3 install wheel
-            "$destfull"venv/bin/pip3 install -r requirements/prod.txt
-        fi
+    if [[ ! "$VIRTUAL_ENV" = "" ]]; then
+        echo 'pas de virtualenv a installer'
+        pip install wheel
+        pip install -r requirements/dev.txt
+        pip install -r requirements/test.txt
+    else
+        if [[ "$arg" = 'prod' ]]; then
+            if [ ! -d "$destfull"venv ]; then
+                python3 -m venv "$destfull"venv
+                source "$destfull"venv/bin/activate
+                "$destfull"venv/bin/pip3 install wheel
+                "$destfull"venv/bin/pip3 install -r requirements/prod.txt
+            fi
+            export PYTHONPATH=$PYTHONPATH:"$destfull"/probemanager
+        elif [[ "$arg" = 'dev' ]]; then
+            if [ ! -d venv ]; then
+                python3 -m venv venv
+                source venv/bin/activate
+                venv/bin/pip3 install wheel
+                venv/bin/pip3 install -r requirements/dev.txt
+                venv/bin/pip3 install -r requirements/test.txt
+            fi
 
-        if [[ "$VIRTUAL_ENV" == "" ]]; then
-            source "$destfull"venv/bin/activate
-        fi
+            if [[ "$VIRTUAL_ENV" == "" ]]; then
+                source venv/bin/activate
+            fi
 
-        DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
-        export DJANGO_SETTINGS_MODULE
-        export PYTHONPATH=$PYTHONPATH:"$destfull"/probemanager
-    elif [[ "$arg" = 'dev' ]]; then
-        if [ ! -d venv ]; then
-            python3 -m venv venv
-            source venv/bin/activate
-            venv/bin/pip3 install wheel
-            venv/bin/pip3 install -r requirements/dev.txt
-            venv/bin/pip3 install -r requirements/test.txt
+            DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
+            export DJANGO_SETTINGS_MODULE
+            export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
         fi
-
-        if [[ "$VIRTUAL_ENV" == "" ]]; then
-            source venv/bin/activate
-        fi
-
-        DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
-        export DJANGO_SETTINGS_MODULE
-        export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
     fi
+    export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
+
 }
 
 generate_keys(){
@@ -407,6 +411,12 @@ post_install() {
     a2dismod deflate -f
     systemctl restart apache2
 }
+echo "VIRTUAL ENV"
+echo "$VIRTUAL_ENV"
+echo $TRAVIS
+pwd
+which python
+
 
 # Install or update ?
 if [[ "$arg" = 'prod' ]]; then
@@ -414,16 +424,11 @@ if [[ "$arg" = 'prod' ]]; then
         echo 'First prod install'
         echo 'Install in dir : '$destfull
         mkdir $dest/ProbeManager
-
         update_repo
         clean
-        if [[ ! "$TRAVIS" = true ]]; then
-            copy_files
-        fi
+        copy_files
         installOsDependencies
-        if [[ ! "$TRAVIS" = true ]]; then
-            installVirtualEnv
-        fi
+        installVirtualEnv
         set_host
         set_timezone
         set_log
