@@ -94,7 +94,7 @@ install_os_dependencies() {
     echo '## Install Dependencies ##'
     # Debian
     if [ -f /etc/debian_version ]; then
-        apt update
+        sudo apt update
         grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs sudo apt install -y
         if [[ "$arg" = 'prod' ]]; then
             grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs sudo apt install -y
