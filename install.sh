@@ -156,7 +156,6 @@ install_virtualenv() {
     if [[ "$arg" = 'prod' ]] && [[ "$TRAVIS" != true ]]; then
         pip install -r requirements/prod.txt
     elif [[ "$TRAVIS" = true ]]; then
-        echo "TRAVIS PIP"
         sudo -u travis pip install -r requirements/prod.txt
         sudo -u travis pip install -r requirements/test.txt
     else
