@@ -39,7 +39,12 @@ install_modules(){
     for f in probemanager/*; do
         if [[ -d $f ]]; then
             if test -f "$f"/install.sh ; then
-                ./"$f"/install.sh "$arg" "$destfull"
+                if [[ "$arg" != 'travis' ]]; then
+                    ./"$f"/install.sh "$arg" "$destfull"
+                else
+                    sudo ./"$f"/install.sh "$arg" "$destfull"
+                fi
+
             fi
         fi
     done
@@ -94,10 +99,15 @@ installOsDependencies() {
     echo '## Install Dependencies ##'
     # Debian
     if [ -f /etc/debian_version ]; then
-        apt update
-        grep -v "#" requirements/os/debian.txt | grep -v "^$" | sudo xargs apt install -y
-        if [[ "$arg" = 'prod' ]]; then
-            grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs apt install -y
+        if [[ "$arg" != 'travis' ]]; then
+            apt update
+            grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs apt install -y
+            if [[ "$arg" = 'prod' ]]; then
+                grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs apt install -y
+            fi
+        else
+            sudo apt update
+            grep -v "#" requirements/os/debian.txt | grep -v "^$" | sudo xargs apt install -y
         fi
     fi
     # OSX with brew
