@@ -13,16 +13,15 @@ Example :
 # Get args
 if [ -z $1 ] || [[ "$1" = 'dev' ]]; then
     arg="dev"
-    dest=""
+    dest=$( pwd )
 elif [[ "$1" = 'prod' ]]; then
     arg=$1
     if [ -z $2 ]; then
         dest='/usr/local/share'
+    elif [[ "$2" = "." ]]; then
+        dest=$( pwd )
     else
         dest=$2
-    fi
-    if [[ "$TRAVIS" = true ]]; then
-        dest='/home/travis/build'
     fi
 elif [[ "$1" = 'help' ]]; then
     echo "$HELP"
@@ -31,7 +30,11 @@ else
     echo 'Bad argument'
     exit 1
 fi
-destfull="$dest"/ProbeManager/
+if [[ "$dest" = $( pwd ) ]]; then
+    destfull="$dest"/
+else
+    destfull="$dest"/ProbeManager/
+fi
 
 install_modules(){
     echo '## Install the modules ##'
@@ -46,12 +49,6 @@ install_modules(){
 
 clean() {
     echo '## Clean Files ##'
-    if [[ "$arg" = 'dev' ]]; then
-        if [ ! -d venv ]; then # First install in dev mode - for init to develop branch
-            git checkout develop
-            git submodule foreach --recursive git checkout develop
-        fi
-    fi
     if [ -f conf.ini ]; then
         rm conf.ini
     fi
@@ -77,21 +74,23 @@ clean() {
 }
 
 copy_files(){
-    echo '## Copy files in install dir ##'
-    if [ "$2" != "" ] && [ "$2" != " " ] && [ "$2" != "." ] && [[ ! "$TRAVIS" = true ]] ; then # Don't copy in the same directory
-        if [ -d $dest ]; then
-            # copy the project
-            cp -r probemanager $destfull
-            # copy the doc
-            cp -r docs $destfull
-            # copy the start script for test
-            cp start.sh $destfull
-            cp README.rst $destfull
+    if [[ "$arg" = 'prod' ]]; then
+        echo '## Copy files in install dir ##'
+        if [ "$2" != "." ]; then # Don't copy in the same directory
+            if [ -d $destfull ]; then
+                # copy the project
+                cp -r probemanager $destfull
+                # copy the doc
+                cp -r docs $destfull
+                # copy the start script for test
+                cp start.sh $destfull
+                cp README.rst $destfull
+            fi
         fi
     fi
 }
 
-installOsDependencies() {
+install_os_dependencies() {
     echo '## Install Dependencies ##'
     # Debian
     if [ -f /etc/debian_version ]; then
@@ -112,82 +111,64 @@ installOsDependencies() {
     fi
 }
 
-chooseApps(){
-    echo '## Choose Apps ##'
-    i=0
-    for f in probemanager/*; do
-        if [[ -d $f ]]; then
-            if [[  -f "$f"/install.sh ]] || [[  -f "$f"/init_db.sh ]] ; then
-                apps[i]=$( echo $f | cut -f2 -d"/" )
-                i=$((i+1))
+select_apps(){
+    if [[ "$arg" = 'prod' ]]; then
+        echo '## Choose Apps ##'
+        i=0
+        for f in probemanager/*; do
+            if [[ -d $f ]]; then
+                if [[  -f "$f"/install.sh ]] || [[  -f "$f"/init_db.sh ]] ; then
+                    apps[i]=$( echo $f | cut -f2 -d"/" )
+                    i=$((i+1))
+                fi
             fi
-        fi
-    done
-    for i in ${apps[@]}; do
-        if [[ -z "${text// }" ]];then
-            text=$text"'"$i"'"
-        else
-            text=$text", '"$i"'"
-        fi
-    done
-    echo "Module(s) available : "${apps[*]}
-    echo "[APPS]" >> "$destfull"conf.ini
-    echo "PROD_APPS = ["$text"]" >> "$destfull"conf.ini
+        done
+        for i in ${apps[@]}; do
+            if [[ -z "${text// }" ]];then
+                text=$text"'"$i"'"
+            else
+                text=$text", '"$i"'"
+            fi
+        done
+        echo "Module(s) available : "${apps[*]}
+        echo "[APPS]" >> "$destfull"conf.ini
+        echo "PROD_APPS = ["$text"]" >> "$destfull"conf.ini
+    fi
 }
 
 set_git(){
     echo '## Set Git ##'
     git_bin=$( which git )
-    if [[ "$arg" = 'prod' ]]; then
-        echo "[GIT]" >> "$destfull"conf.ini
-        echo "GIT_BINARY = $git_bin" >> "$destfull"conf.ini
-    else
-        echo "[GIT]"  >> conf.ini
-        echo "GIT_BINARY = $git_bin" >> conf.ini
-    fi
+    echo "[GIT]" >> "$destfull"conf.ini
+    echo "GIT_BINARY = $git_bin" >> "$destfull"conf.ini
 }
 
-installVirtualEnv() {
-    echo '## Create Virtualenv ##'
-    if [[ ! "$VIRTUAL_ENV" = "" ]]; then
-        echo 'pas de virtualenv a installer'
-        pip install wheel
-        pip install -r requirements/dev.txt
+install_virtualenv() {
+    if [[ "$VIRTUAL_ENV" = "" ]]; then
+        if [ ! -d "$destfull"venv ]; then
+            echo '## Create Virtualenv ##'
+            python3 -m venv "$destfull"venv
+        fi
+        source "$destfull"venv/bin/activate
+    fi
+    echo '## Install Pip package ##'
+    pip install wheel
+    if [[ "$arg" = 'prod' ]]; then
+        pip install -r requirements/prod.txt
         pip install -r requirements/test.txt
     else
-        if [[ "$arg" = 'prod' ]]; then
-            if [ ! -d "$destfull"venv ]; then
-                python3 -m venv "$destfull"venv
-                source "$destfull"venv/bin/activate
-                "$destfull"venv/bin/pip3 install wheel
-                "$destfull"venv/bin/pip3 install -r requirements/prod.txt
-            fi
-            export PYTHONPATH=$PYTHONPATH:"$destfull"/probemanager
-        elif [[ "$arg" = 'dev' ]]; then
-            if [ ! -d venv ]; then
-                python3 -m venv venv
-                source venv/bin/activate
-                venv/bin/pip3 install wheel
-                venv/bin/pip3 install -r requirements/dev.txt
-                venv/bin/pip3 install -r requirements/test.txt
-            fi
-
-            if [[ "$VIRTUAL_ENV" == "" ]]; then
-                source venv/bin/activate
-            fi
-
-            DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
-            export DJANGO_SETTINGS_MODULE
-            export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
-        fi
+        pip install -r requirements/dev.txt
+        pip install -r requirements/test.txt
     fi
     export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
-
+    export PYTHONPATH=$PYTHONPATH:"$destfull"/probemanager
 }
 
 generate_keys(){
-    echo '## Generate secret_key and fernet_key ##'
-    python "$destfull"probemanager/scripts/secrets.py -d $destfull
+    if [[ "$arg" = 'prod' ]]; then
+        echo '## Generate secret_key and fernet_key ##'
+        python "$destfull"probemanager/scripts/secrets.py -d $destfull
+    fi
 }
 
 set_host(){
@@ -205,66 +186,42 @@ set_host(){
 }
 
 set_timezone(){
-    echo '## Set Timezone ##'
-    if [[ "$TRAVIS" = true ]]; then
-        timezone='Europe/Paris'
-    else
-        echo "Give the timezone, followed by [ENTER], example: Europe/Paris, default: UTC:"
-        read timezone
-    fi
-    if [ "$timezone" == "" ]; then
-        $timezone='UTC'
-    fi
     if [[ "$arg" = 'prod' ]]; then
-        echo "TIME_ZONE = $timezone" >> "$destfull"conf.ini
+        echo '## Set Timezone ##'
+        if [[ "$TRAVIS" = true ]]; then
+            timezone='Europe/Paris'
+        else
+            echo "Give the timezone, followed by [ENTER], example: Europe/Paris, default: UTC:"
+            read timezone
+        fi
+        if [ "$timezone" == "" ]; then
+            $timezone='UTC'
+        fi
+        if [[ "$arg" = 'prod' ]]; then
+            echo "TIME_ZONE = $timezone" >> "$destfull"conf.ini
+        fi
     fi
 }
 
 set_smtp(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Set SMTP settings ##'
-        python probemanager/scripts/setup_smtp.py -d $destfull
+        python "$destfull"probemanager/scripts/setup_smtp.py -d $destfull
     fi
 }
 
-set_log() {
-    echo '## Set logs ##'
+set_logs(){
     if [[ "$arg" = 'prod' ]]; then
+        echo '## Set logs ##'
         echo "[LOG]" >> "$destfull"conf.ini
         echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
         echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
     fi
 }
 
-set_settings() {
-    echo '## Set settings ##'
-    if [[ "$arg" = 'prod' ]]; then
-        export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
-        # if there is not django settings in activate script
-        if ! cat "$destfull"venv/bin/activate | grep -qw DJANGO_SETTINGS_MODULE ; then
-            echo DJANGO_SETTINGS_MODULE="probemanager.settings.$arg" >> "$destfull"venv/bin/activate
-            echo "export DJANGO_SETTINGS_MODULE" >> "$destfull"venv/bin/activate
-            echo "export PYTHONPATH=""$destfull""probemanager" >> "$destfull"venv/bin/activate
-            echo "export PATH=$PATH:""$destfull""venv/bin" >> "$destfull"venv/bin/activate
-        fi
-    else
-        export DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
-        # if there is not django settings in activate script
-        if ! cat venv/bin/activate | grep -qw DJANGO_SETTINGS_MODULE ; then
-            echo DJANGO_SETTINGS_MODULE="probemanager.settings.$arg" >> venv/bin/activate
-            echo "export DJANGO_SETTINGS_MODULE" >> venv/bin/activate
-            echo "export PYTHONPATH=$PYTHONPATH:$PWD/probemanager" >> venv/bin/activate
-        fi
-    fi
-}
-
 generate_version(){
     echo '## Generate version ##'
-    if [[ "$arg" = 'prod' ]]; then
-        python "$destfull"probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args $destfull $(pwd)
-    elif [[ "$arg" = 'dev' ]]; then
-        venv/bin/python probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args -
-    fi
+    python "$destfull"probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args $(pwd) $destfull
 }
 
 create_db() {
@@ -274,7 +231,7 @@ create_db() {
         sleep 5
         sudo su postgres -c 'dropdb --if-exists probemanager'
         sudo su postgres -c 'dropuser --if-exists probemanager'
-        if [[ "$arg" = 'prod' ]]; then
+        if [[ "$arg" = 'prod' ]] && [[ "$TRAVIS" != true ]]; then
             password=$(python probemanager/scripts/db_password.py -d $destfull 2>&1)
             sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$password';\""
         else
@@ -294,18 +251,10 @@ create_db() {
         fi
         createdb -T template0 -O probemanager probemanager
     fi
-
-    if [[ "$arg" = 'prod' ]]; then
-        python "$destfull"probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
-        python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
-        python "$destfull"probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
-        python "$destfull"probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.$arg
-    elif [[ "$arg" = 'dev' ]]; then
-        venv/bin/python probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
-        venv/bin/python probemanager/manage.py migrate --settings=probemanager.settings.$arg
-        venv/bin/python probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
-        venv/bin/python probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.$arg
-    fi
+    python "$destfull"probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
+    python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
+    python "$destfull"probemanager/manage.py loaddata init.json --settings=probemanager.settings.$arg
+    python "$destfull"probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.$arg
     for f in probemanager/*; do
         if [[ -d $f ]]; then
             if test -f "$f"/init_db.sh ; then
@@ -317,51 +266,48 @@ create_db() {
 
 update_db(){
     echo '## Update DB ##'
-    "$destfull"venv/bin/python "$destfull"probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
-    "$destfull"venv/bin/python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
+    python "$destfull"probemanager/manage.py makemigrations --settings=probemanager.settings.$arg
+    python "$destfull"probemanager/manage.py migrate --settings=probemanager.settings.$arg
 }
 
 create_superuser(){
     echo '## Create Super user ##'
-    if [[ "$arg" = 'prod' ]]; then
-        python "$destfull"probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
-    else
-        venv/bin/python probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
-    fi
+    python "$destfull"probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
 }
 
 collect_static(){
-    echo '## Collect static ##'
-    python "$destfull"probemanager/manage.py collectstatic --noinput --settings=probemanager.settings.$arg
+    if [[ "$arg" = 'prod' ]]; then
+        echo '## Collect static ##'
+        python "$destfull"probemanager/manage.py collectstatic --noinput --settings=probemanager.settings.$arg
+    fi
 }
 
 check_deployement(){
-    echo '## Check deployment ##'
-    result=$( python "$destfull"probemanager/manage.py check --deploy --settings=probemanager.settings.$arg )
-    result=$( python "$destfull"probemanager/manage.py validate_templates --settings=probemanager.settings.$arg )
+    if [[ "$arg" = 'prod' ]]; then
+        echo '## Check deployment ##'
+        result=$( python "$destfull"probemanager/manage.py check --deploy --settings=probemanager.settings.$arg )
+        result=$( python "$destfull"probemanager/manage.py validate_templates --settings=probemanager.settings.$arg )
+    fi
 }
 
 generate_doc(){
     echo '## Generate doc ##'
-    if [[ "$arg" = 'prod' ]]; then
-        export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
-        python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
-        sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
-    elif [[ "$arg" = 'dev' ]]; then
-        export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
-        venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
-        venv/bin/sphinx-build -b html docs docs/_build/html
-    fi
+    python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
+    sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
 }
 
 setup_tests(){
-    echo '## Setup tests ##'
-    venv/bin/python probemanager/manage.py runscript setup_tests --settings=probemanager.settings.$arg
+    if [[ "$arg" = 'dev' ]]; then
+        echo '## Setup tests ##'
+        python "$destfull"probemanager/manage.py runscript setup_tests --settings=probemanager.settings.$arg
+    fi
 }
 
 apache_conf(){
-    echo '## Create Apache configuration ##'
-    python "$destfull"probemanager/manage.py runscript apache --script-args $destfull
+    if [[ "$arg" = 'prod' ]]; then
+        echo '## Create Apache configuration ##'
+        python "$destfull"probemanager/manage.py runscript apache --script-args $destfull
+    fi
 }
 
 update_repo(){
@@ -372,111 +318,93 @@ update_repo(){
 }
 
 launch_celery(){
-    if [ ! -f "$destfull"probemanager/celery.pid ]; then
-        echo '## Start Celery ##'
-        (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
-    else
-        echo '## Restart Celery ##'
-        kill $( cat "$destfull"probemanager/celery.pid)
-        pkill -f celery
-        if [ -f "$destfull"probemanager/celery.pid ]; then
-            rm "$destfull"probemanager/celery.pid
+    if [[ "$arg" = 'prod' ]]; then
+        if [ ! -f "$destfull"probemanager/celery.pid ]; then
+            echo '## Start Celery ##'
+            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+        else
+            echo '## Restart Celery ##'
+            kill $( cat "$destfull"probemanager/celery.pid)
+            pkill -f celery
+            if [ -f "$destfull"probemanager/celery.pid ]; then
+                rm "$destfull"probemanager/celery.pid
+            fi
+            sleep 8
+            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
         fi
-        sleep 8
-        (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
     fi
 }
 
 post_install() {
-    echo '## Post Install ##'
-    chown -R www-data:www-data "$destfull"
-    # chmod -R 400 "$destfull"
-    if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
-         chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
-    fi
-    chmod 400 "$destfull"fernet_key.txt
-    chmod 400 "$destfull"secret_key.txt
-    chmod 400 "$destfull"password_db.txt
-    chmod 400 "$destfull"conf.ini
+    if [[ "$arg" = 'prod' ]]; then
+        echo '## Post Install ##'
+        chown -R www-data:www-data "$destfull"
+        if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
+             chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
+        fi
+        chmod 400 "$destfull"fernet_key.txt
+        chmod 400 "$destfull"secret_key.txt
+        chmod 400 "$destfull"password_db.txt
+        chmod 400 "$destfull"conf.ini
 
-    if [ ! -d /var/www/.ansible ]; then
-        mkdir /var/www/.ansible
-        chown www-data:www-data /var/www/.ansible
+        touch /var/log/probemanager.log
+        touch /var/log/probemanager-error.log
+        chown www-data /var/log/probemanager.log
+        chown www-data /var/log/probemanager-error.log
+        a2dissite 000-default.conf
+        a2dismod deflate -f
+        systemctl restart apache2
     fi
-    touch /var/log/probemanager.log
-    touch /var/log/probemanager-error.log
-    chown www-data /var/log/probemanager.log
-    chown www-data /var/log/probemanager-error.log
-    a2dissite 000-default.conf
-    a2dismod deflate -f
-    systemctl restart apache2
 }
-echo "VIRTUAL ENV"
-echo "$VIRTUAL_ENV"
-echo $TRAVIS
-pwd
-which python
 
+first=false
+if [ ! -d "$destfull" ]; then
+    mkdir $destfull
+    first=true
+elif [ ! -f "$destfull"probemanager/version.txt ]; then
+    first=true
+fi
+if [ "$first" = true ]; then
+    echo 'First prod install'
+    echo 'Install in dir : '$destfull
 
-# Install or update ?
-if [[ "$arg" = 'prod' ]]; then
-    if [ ! -d $dest'/ProbeManager' ]; then
-        echo 'First prod install'
-        echo 'Install in dir : '$destfull
-        mkdir $dest/ProbeManager
-        update_repo
-        clean
-        copy_files
-        installOsDependencies
-        installVirtualEnv
-        set_host
-        set_timezone
-        set_log
-        set_git
-        generate_keys
-        chooseApps
-        set_smtp
-        set_settings
-        install_modules
-        create_db
-        generate_version
-        create_superuser
-        collect_static
-        check_deployement
-        generate_doc
-        apache_conf
-        post_install
-        launch_celery
-
-    else
-        echo 'Update prod install'
-
-        update_repo
-        clean
-        copy_files
-        generate_version
-        update_db
-        collect_static
-        check_deployement
-        generate_doc
-        post_install
-        launch_celery
-    fi
-elif [[ "$arg" = 'dev' ]]; then
-    echo 'Install for Development'
-
+    update_repo
     clean
-    installOsDependencies
-    installVirtualEnv
-    set_settings
+    copy_files
+    install_os_dependencies
+    install_virtualenv
+    set_host
+    set_timezone
+    set_logs
     set_git
+    generate_keys
+    select_apps
+    set_smtp
     install_modules
-    generate_version
     create_db
+    generate_version
     create_superuser
+    collect_static
+    check_deployement
     generate_doc
     setup_tests
+    apache_conf
+    post_install
+    launch_celery
 
+else
+    echo 'Update prod install'
+
+    update_repo
+    clean
+    copy_files
+    generate_version
+    update_db
+    collect_static
+    check_deployement
+    generate_doc
+    post_install
+    launch_celery
 fi
 
 exit
