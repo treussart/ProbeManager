@@ -400,8 +400,8 @@ else
     echo 'Update install'
 
     update_repo
-    clean
     copy_files
+    install_virtualenv
     generate_version
     update_db
     collect_static
