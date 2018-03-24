@@ -10,6 +10,7 @@ python:
 - '3.6'
 env:
 - DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
+- MOZ_HEADLESS=1
 os:
 - linux
 sudo: required
@@ -35,3 +36,5 @@ before_script:
   - sleep 3 # give xvfb some time to start
   - "./start.sh travis" # start a Web server
   - sleep 3 # give Web server some time to bind to sockets, etc
+addons:
+  firefox: latest
