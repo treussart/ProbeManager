@@ -76,7 +76,7 @@ clean() {
 copy_files(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Copy files in install dir ##'
-        if [[ "$2" != "." ]]; then # Don't copy in the same directory
+        if [[ "$destfull" != $( pwd ) ]]; then # Don't copy in the same directory
             if [ -d $destfull ]; then
                 # copy the project
                 cp -r probemanager $destfull
