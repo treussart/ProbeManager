@@ -17,15 +17,19 @@ if [[ "$VIRTUAL_ENV" = "" ]]; then
         source venv/bin/activate
     fi
 fi
+if [[ "$arg" != 'travis' ]]; then
+    if [ ! -f probemanager/celery.pid ]; then
+        (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+    else
+        kill $( cat probemanager/celery.pid)
+        sleep 3
+        pkill -f celery
+        sleep 3
+        (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+    fi
 
-if [ ! -f probemanager/celery.pid ]; then
-    (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+    venv/bin/python probemanager/manage.py runserver --settings=probemanager.settings.$arg
 else
-    kill $( cat probemanager/celery.pid)
-    sleep 3
-    pkill -f celery
-    sleep 3
-    (cd probemanager/ && ../venv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+    (cd probemanager/ && /home/travis/virtualenv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+    /home/travis/virtualenv/bin/python probemanager/manage.py runserver --settings=probemanager.settings.$arg
 fi
-
-venv/bin/python probemanager/manage.py runserver --settings=probemanager.settings.$arg
