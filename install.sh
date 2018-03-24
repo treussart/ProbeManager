@@ -497,7 +497,7 @@ elif [[ "$arg" = 'travis' ]]; then
     generate_version
     create_db
     generate_doc
-    ls -l /etc/suricata/rules
+    which suricata
 
 fi
 
