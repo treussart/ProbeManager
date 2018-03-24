@@ -9,8 +9,9 @@ python:
 - '3.5'
 - '3.6'
 env:
-- DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
-- MOZ_HEADLESS=1
+  global:
+    - DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
+    - MOZ_HEADLESS=1
 os:
 - linux
 sudo: required
