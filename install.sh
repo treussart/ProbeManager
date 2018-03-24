@@ -220,10 +220,8 @@ set_logs(){
         echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
         sudo touch /var/log/probemanager.log
         sudo touch /var/log/probemanager-error.log
-        if [[ "$TRAVIS" = true ]]; then
-            sudo chown travis /var/log/probemanager.log
-            sudo chown travis /var/log/probemanager-error.log
-        fi
+        sudo chown $(whoami) /var/log/probemanager.log
+        sudo chown $(whoami) /var/log/probemanager-error.log
     fi
 }
 
