@@ -277,8 +277,10 @@ update_db(){
 }
 
 create_superuser(){
-    echo '## Create Super user ##'
-    python "$destfull"probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
+    if [[ "$TRAVIS" != true ]]; then
+        echo '## Create Super user ##'
+        python "$destfull"probemanager/manage.py createsuperuser --settings=probemanager.settings.$arg
+    fi
 }
 
 collect_static(){
