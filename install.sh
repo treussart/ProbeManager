@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 HELP="
-First argument : dev, prod or travis
+First argument : dev or prod
 Second argument : path to the install destination (Only with prod argument)
 dev : For local devlopement.
-travis : For test platform.
 prod : For use in production.
 Example :
 ./install.sh dev
@@ -14,9 +13,6 @@ Example :
 # Get args
 if [ -z $1 ] || [[ "$1" = 'dev' ]]; then
     arg="dev"
-    dest=""
-elif [[ "$1" = 'travis' ]]; then
-    arg=$1
     dest=""
 elif [[ "$1" = 'prod' ]]; then
     arg=$1
@@ -39,12 +35,7 @@ install_modules(){
     for f in probemanager/*; do
         if [[ -d $f ]]; then
             if test -f "$f"/install.sh ; then
-                if [[ "$arg" != 'travis' ]]; then
-                    ./"$f"/install.sh "$arg" "$destfull"
-                else
-                    sudo ./"$f"/install.sh "$arg" "$destfull"
-                fi
-
+                ./"$f"/install.sh "$arg" "$destfull"
             fi
         fi
     done
@@ -99,15 +90,10 @@ installOsDependencies() {
     echo '## Install Dependencies ##'
     # Debian
     if [ -f /etc/debian_version ]; then
-        if [[ "$arg" != 'travis' ]]; then
-            apt update
-            grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs apt install -y
-            if [[ "$arg" = 'prod' ]]; then
-                grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs apt install -y
-            fi
-        else
-            sudo apt update
-            grep -v "#" requirements/os/debian.txt | grep -v "^$" | sudo xargs apt install -y
+        apt update
+        grep -v "#" requirements/os/debian.txt | grep -v "^$" | xargs apt install -y
+        if [[ "$arg" = 'prod' ]]; then
+            grep -v "#" requirements/os/debian_prod.txt | grep -v "^$" | xargs apt install -y
         fi
     fi
     # OSX with brew
@@ -189,12 +175,6 @@ installVirtualEnv() {
         DJANGO_SETTINGS_MODULE="probemanager.settings.$arg"
         export DJANGO_SETTINGS_MODULE
         export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
-    elif [[ "$arg" = 'travis' ]]; then
-        pip install -r requirements/base.txt
-        pip install -r requirements/test.txt
-        DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
-        export DJANGO_SETTINGS_MODULE
-        export PYTHONPATH=$PYTHONPATH:$PWD/probemanager
     fi
 }
 
@@ -206,8 +186,12 @@ generate_keys(){
 set_host(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Set Host file ##'
-        echo "Give the host, followed by [ENTER]:"
-        read host
+        if [[ "$TRAVIS" = true ]]; then
+            host='probemanager.test.com'
+        else
+            echo "Give the host, followed by [ENTER]:"
+            read host
+        fi
         echo "[DEFAULT]" > "$destfull"conf.ini
         echo "HOST = $host" >> "$destfull"conf.ini
     fi
@@ -215,8 +199,12 @@ set_host(){
 
 set_timezone(){
     echo '## Set Timezone ##'
-    echo "Give the timezone, followed by [ENTER], example: Europe/Paris, default: UTC:"
-    read timezone
+    if [[ "$TRAVIS" = true ]]; then
+        timezone='Europe/Paris'
+    else
+        echo "Give the timezone, followed by [ENTER], example: Europe/Paris, default: UTC:"
+        read timezone
+    fi
     if [ "$timezone" == "" ]; then
         $timezone='UTC'
     fi
@@ -269,29 +257,12 @@ generate_version(){
         "$destfull"venv/bin/python "$destfull"probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args $destfull $(pwd)
     elif [[ "$arg" = 'dev' ]]; then
         venv/bin/python probemanager/manage.py runscript version --settings=probemanager.settings.$arg --script-args -
-    elif [[ "$arg" = 'travis' ]]; then
-        python probemanager/manage.py runscript version --settings=probemanager.settings.dev --script-args -
     fi
 }
 
 create_db() {
     echo '## Create DB ##'
-    if [[ "$arg" = 'travis' ]]; then
-        for f in probemanager/*; do
-            if [[ -d $f ]]; then
-                if test -d "$f"/migrations ; then
-                    rm "$f"/migrations/00*.py
-                fi
-            fi
-        done
-        sudo su postgres -c "psql -c \"CREATE USER probemanager WITH LOGIN CREATEDB ENCRYPTED PASSWORD 'probemanager';\""
-        sudo su postgres -c 'createdb -T template0 -O probemanager probemanager'
-
-        python probemanager/manage.py makemigrations --settings=probemanager.settings.dev
-        python probemanager/manage.py migrate --settings=probemanager.settings.dev
-        python probemanager/manage.py loaddata init.json --settings=probemanager.settings.dev
-        python probemanager/manage.py loaddata crontab.json --settings=probemanager.settings.dev
-    elif [ -f /etc/debian_version ]; then
+    if [ -f /etc/debian_version ]; then
         sudo service postgresql restart
         sleep 5
         sudo su postgres -c 'dropdb --if-exists probemanager'
@@ -373,9 +344,6 @@ generate_doc(){
         export DJANGO_SETTINGS_MODULE=probemanager.settings.$arg
         venv/bin/python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
         venv/bin/sphinx-build -b html docs docs/_build/html
-    elif [[ "$arg" = 'travis' ]]; then
-        python probemanager/manage.py runscript generate_doc --settings=probemanager.settings.dev
-        sphinx-build -b html docs docs/_build/html
     fi
 }
 
@@ -496,17 +464,6 @@ elif [[ "$arg" = 'dev' ]]; then
     create_superuser
     generate_doc
     setup_tests
-
-elif [[ "$arg" = 'travis' ]]; then
-    echo 'Install for Travis env'
-
-    installOsDependencies
-    installVirtualEnv
-    set_git
-    install_modules
-    generate_version
-    create_db
-    generate_doc
 
 fi
 
