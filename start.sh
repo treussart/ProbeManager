@@ -32,6 +32,6 @@ if [[ "$arg" != 'travis' ]]; then
 
     venv/bin/python probemanager/manage.py runserver --settings=probemanager.settings.$arg
 else
-    (cd probemanager/ && /home/travis/virtualenv/bin/celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
-    /home/travis/virtualenv/bin/python probemanager/manage.py runserver --settings=probemanager.settings.dev
+    (cd probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l debug -f probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+    python probemanager/manage.py runserver --settings=probemanager.settings.dev
 fi
