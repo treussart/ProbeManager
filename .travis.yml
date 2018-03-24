@@ -23,7 +23,7 @@ services:
 - postgresql
 - rabbitmq
 install:
-- "sudo ./install.sh prod"
+- "sudo ./install.sh ."
 script:
 - "./test.sh"
 before_install:
