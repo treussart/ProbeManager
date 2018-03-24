@@ -76,7 +76,7 @@ clean() {
 copy_files(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Copy files in install dir ##'
-        if [ "$2" != "." ]; then # Don't copy in the same directory
+        if [[ "$2" != "." ]]; then # Don't copy in the same directory
             if [ -d $destfull ]; then
                 # copy the project
                 cp -r probemanager $destfull
@@ -155,7 +155,9 @@ install_virtualenv() {
     pip install wheel
     if [[ "$arg" = 'prod' ]]; then
         pip install -r requirements/prod.txt
-        pip install -r requirements/test.txt
+    elif [[ "$TRAVIS" = true ]]; then
+        su travis -c "pip install -r requirements/prod.txt"
+        su travis -c "pip install -r requirements/test.txt"
     else
         pip install -r requirements/dev.txt
         pip install -r requirements/test.txt
@@ -311,10 +313,12 @@ apache_conf(){
 }
 
 update_repo(){
-    echo '## Update Git repository ##'
-    branch=$( git branch | grep \* | cut -d ' ' -f2 )
-    git pull origin $branch
-    git submodule update --remote
+    if [[ "$TRAVIS" != true ]]; then
+        echo '## Update Git repository ##'
+        branch=$( git branch | grep \* | cut -d ' ' -f2 )
+        git pull origin $branch
+        git submodule update --remote
+    fi
 }
 
 launch_celery(){
