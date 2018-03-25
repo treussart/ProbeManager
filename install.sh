@@ -350,19 +350,19 @@ launch_celery(){
 post_install() {
     if [[ "$arg" = 'prod' ]]; then
         echo '## Post Install ##'
-        sudo chown -R www-data "$destfull"
+        sudo chown -R www-data:$(whoami) "$destfull"
         if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
              sudo chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
         fi
-        sudo chmod 400 "$destfull"fernet_key.txt
-        sudo chmod 400 "$destfull"secret_key.txt
+        sudo chmod 440 "$destfull"fernet_key.txt
+        sudo chmod 440 "$destfull"secret_key.txt
         if [ -f "$destfull"password_db.txt ]; then
-            sudo chmod 400 "$destfull"password_db.txt
+            sudo chmod 440 "$destfull"password_db.txt
         fi
-        sudo chmod 400 "$destfull"conf.ini
+        sudo chmod 440 "$destfull"conf.ini
 
-        sudo chown www-data /var/log/probemanager.log
-        sudo chown www-data /var/log/probemanager-error.log
+        sudo chown www-data:$(whoami) /var/log/probemanager.log
+        sudo chown www-data:$(whoami) /var/log/probemanager-error.log
         sudo a2dissite 000-default.conf
         sudo a2dismod deflate -f
         sudo service apache2 restart
