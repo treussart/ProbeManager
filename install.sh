@@ -356,7 +356,9 @@ post_install() {
         fi
         sudo chmod 400 "$destfull"fernet_key.txt
         sudo chmod 400 "$destfull"secret_key.txt
-        sudo chmod 400 "$destfull"password_db.txt
+        if [ -f "$destfull"password_db.txt ]; then
+            sudo chmod 400 "$destfull"password_db.txt
+        fi
         sudo chmod 400 "$destfull"conf.ini
 
         sudo chown www-data /var/log/probemanager.log
