@@ -150,7 +150,7 @@ Documentation
 ~~~~~~~~~~~~~
 
 
-Respect the standard : reStructuredText (RST).
+Respect standard : reStructuredText (RST).
 
 .. code-block:: sh
 
@@ -179,33 +179,3 @@ Good practice :
 
     flake8 --install-hook git
     git config --bool flake8.strict true
-
-
-Update
-~~~~~~
-
-
-Repository
-==========
-
-.. code-block:: sh
-
-    git pull origin master
-    git submodule foreach git pull origin master
-
-
-PIP Packages
-============
-
-.. code-block:: sh
-
-    See upgrades :
-    pip list --outdated --format=freeze
-    Apply upgrades :
-    pip list --outdated --format=legacy | cut -d' ' -f1 | xargs pip install --upgrade
-
-    Upgrade pip :
-    pip install --upgrade pip
-
-    Uninstall packages :
-    pip freeze | cut -d'=' -f1 | xargs pip uninstall -y
