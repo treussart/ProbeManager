@@ -405,8 +405,8 @@ if [ "$first" = true ]; then
     generate_doc
     setup_tests
     apache_conf
-    post_install
     launch_celery
+    post_install
 
 else
     echo 'Update install'
@@ -419,8 +419,8 @@ else
     collect_static
     check_deployement
     generate_doc
-    post_install
     launch_celery
+    post_install
 fi
 
 exit
