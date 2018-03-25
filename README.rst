@@ -92,7 +92,9 @@ For Production :
 ----------------
 
 Default destination path : /usr/local/share
+
 Fo same destination path : .
+
 Be sure to have the write rights in the destination path
 
 .. code-block:: sh
