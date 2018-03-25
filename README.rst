@@ -175,7 +175,7 @@ Respect the syntax and rules PEP8
 
 Good practice :
 
-..
+.. code-block:: sh
 
     flake8 --install-hook git
     git config --bool flake8.strict true
