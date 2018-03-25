@@ -331,6 +331,8 @@ update_repo(){
 
 launch_celery(){
     if [[ "$arg" = 'prod' ]]; then
+        sudo touch /var/log/probemanager-celery.log
+        sudo chown $(whoami) /var/log/probemanager-celery.log
         if [ ! -f "$destfull"probemanager/celery.pid ]; then
             echo '## Start Celery ##'
             (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)

@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+if [[ "$TRAVIS" = true ]]; then
+    export DJANGO_SETTINGS_MODULE="probemanager.settings.prod"
+    LOG_PATH="/var/log/"
+else
+    export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
+    LOG_PATH="probemanager/"
+fi
+
 # Get args
 if [ -z $1 ]; then
     arg=""
@@ -36,9 +44,9 @@ coverage html
 if [ -f .coveralls.yml ]; then
     coveralls
 fi
-if [ -f probemanager/probemanager-error.log ]; then
+if [ -f "$LOG_PATH"probemanager-error.log ]; then
     echo "#### LOGS ####"
-    cat probemanager/probemanager-error.log
+    cat "$LOG_PATH"probemanager-error.log
 fi
 
 exit
