@@ -6,13 +6,12 @@ from core.models import Probe
 
 
 def run(*args):
-    if args[0] != "-":
-        dest = args[0].rstrip('/') + '/probemanager'
-        if args[1]:
-            source = args[1] + '/probemanager'
+    if args[0] and args[1]:
+        source = args[0] + '/probemanager'
+        dest = args[1].rstrip('/') + '/probemanager'
     else:
-        dest = settings.BASE_DIR
         source = settings.BASE_DIR
+        dest = settings.BASE_DIR
     # en prod git_tag prendre des sources ou copier git_root = settings.BASE_DIR
     with open(dest + '/version.txt', 'w') as f:
         f.write(git_tag(source))

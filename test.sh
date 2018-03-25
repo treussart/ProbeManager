@@ -15,34 +15,39 @@ do
 done
 sourcecoverage="--source=""$sourcecoverage"
 
-if [[ "$TRAVIS" = true ]]; then
-    flake8 $source --config=.flake8
-    coverage erase
-    coverage run $sourcecoverage probemanager/runtests.py $arg
-    coverage report -i --skip-covered
-    if [ -f .coveralls.yml ]; then
-        coveralls
-    fi
-    if [ -f probemanager/probemanager-error.log ]; then
-        echo "#### LOGS ####"
-        cat probemanager/probemanager-error.log
-    fi
-else
+if [[ "$VIRTUAL_ENV" = "" ]]; then
     if [ ! -d venv ]; then
         echo 'Install before testing'
         exit
-    fi
-    if [[ "$VIRTUAL_ENV" = "" ]]; then
+    else
         source venv/bin/activate
-    fi
-    venv/bin/flake8 $source --config=.flake8
-    venv/bin/coverage erase
-    venv/bin/coverage run $sourcecoverage probemanager/runtests.py $arg
-    venv/bin/coverage report -i --skip-covered
-    venv/bin/coverage html
-    if [ -f .coveralls.yml ]; then
-        venv/bin/coveralls
     fi
 fi
 
+if [[ "$TRAVIS" = true ]]; then
+    export DJANGO_SETTINGS_MODULE="probemanager.settings.prod"
+    LOG_PATH="/var/log/"
+else
+    export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
+    LOG_PATH="probemanager/"
+fi
 
+# test if fixtures secrets files are here
+if [ ! -f probemanager/core/fixtures/test-core-secrets.json ]; then
+    echo 'Secrets fixtures not found'
+    exit 1
+fi
+flake8 $source --config=.flake8
+coverage erase
+coverage run $sourcecoverage probemanager/runtests.py $arg
+coverage report -i --skip-covered
+coverage html
+if [ -f .coveralls.yml ]; then
+    coveralls
+fi
+if [ -f "$LOG_PATH"probemanager-error.log ]; then
+    echo "#### LOGS ####"
+    cat "$LOG_PATH"probemanager-error.log
+fi
+
+exit

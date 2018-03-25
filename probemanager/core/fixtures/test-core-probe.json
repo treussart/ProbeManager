@@ -11,7 +11,8 @@
       "secure_deployment": true,
       "scheduled_rules_deployment_enabled": true,
       "scheduled_rules_deployment_crontab": 1,
-      "server": 1
+      "server": 1,
+      "installed": true
     }
   }
 ]

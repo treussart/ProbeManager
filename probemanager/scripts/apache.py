@@ -43,7 +43,7 @@ WSGIPythonPath {{ dest }}/{{ project_name }}
         install_dir = '/etc/apache2/sites-enabled/'
     else:
         install_dir = dest
-    with open(install_dir + '/probemanager.conf', 'w') as f:
+    with open(install_dir + 'probemanager.conf', 'w') as f:
         f.write(apache_conf)
 
 

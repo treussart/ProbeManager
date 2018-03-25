@@ -292,7 +292,8 @@ def deploy_rules(request, id):
         try:
             deploy_rules_probe.delay(probe.name)
             messages.add_message(request, messages.SUCCESS,
-                                 mark_safe("Deployed rules launched with succeed. <a href='/admin/core/job/'>View Job</a>"))
+                                 mark_safe("Deployed rules launched with succeed. "
+                                           "<a href='/admin/core/job/'>View Job</a>"))
         except Exception as e:
             logger.exception('Error during the rules deployment : ' + str(e))
             messages.add_message(request, messages.ERROR, 'Error during the rules deployment : ' + str(e))

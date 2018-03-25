@@ -47,7 +47,7 @@ if os.path.isfile(os.path.join(ROOT_DIR, 'password_db.txt')):
     with open(os.path.join(ROOT_DIR, 'password_db.txt'), encoding='utf_8') as f:
         PASSWORD_DB = decrypt(f.read().strip())
 else:
-    PASSWORD_DB = ""
+    PASSWORD_DB = "probemanager"
 
 # Celery settings
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
@@ -78,15 +78,25 @@ LOGGING['handlers']['file-error'].update({'filename': config['LOG']['FILE_ERROR_
 
 TIME_ZONE = config['DEFAULT']['TIME_ZONE']
 
-EMAIL_HOST = config['EMAIL']['EMAIL_HOST']
-EMAIL_PORT = int(config['EMAIL']['EMAIL_PORT'])
-EMAIL_HOST_USER = config['EMAIL']['EMAIL_HOST_USER']
-DEFAULT_FROM_EMAIL = config['EMAIL']['DEFAULT_FROM_EMAIL']
-EMAIL_USE_TLS = config.getboolean('EMAIL', 'EMAIL_USE_TLS')
-if os.path.isfile(os.path.join(ROOT_DIR, 'password_email.txt')):
-    with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
-        EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
-elif config.has_option('EMAIL','EMAIL_HOST_PASSWORD'):
-    EMAIL_HOST_PASSWORD = config['EMAIL']['EMAIL_HOST_PASSWORD']
+if os.path.isfile(os.path.join(BASE_DIR, 'core/fixtures/test-core-secrets.ini')):
+    config_secrets = configparser.ConfigParser()
+    config_secrets.read(os.path.join(BASE_DIR, 'core/fixtures/test-core-secrets.ini'))
+    EMAIL_HOST = config_secrets['EMAIL']['EMAIL_HOST']
+    EMAIL_PORT = int(config_secrets['EMAIL']['EMAIL_PORT'])
+    EMAIL_HOST_USER = config_secrets['EMAIL']['EMAIL_HOST_USER']
+    DEFAULT_FROM_EMAIL = config_secrets['EMAIL']['DEFAULT_FROM_EMAIL']
+    EMAIL_USE_TLS = config_secrets.getboolean('EMAIL', 'EMAIL_USE_TLS')
+    EMAIL_HOST_PASSWORD = config_secrets['EMAIL']['EMAIL_HOST_PASSWORD']
 else:
-    EMAIL_HOST_PASSWORD = ""
+    EMAIL_HOST = config['EMAIL']['EMAIL_HOST']
+    EMAIL_PORT = int(config['EMAIL']['EMAIL_PORT'])
+    EMAIL_HOST_USER = config['EMAIL']['EMAIL_HOST_USER']
+    DEFAULT_FROM_EMAIL = config['EMAIL']['DEFAULT_FROM_EMAIL']
+    EMAIL_USE_TLS = config.getboolean('EMAIL', 'EMAIL_USE_TLS')
+    if os.path.isfile(os.path.join(ROOT_DIR, 'password_email.txt')):
+        with open(os.path.join(ROOT_DIR, 'password_email.txt'), encoding='utf_8') as f:
+            EMAIL_HOST_PASSWORD = decrypt(f.read().strip())
+    elif config.has_option('EMAIL','EMAIL_HOST_PASSWORD'):
+        EMAIL_HOST_PASSWORD = config['EMAIL']['EMAIL_HOST_PASSWORD']
+    else:
+        EMAIL_HOST_PASSWORD = ""

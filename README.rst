@@ -92,10 +92,12 @@ For Production :
 ----------------
 
 Default destination path : /usr/local/share
+Fo same destination path : .
+Be sure to have the write rights in the destination path
 
 .. code-block:: sh
 
-    sudo ./install.sh prod [destination path]
+    ./install.sh prod [destination path]
 
 With Django server (not recommended) :
 
@@ -111,6 +113,8 @@ With Apache (Only for Debian) :
 
 Launch the tests
 ================
+
+(Only for Dev or Travis) :
 
 .. code-block:: sh
 
