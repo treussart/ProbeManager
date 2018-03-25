@@ -56,7 +56,7 @@ Installation
 Operating System
 ================
 
-OSX and Debian are Supported.
+OSX, Debian and Ubuntu are Supported.
 
 Requirements
 ============
