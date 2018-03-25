@@ -30,14 +30,11 @@ Probe Manager
 Presentation
 ~~~~~~~~~~~~
 
-It is common to note that many IDS which are installed on a system,
-are not updated, as well on the side of the software, as rules.
-This can be explained because maintenance and rule management are complicated.
-This observation made me want to develop an application that would better manage network
-and machine detection probes on a system.
+It is common to see that many IDS (intrusion and detection system), including the software and its rules are not updated regularly. This can be explained by the fact the software and rule management is often complicated, which can be a particular problem for small and medium sized enterprises that normally lack system security expertise and full time operators to supervise their respective IDS. This finding encouraged me to develop an application (ProbeManager) that will better manage network and machine detection probes on a system.
 
-ProbeManager is an application that centralizes the management of intrusion detection system.
-For the moment the NIDS Suricata is implemented and Bro and OSSEC are being implemented.
+ProbeManager is an application that centralizes the management of intrusion detection systems. The purpose of ProbeManager is to simplify the deployment of detection probes and to put together all of their functionalities in one single place. ProbeManager also allows you to check the status of the probes and to be notified whenever there is a problem or dysfunction. ProbeManager is not a SIEM (security information and event management), therefore, it doesn’t display the probe outputs (alerts, logs, etc…)
+
+ProbeManager is currently compatible with NIDS Suricata, and it will soon also be compatible with Bro and OSSEC.
 
 Features
 ========
