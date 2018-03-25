@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-if [[ "$TRAVIS" = true ]]; then
-    export DJANGO_SETTINGS_MODULE="probemanager.settings.prod"
-    LOG_PATH="/var/log/"
-else
-    export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
-    LOG_PATH="probemanager/"
-fi
-
 # Get args
 if [ -z $1 ]; then
     arg=""
@@ -31,6 +23,15 @@ if [[ "$VIRTUAL_ENV" = "" ]]; then
         source venv/bin/activate
     fi
 fi
+
+if [[ "$TRAVIS" = true ]]; then
+    export DJANGO_SETTINGS_MODULE="probemanager.settings.prod"
+    LOG_PATH="/var/log/"
+else
+    export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
+    LOG_PATH="probemanager/"
+fi
+
 # test if fixtures secrets files are here
 if [ ! -f probemanager/core/fixtures/test-core-secrets.json ]; then
     echo 'Secrets fixtures not found'
