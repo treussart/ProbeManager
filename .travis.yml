@@ -10,7 +10,6 @@ python:
 - '3.6'
 env:
   global:
-    - DJANGO_SETTINGS_MODULE="probemanager.settings.prod"
     - MOZ_HEADLESS=1
 os:
 - linux
