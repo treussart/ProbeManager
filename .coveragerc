@@ -15,3 +15,4 @@ omit =  */tests/*
         */__init__.py
 [html]
 title = "ProbeManager Coverage report"
+skip_covered = True
