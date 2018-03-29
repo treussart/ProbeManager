@@ -2,6 +2,7 @@
 plugins =
     django_coverage_plugin
 [report]
+fail_under = 70
 omit =  */tests/*
         venv/*
         /home/travis/virtualenv/*
