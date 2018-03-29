@@ -40,7 +40,7 @@ fi
 flake8 $source --config=.flake8
 coverage erase
 coverage run $sourcecoverage probemanager/runtests.py $arg
-coverage report -i --skip-covered --fail-under=70
+coverage report
 coverage html
 if [ -f .coveralls.yml ]; then
     coveralls
