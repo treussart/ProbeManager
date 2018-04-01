@@ -14,5 +14,6 @@ omit =  */tests/*
         */migrations/*
         */__init__.py
         */settings.py
+        suricata-*/*
 [html]
 title = "ProbeManager Coverage report"
