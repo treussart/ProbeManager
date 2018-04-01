@@ -7,6 +7,13 @@
     }
 },
 {
+    "model": "core.ossupported",
+    "pk": 1,
+    "fields": {
+        "name": "ubuntu"
+    }
+},
+{
     "model": "core.configuration",
     "pk": 1,
     "fields": {

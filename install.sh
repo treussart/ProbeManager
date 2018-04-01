@@ -373,7 +373,8 @@ post_install() {
 
 first=false
 if [ ! -d "$destfull" ]; then
-    mkdir $destfull
+    sudo mkdir $destfull
+    sudo chown $(whoami) $destfull
     first=true
 elif [ ! -f "$destfull"probemanager/version.txt ]; then
     first=true

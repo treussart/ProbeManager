@@ -145,7 +145,7 @@ class Probe(CommonMixin, models.Model):
 
     def uptime(self):
         if self.installed:
-            if self.server.os.name == 'debian':
+            if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
                 # command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
                 command = "service " + self.type.lower() + " status | grep since"
             else:
@@ -162,7 +162,7 @@ class Probe(CommonMixin, models.Model):
             return 'Not installed'
 
     def restart(self):
-        if self.server.os.name == 'debian':
+        if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command = "service " + self.__class__.__name__.lower() + " restart"
         else:
             raise Exception("Not yet implemented")
@@ -176,7 +176,7 @@ class Probe(CommonMixin, models.Model):
         return {'status': True}
 
     def start(self):
-        if self.server.os.name == 'debian':
+        if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command = "service " + self.__class__.__name__.lower() + " start"
         else:
             raise Exception("Not yet implemented")
@@ -190,7 +190,7 @@ class Probe(CommonMixin, models.Model):
         return {'status': True}
 
     def stop(self):
-        if self.server.os.name == 'debian':
+        if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command = "service " + self.__class__.__name__.lower() + " stop"
         else:
             raise Exception("Not yet implemented")
@@ -205,7 +205,7 @@ class Probe(CommonMixin, models.Model):
 
     def status(self):
         if self.installed:
-            if self.server.os.name == 'debian':
+            if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
                 command = "service " + self.__class__.__name__.lower() + " status"
             else:
                 raise Exception("Not yet implemented")
@@ -221,7 +221,7 @@ class Probe(CommonMixin, models.Model):
             return " "
 
     def reload(self):
-        if self.server.os.name == 'debian':
+        if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command = "service " + self.__class__.__name__.lower() + " reload"
         else:
             raise Exception("Not yet implemented")
@@ -235,7 +235,7 @@ class Probe(CommonMixin, models.Model):
         return {'status': True}
 
     def install(self):
-        if self.server.os.name == 'debian':
+        if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command1 = "apt update"
             command2 = "apt install " + self.__class__.__name__.lower()
         else:

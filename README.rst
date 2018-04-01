@@ -21,11 +21,11 @@ Probe Manager
 .. |Version| image:: https://img.shields.io/github/tag/treussart/ProbeManager.svg
 .. |Commits| image:: https://img.shields.io/github/commits-since/treussart/ProbeManager/latest.svg
 .. |Coverage_Status| image:: https://coveralls.io/repos/github/treussart/ProbeManager/badge.svg?branch=master
-   :target: https://coveralls.io/github/matleses/ProbeManager?branch=master
+   :target: https://coveralls.io/github/treussart/ProbeManager?branch=master
 .. |Build_Status| image:: https://travis-ci.org/treussart/ProbeManager.svg?branch=master
-   :target: https://travis-ci.org/matleses/ProbeManager
+   :target: https://travis-ci.org/treussart/ProbeManager
 .. |Code_Health| image:: https://landscape.io/github/treussart/ProbeManager/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/matleses/ProbeManager/master
+   :target: https://landscape.io/github/treussart/ProbeManager/master
 
 Presentation
 ~~~~~~~~~~~~
