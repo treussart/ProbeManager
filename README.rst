@@ -61,8 +61,8 @@ OSX, Debian and Ubuntu are Supported.
 Requirements
 ============
 
--  Python3.
--  Pip.
+-  Python3.5+
+-  Pip
 -  Rabbitmq-server (installed with install script)
 -  Postgresql (installed with install script)
 
