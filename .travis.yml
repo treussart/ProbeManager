@@ -9,6 +9,8 @@ python:
 - '3.5'
 - '3.6'
 env:
+  matrix:
+    - SURICATA_VERSION="4.0.4"
   global:
     - MOZ_HEADLESS=1
 os:

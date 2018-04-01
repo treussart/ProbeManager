@@ -5,3 +5,4 @@ python3-venv
 python3-dev
 python3-wheel
 rabbitmq-server
+wget

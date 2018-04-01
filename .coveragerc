@@ -11,7 +11,9 @@ omit =  */tests/*
         probemanager/probemanager/settings/*
         probemanager/manage.py
         probemanager/runtests.py
-        migrations/*
+        */migrations/*
         */__init__.py
+        */settings.py
+        suricata-*/*
 [html]
 title = "ProbeManager Coverage report"
