@@ -8,7 +8,7 @@
 },
 {
     "model": "core.ossupported",
-    "pk": 1,
+    "pk": 2,
     "fields": {
         "name": "ubuntu"
     }
