@@ -41,7 +41,7 @@ class OsSupportedTest(TestCase):
     def test_os_supported(self):
         all_os_supported = OsSupported.get_all()
         os_supported = OsSupported.get_by_id(1)
-        self.assertEqual(len(all_os_supported), 1)
+        self.assertEqual(len(all_os_supported), 2)
         self.assertEqual(os_supported.name, "debian")
         self.assertEqual(str(os_supported), "debian")
         os_supported = OsSupported.get_by_id(99)
