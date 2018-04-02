@@ -47,7 +47,7 @@ class Rule(CommonMixin, models.Model):
     @classmethod
     def find(cls, pattern):
         """Search the pattern in all the scripts and signatures"""
-        return cls.objects.filter(rule_full__contains=pattern)
+        return cls.objects.filter(rule_full__icontains=pattern)
 
 
 class DataTypeUpload(CommonMixin, models.Model):

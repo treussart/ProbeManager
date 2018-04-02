@@ -47,7 +47,7 @@ def search(request):
                                     pass
                                 probe_data.update({'name': app.label})
                                 data.append(probe_data)
-            return render(request, 'rules/search.html', {'data': data})
+            return render(request, 'rules/search.html', {'data': data, 'pattern': pattern})
         else:
             return render(request, 'rules/search.html', {'message': 'Pattern ' + pattern + ' not found'})
     else:
