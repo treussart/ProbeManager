@@ -46,8 +46,10 @@ if [ -f .coveralls.yml ]; then
     coveralls
 fi
 if [ -f "$LOG_PATH"probemanager-error.log ]; then
-    echo "#### LOGS ####"
+    echo "#### ERROR LOGS ####"
     cat "$LOG_PATH"probemanager-error.log
+    echo "#### CELERY LOGS ####"
+    cat "$LOG_PATH"probemanager-celery.log
 fi
 
 exit
