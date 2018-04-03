@@ -42,9 +42,11 @@ coverage erase
 coverage run $sourcecoverage probemanager/runtests.py $arg
 coverage report
 coverage html --skip-covered
-coverage xml
-python-codacy-coverage -r coverage.xml
 
+if [[ "$TRAVIS" = true ]]; then
+    coverage xml
+    python-codacy-coverage -r coverage.xml
+fi
 if [ -f .coveralls.yml ]; then
     coveralls
 fi
