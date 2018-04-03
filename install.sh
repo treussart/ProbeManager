@@ -125,14 +125,14 @@ select_apps(){
         done
         for i in ${apps[@]}; do
             if [[ -z "${text// }" ]];then
-                text=$text"'"$i"'"
+                text=$text"'$i'"
             else
-                text=$text", '"$i"'"
+                text=$text", '$i'"
             fi
         done
         echo "Module(s) available : "${apps[*]}
         echo "[APPS]" >> "$destfull"conf.ini
-        echo "PROD_APPS = ["$text"]" >> "$destfull"conf.ini
+        echo "PROD_APPS = [$text]" >> "$destfull"conf.ini
     fi
 }
 
@@ -293,8 +293,8 @@ collect_static(){
 check_deployement(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Check deployment ##'
-        result=$( python "$destfull"probemanager/manage.py check --deploy --settings=probemanager.settings.$arg )
-        result=$( python "$destfull"probemanager/manage.py validate_templates --settings=probemanager.settings.$arg )
+        python "$destfull"probemanager/manage.py check --deploy --settings=probemanager.settings.$arg
+        python "$destfull"probemanager/manage.py validate_templates --settings=probemanager.settings.$arg
     fi
 }
 
