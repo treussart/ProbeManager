@@ -25,11 +25,11 @@ class ClassType(CommonMixin, models.Model):
     @classmethod
     def get_by_name(cls, name):
         try:
-            object = cls.objects.get(name=name)
+            obj = cls.objects.get(name=name)
         except cls.DoesNotExist as e:
             logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
-        return object
+        return obj
 
 
 class Rule(CommonMixin, models.Model):
@@ -62,11 +62,11 @@ class DataTypeUpload(CommonMixin, models.Model):
     @classmethod
     def get_by_name(cls, name):
         try:
-            object = cls.objects.get(name=name)
+            obj = cls.objects.get(name=name)
         except cls.DoesNotExist as e:
             logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
-        return object
+        return obj
 
 
 class MethodUpload(CommonMixin, models.Model):
@@ -81,11 +81,11 @@ class MethodUpload(CommonMixin, models.Model):
     @classmethod
     def get_by_name(cls, name):
         try:
-            object = cls.objects.get(name=name)
+            obj = cls.objects.get(name=name)
         except cls.DoesNotExist as e:
             logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
-        return object
+        return obj
 
 
 class RuleSet(CommonMixin, models.Model):
@@ -104,11 +104,11 @@ class RuleSet(CommonMixin, models.Model):
     @classmethod
     def get_by_name(cls, name):
         try:
-            object = cls.objects.get(name=name)
+            obj = cls.objects.get(name=name)
         except cls.DoesNotExist as e:
             logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
-        return object
+        return obj
 
 
 class Source(CommonMixin, models.Model):
@@ -131,8 +131,8 @@ class Source(CommonMixin, models.Model):
     @classmethod
     def get_by_uri(cls, uri):
         try:
-            object = cls.objects.get(uri=uri)
+            obj = cls.objects.get(uri=uri)
         except cls.DoesNotExist as e:
             logger.debug('Tries to access an object that does not exist : ' + str(e))
             return None
-        return object
+        return obj
