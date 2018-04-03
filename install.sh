@@ -335,16 +335,16 @@ launch_celery(){
         sudo chown $(whoami) /var/log/probemanager-celery.log
         if [ ! -f "$destfull"probemanager/celery.pid ]; then
             echo '## Start Celery ##'
-            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+            (cd "$destfull"probemanager/ && sudo celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
         else
             echo '## Restart Celery ##'
-            kill $( cat "$destfull"probemanager/celery.pid)
-            pkill -f celery
+            sudo kill $( cat "$destfull"probemanager/celery.pid)
+            sudo pkill -f celery
             if [ -f "$destfull"probemanager/celery.pid ]; then
-                rm "$destfull"probemanager/celery.pid
+                sudo rm "$destfull"probemanager/celery.pid
             fi
             sleep 8
-            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+            (cd "$destfull"probemanager/ && sudo celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
         fi
     fi
 }
