@@ -43,7 +43,7 @@ coverage run $sourcecoverage probemanager/runtests.py $arg
 coverage report
 coverage html --skip-covered
 
-if [[ "$TRAVIS" = true ]]; then
+if [[ "$CODACY_PROJECT_TOKEN" != "" ]]; then
     coverage xml
     python-codacy-coverage -r coverage.xml
 fi
