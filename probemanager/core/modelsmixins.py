@@ -26,11 +26,11 @@ class CommonMixin:
     @classmethod
     def get_last(cls):
         try:
-            object = cls.objects.last()
+            obj = cls.objects.last()
         except cls.DoesNotExist:
             cls.get_logger().warning('Tries to access an object that does not exist', exc_info=True)
             return None
-        return object
+        return obj
 
     @classmethod
     def get_nb_last(cls, nbr):
