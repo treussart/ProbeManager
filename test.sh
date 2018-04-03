@@ -42,12 +42,17 @@ coverage erase
 coverage run $sourcecoverage probemanager/runtests.py $arg
 coverage report
 coverage html --skip-covered
+coverage xml
+python-codacy-coverage -r coverage.xml
+
 if [ -f .coveralls.yml ]; then
     coveralls
 fi
 if [ -f "$LOG_PATH"probemanager-error.log ]; then
     echo "#### ERROR LOGS ####"
     cat "$LOG_PATH"probemanager-error.log
+fi
+if [ -f "$LOG_PATH"probemanager-celery.log ]; then
     echo "#### CELERY LOGS ####"
     cat "$LOG_PATH"probemanager-celery.log
 fi
