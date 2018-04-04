@@ -51,7 +51,7 @@ if [ -f .coveralls.yml ]; then
     coveralls
 fi
 
-bandit -r probemanager/
+bandit -c .bandit -r probemanager/
 
 if [ -f "$LOG_PATH"probemanager-error.log ]; then
     echo "#### ERROR LOGS ####"
