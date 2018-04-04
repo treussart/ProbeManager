@@ -134,3 +134,5 @@ class ServerTest(TestCase):
 
     def test_server(self):
         self.assertEqual(Server.get_by_host("localhost"), Server.get_by_id(1))
+        self.assertFalse(Server.get_by_host("localhost").test())
+        self.assertFalse(Server.get_by_host("localhost").test_root())

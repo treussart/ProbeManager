@@ -148,7 +148,7 @@ class Probe(CommonMixin, models.Model):
             if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
                 # command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
                 command = "service " + self.type.lower() + " status | grep since"
-            else:
+            else:  # pragma: no cover
                 raise Exception("Not yet implemented")
             tasks = {"uptime": command}
             try:
@@ -164,7 +164,7 @@ class Probe(CommonMixin, models.Model):
     def restart(self):
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command = "service " + self.__class__.__name__.lower() + " restart"
-        else:
+        else:  # pragma: no cover
             raise Exception("Not yet implemented")
         tasks = {"restart": command}
         try:
@@ -178,7 +178,7 @@ class Probe(CommonMixin, models.Model):
     def start(self):
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command = "service " + self.__class__.__name__.lower() + " start"
-        else:
+        else:  # pragma: no cover
             raise Exception("Not yet implemented")
         tasks = {"start": command}
         try:
@@ -192,7 +192,7 @@ class Probe(CommonMixin, models.Model):
     def stop(self):
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command = "service " + self.__class__.__name__.lower() + " stop"
-        else:
+        else:  # pragma: no cover
             raise Exception("Not yet implemented")
         tasks = {"stop": command}
         try:
@@ -207,7 +207,7 @@ class Probe(CommonMixin, models.Model):
         if self.installed:
             if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
                 command = "service " + self.__class__.__name__.lower() + " status"
-            else:
+            else:  # pragma: no cover
                 raise Exception("Not yet implemented")
             tasks = {"status": command}
             try:
@@ -223,7 +223,7 @@ class Probe(CommonMixin, models.Model):
     def reload(self):
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command = "service " + self.__class__.__name__.lower() + " reload"
-        else:
+        else:  # pragma: no cover
             raise Exception("Not yet implemented")
         tasks = {"reload": command}
         try:
@@ -238,7 +238,7 @@ class Probe(CommonMixin, models.Model):
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command1 = "apt update"
             command2 = "apt install " + self.__class__.__name__.lower()
-        else:
+        else:  # pragma: no cover
             raise Exception("Not yet implemented")
         tasks = OrderedDict(sorted({"1_update": command1, "2_install": command2}.items(), key=lambda t: t[0]))
         try:
