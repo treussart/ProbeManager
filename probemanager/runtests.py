@@ -22,8 +22,8 @@ def runtests():
     tests_all = []
     for test in glob.glob(os.path.dirname(os.path.abspath(__file__)) + '/*/tests/test*.py'):
         file = os.path.basename(test)
-        dir = os.path.basename(os.path.normpath(os.path.join(os.path.dirname(test), os.pardir)))
-        tests_all.append(dir + '.tests.' + str(file.split('.')[0]))
+        directory = os.path.basename(os.path.normpath(os.path.join(os.path.dirname(test), os.pardir)))
+        tests_all.append(directory + '.tests.' + str(file.split('.')[0]))
 
     tests_app = []
     for test in tests_all:
