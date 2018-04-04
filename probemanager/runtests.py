@@ -13,6 +13,7 @@ assert scripted
 
 
 def runtests():
+    """ By default tests are executed by alphabetical order """
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", "--all", help="run all tests - default action", action="store_true", default=False)
     parser.add_argument("--app", help="run the tests for this app", nargs='+', action='append', dest='app', default=[])
@@ -46,5 +47,4 @@ def runtests():
 
 
 if __name__ == "__main__":
-    """ By default tests are executed by alphabetical order """
     runtests()
