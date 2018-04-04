@@ -4,7 +4,7 @@ Probe Manager
 
 |Licence| |Version|
 
-|Coverage_Status| |Codacy_Badge|
+|Coverage_Status|
 
 +------------------+--------------------+
 | Status           | Operating system   |
@@ -18,12 +18,10 @@ Probe Manager
 .. |Downloads| image:: https://img.shields.io/github/downloads/treussart/ProbeManager/total.svg
 .. |Version| image:: https://img.shields.io/github/tag/treussart/ProbeManager.svg
 .. |Commits| image:: https://img.shields.io/github/commits-since/treussart/ProbeManager/latest.svg
-.. |Coverage_Status| image:: https://coveralls.io/repos/github/treussart/ProbeManager/badge.svg?branch=master
-   :target: https://coveralls.io/github/treussart/ProbeManager?branch=master
-.. |Build_Status| image:: https://travis-ci.org/treussart/ProbeManager.svg?branch=master
+.. |Coverage_Status| image:: https://coveralls.io/repos/github/treussart/ProbeManager/badge.svg?branch=develop
+   :target: https://coveralls.io/github/treussart/ProbeManager?branch=develop
+.. |Build_Status| image:: https://travis-ci.org/treussart/ProbeManager.svg?branch=develop
    :target: https://travis-ci.org/treussart/ProbeManager
-.. |Codacy_Badge| image:: https://api.codacy.com/project/badge/Grade/8c16c475964d4db58ce0c7de0d03abbf :target: https://www.codacy.com/app/treussart/ProbeManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=treussart/ProbeManager&amp;utm_campaign=Badge_Grade
-
 
 Presentation
 ~~~~~~~~~~~~
