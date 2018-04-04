@@ -4,9 +4,7 @@ Probe Manager
 
 |Licence| |Version|
 
-|Code_Health|
-
-|Coverage_Status|
+|Code_Health| |Codacy_Badge|
 
 +------------------+--------------------+
 | Status           | Operating system   |
