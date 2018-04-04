@@ -3,3 +3,4 @@ coveralls==1.3.0
 django-coverage-plugin==1.5.0
 flake8==3.5.0
 codacy-coverage==1.3.10
+bandit==1.4.0
