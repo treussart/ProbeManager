@@ -47,13 +47,16 @@ class OsSupportedTest(TestCase):
         # Mixins
         self.assertEqual(OsSupported.get_last(), OsSupported.get_by_id(2))
         self.assertEqual(OsSupported.get_nbr(1)[0], os_supported)
-
+        OsSupported.get_by_id(1).delete()
+        OsSupported.get_by_id(2).delete()
+        self.assertEqual(OsSupported.get_last(), None)
         os_supported = OsSupported.get_by_id(99)
         self.assertEqual(os_supported, None)
         with self.assertRaises(AttributeError):
             os_supported.name
         with self.assertLogs('core.models', level='DEBUG'):
             OsSupported.get_by_id(99)
+        OsSupported.objects.create(name='debian')
         with self.assertRaises(IntegrityError):
             OsSupported.objects.create(name="debian")
 
