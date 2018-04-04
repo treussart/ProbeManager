@@ -156,3 +156,4 @@ class ConfTest(TestCase):
     def test_conf(self):
         conf = Configuration.objects.get(id=1)
         self.assertEqual(str(conf), "PUSHBULLET_API_KEY")
+        self.assertEqual(conf.get_value('inexist'), None)
