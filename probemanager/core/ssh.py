@@ -35,7 +35,7 @@ def execute(server, commands, become=False):
             else:
                 raise Exception("Server cannot become", server.name)
         client = connection(server)
-        stdout, stderr = client.exec_command(command)
+        stdin, stdout, stderr = client.exec_command(command)
         if stdout.channel.recv_exit_status() != 0:
             raise Exception("Command Failed",
                             "Command: " + command_name +
