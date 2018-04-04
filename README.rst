@@ -26,6 +26,7 @@ Probe Manager
    :target: https://travis-ci.org/treussart/ProbeManager
 .. |Code_Health| image:: https://landscape.io/github/treussart/ProbeManager/master/landscape.svg?style=flat
    :target: https://landscape.io/github/treussart/ProbeManager/master
+.. image:: https://api.codacy.com/project/badge/Grade/8c16c475964d4db58ce0c7de0d03abbf    :target: https://www.codacy.com/app/treussart/ProbeManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=treussart/ProbeManager&amp;utm_campaign=Badge_Grade
 
 Presentation
 ~~~~~~~~~~~~
