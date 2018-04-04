@@ -127,6 +127,7 @@ class RuleSetTest(TestCase):
         self.assertEqual(len(all_ruleset), 1)
         self.assertEqual(ruleset.name, "ruleset1")
         self.assertEqual(str(ruleset), "ruleset1")
+        self.assertEqual(RuleSet.get_by_name('inexist'), None)
         ruleset = RuleSet.get_by_id(99)
         self.assertEqual(ruleset, None)
         with self.assertRaises(AttributeError):
