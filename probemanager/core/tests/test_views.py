@@ -84,3 +84,21 @@ class ViewsCoreTest(TestCase):
         self.assertIn(' was added successfully', str(response.content))
         self.assertIn('Connection to the server Failed', str(response.content))
         self.assertEqual(len(Server.get_all()), 2)
+        Server.get_by_id(1).delete()
+        self.assertEqual(len(Server.get_all()), 1)
+        response = self.client.post('/admin/core/server/add/', {'name': 'test-server-ok',
+                                                                'host': 'server.treussart.com',
+                                                                'os': '1',
+                                                                'remote_user': 'travis',
+                                                                'remote_port': 33003,
+                                                                'become_method': 'sudo',
+                                                                'become_user': 'root',
+                                                                'become_pass': 'test',
+                                                                'become': False,
+                                                                'ssh_private_key_file': '1',
+                                                                },
+                                    follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(' was added successfully', str(response.content))
+        self.assertIn('Connection to the server OK', str(response.content))
+        self.assertEqual(len(Server.get_all()), 2)

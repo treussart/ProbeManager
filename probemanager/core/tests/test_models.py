@@ -4,7 +4,7 @@ import pytz
 from django.db.utils import IntegrityError
 from django.test import TestCase
 from datetime import timedelta, datetime
-from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job
+from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job, Server
 
 
 # from unittest import skip
@@ -123,3 +123,14 @@ class ProbeTest(TestCase):
             Probe.get_by_name('probe99')
         with self.assertRaises(IntegrityError):
             Probe.objects.create(name="suricata1")
+
+
+class ServerTest(TestCase):
+    fixtures = ['init', 'crontab', 'test-core-server', 'test-core-probe']
+
+    @classmethod
+    def setUpTestData(cls):
+        pass
+
+    def test_server(self):
+        self.assertEqual(Server.get_by_host("localhost"), Server.get_by_id(1))
