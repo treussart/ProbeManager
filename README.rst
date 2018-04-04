@@ -4,7 +4,7 @@ Probe Manager
 
 |Licence| |Version|
 
-|Code_Health| |Codacy_Badge|
+|Coverage_Status| |Codacy_Badge|
 
 +------------------+--------------------+
 | Status           | Operating system   |
@@ -22,8 +22,6 @@ Probe Manager
    :target: https://coveralls.io/github/treussart/ProbeManager?branch=master
 .. |Build_Status| image:: https://travis-ci.org/treussart/ProbeManager.svg?branch=master
    :target: https://travis-ci.org/treussart/ProbeManager
-.. |Code_Health| image:: https://landscape.io/github/treussart/ProbeManager/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/treussart/ProbeManager/master
 .. |Codacy_Badge| image:: https://api.codacy.com/project/badge/Grade/8c16c475964d4db58ce0c7de0d03abbf :target: https://www.codacy.com/app/treussart/ProbeManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=treussart/ProbeManager&amp;utm_campaign=Badge_Grade
 
 
