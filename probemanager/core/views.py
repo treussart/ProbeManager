@@ -34,18 +34,18 @@ def index(request):
 
 
 @login_required
-def probe_index(request, id):
+def probe_index(request, key):
     """
     Display an individual Probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound('<h1>Page not found</h1>')
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound('<h1>Page not found</h1>')
     else:
@@ -53,16 +53,16 @@ def probe_index(request, id):
 
 
 @login_required
-def start(request, id):
+def start(request, key):
     """
     Start a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
@@ -80,16 +80,16 @@ def start(request, id):
 
 
 @login_required
-def stop(request, id):
+def stop(request, key):
     """
     Stop a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
@@ -106,16 +106,16 @@ def stop(request, id):
 
 
 @login_required
-def restart(request, id):
+def restart(request, key):
     """
     Restart a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
@@ -133,16 +133,16 @@ def restart(request, id):
 
 
 @login_required
-def reload(request, id):
+def reload(request, key):
     """
     Reload a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
@@ -160,16 +160,16 @@ def reload(request, id):
 
 
 @login_required
-def status(request, id):
+def status(request, key):
     """
     Status of a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
@@ -187,16 +187,16 @@ def status(request, id):
 
 
 @login_required
-def install(request, id):
+def install(request, key):
     """
     Install a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
@@ -211,16 +211,16 @@ def install(request, id):
 
 
 @login_required
-def update(request, id):
+def update(request, key):
     """
     Update a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
@@ -235,16 +235,16 @@ def update(request, id):
 
 
 @login_required
-def deploy_conf(request, id):
+def deploy_conf(request, key):
     """
     Deploy the configuration of a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
@@ -276,16 +276,16 @@ def deploy_conf(request, id):
 
 
 @login_required
-def deploy_rules(request, id):
+def deploy_rules(request, key):
     """
     Deploy the rules of a probe instance.
     """
-    probe = Probe.get_by_id(id)
+    probe = Probe.get_by_id(key)
     if probe.subtype:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.subtype)
     else:
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
-    probe = my_class.get_by_id(id)
+    probe = my_class.get_by_id(key)
     if probe is None:
         return HttpResponseNotFound
     else:
