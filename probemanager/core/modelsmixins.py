@@ -33,7 +33,7 @@ class CommonMixin:
         return obj
 
     @classmethod
-    def get_nb_last(cls, nbr):
+    def get_nbr(cls, nbr):
         try:
             objects = cls.objects.all()[:nbr]
         except IndexError:

@@ -44,6 +44,10 @@ class OsSupportedTest(TestCase):
         self.assertEqual(len(all_os_supported), 2)
         self.assertEqual(os_supported.name, "debian")
         self.assertEqual(str(os_supported), "debian")
+        # Mixins
+        self.assertEqual(OsSupported.get_last(), OsSupported.get_by_id(2))
+        self.assertEqual(OsSupported.get_nbr(1)[0], os_supported)
+
         os_supported = OsSupported.get_by_id(99)
         self.assertEqual(os_supported, None)
         with self.assertRaises(AttributeError):
