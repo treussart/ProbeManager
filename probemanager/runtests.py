@@ -13,6 +13,7 @@ assert scripted
 
 
 def runtests():
+    """ By default tests are executed by alphabetical order """
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", "--all", help="run all tests - default action", action="store_true", default=False)
     parser.add_argument("--app", help="run the tests for this app", nargs='+', action='append', dest='app', default=[])
@@ -21,8 +22,8 @@ def runtests():
     tests_all = []
     for test in glob.glob(os.path.dirname(os.path.abspath(__file__)) + '/*/tests/test*.py'):
         file = os.path.basename(test)
-        dir = os.path.basename(os.path.normpath(os.path.join(os.path.dirname(test), os.pardir)))
-        tests_all.append(dir + '.tests.' + str(file.split('.')[0]))
+        directory = os.path.basename(os.path.normpath(os.path.join(os.path.dirname(test), os.pardir)))
+        tests_all.append(directory + '.tests.' + str(file.split('.')[0]))
 
     tests_app = []
     for test in tests_all:
@@ -46,5 +47,4 @@ def runtests():
 
 
 if __name__ == "__main__":
-    """ By default tests are executed by alphabetical order """
     runtests()

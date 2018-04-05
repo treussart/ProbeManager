@@ -15,9 +15,9 @@ class CommonMixin:
         return cls.objects.all()
 
     @classmethod
-    def get_by_id(cls, id):
+    def get_by_id(cls, key):
         try:
-            probe = cls.objects.get(id=id)
+            probe = cls.objects.get(id=key)
         except cls.DoesNotExist:
             cls.get_logger().warning('Tries to access an object that does not exist', exc_info=True)
             return None
@@ -33,7 +33,7 @@ class CommonMixin:
         return obj
 
     @classmethod
-    def get_nb_last(cls, nbr):
+    def get_nbr(cls, nbr):
         try:
             objects = cls.objects.all()[:nbr]
         except IndexError:

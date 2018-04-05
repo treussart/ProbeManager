@@ -4,7 +4,7 @@ import pytz
 from django.db.utils import IntegrityError
 from django.test import TestCase
 from datetime import timedelta, datetime
-from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job
+from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job, Server, Configuration
 
 
 # from unittest import skip
@@ -44,12 +44,19 @@ class OsSupportedTest(TestCase):
         self.assertEqual(len(all_os_supported), 2)
         self.assertEqual(os_supported.name, "debian")
         self.assertEqual(str(os_supported), "debian")
+        # Mixins
+        self.assertEqual(OsSupported.get_last(), OsSupported.get_by_id(2))
+        self.assertEqual(OsSupported.get_nbr(1)[0], os_supported)
+        OsSupported.get_by_id(1).delete()
+        OsSupported.get_by_id(2).delete()
+        self.assertEqual(OsSupported.get_last(), None)
         os_supported = OsSupported.get_by_id(99)
         self.assertEqual(os_supported, None)
         with self.assertRaises(AttributeError):
             os_supported.name
         with self.assertLogs('core.models', level='DEBUG'):
             OsSupported.get_by_id(99)
+        OsSupported.objects.create(name='debian')
         with self.assertRaises(IntegrityError):
             OsSupported.objects.create(name="debian")
 
@@ -109,6 +116,14 @@ class ProbeTest(TestCase):
         self.assertEqual(probe.name, "probe1")
         self.assertEqual(str(probe), "probe1")
         self.assertEqual(probe.description, "test")
+        self.assertIn('Failed to get the uptime on the host :', probe.uptime())
+        self.assertFalse(probe.start()['status'])
+        self.assertFalse(probe.restart()['status'])
+        self.assertFalse(probe.stop()['status'])
+        self.assertFalse(probe.reload()['status'])
+        self.assertEqual('Failed to get status', probe.status())
+        probe.installed = False
+        self.assertEqual('Not installed', probe.uptime())
         probe = Probe.get_by_id(99)
         self.assertEqual(probe, None)
         with self.assertRaises(AttributeError):
@@ -123,3 +138,29 @@ class ProbeTest(TestCase):
             Probe.get_by_name('probe99')
         with self.assertRaises(IntegrityError):
             Probe.objects.create(name="suricata1")
+
+
+class ServerTest(TestCase):
+    fixtures = ['init', 'crontab', 'test-core-server', 'test-core-probe']
+
+    @classmethod
+    def setUpTestData(cls):
+        pass
+
+    def test_server(self):
+        self.assertEqual(Server.get_by_host("localhost"), Server.get_by_id(1))
+        self.assertFalse(Server.get_by_host("localhost").test())
+        self.assertFalse(Server.get_by_host("localhost").test_root())
+
+
+class ConfTest(TestCase):
+    fixtures = ['init', 'crontab', 'test-core-probeconfiguration', 'test-core-server', 'test-core-probe']
+
+    @classmethod
+    def setUpTestData(cls):
+        pass
+
+    def test_conf(self):
+        conf = Configuration.objects.get(id=1)
+        self.assertEqual(str(conf), "PUSHBULLET_API_KEY")
+        self.assertEqual(conf.get_value('inexist'), None)

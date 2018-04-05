@@ -71,7 +71,7 @@ def create_deploy_rules_task(probe, schedule=None, source=None):
                                             task='core.tasks.deploy_rules',
                                             enabled=probe.scheduled_rules_deployment_enabled,
                                             args=json.dumps([probe.name, ]))
-    except Exception as e:
+    except Exception:
         logger.warning("Error if 2 sources have the same crontab on the same probe -> useless")
 
 

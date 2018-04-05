@@ -2,9 +2,11 @@
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 
+from core.models import Server, SshKey, OsSupported
+
 
 class ViewsCoreTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-rules-source']
+    fixtures = ['init', 'crontab', 'test-rules-source', 'test-core-secrets']
 
     def setUp(self):
         self.client = Client()
@@ -61,3 +63,42 @@ class ViewsCoreTest(TestCase):
         self.assertEqual(str(response.context['user']), 'testuser')
         with self.assertTemplateUsed('core/index.html'):
             self.client.get('/')
+
+    def test_admin(self):
+        response = self.client.get('/admin/core/server/', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(Server.get_all()), 1)
+        response = self.client.post('/admin/core/server/add/', {'name': 'test-server',
+                                                                'host': 'test.com',
+                                                                'os': '1',
+                                                                'remote_user': 'test',
+                                                                'remote_port': 22,
+                                                                'become_method': 'sudo',
+                                                                'become_user': 'root',
+                                                                'become_pass': 'test',
+                                                                'become': True,
+                                                                'ssh_private_key_file': '1',
+                                                                },
+                                    follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(' was added successfully', str(response.content))
+        self.assertIn('Connection to the server Failed', str(response.content))
+        self.assertEqual(len(Server.get_all()), 2)
+        Server.get_by_id(1).delete()
+        self.assertEqual(len(Server.get_all()), 1)
+        response = self.client.post('/admin/core/server/add/', {'name': 'test-server-ok',
+                                                                'host': 'server.treussart.com',
+                                                                'os': '1',
+                                                                'remote_user': 'travis',
+                                                                'remote_port': 33003,
+                                                                'become_method': 'sudo',
+                                                                'become_user': 'root',
+                                                                'become_pass': 'test',
+                                                                'become': False,
+                                                                'ssh_private_key_file': '1',
+                                                                },
+                                    follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(' was added successfully', str(response.content))
+        self.assertIn('Connection to the server OK', str(response.content))
+        self.assertEqual(len(Server.get_all()), 2)
