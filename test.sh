@@ -46,9 +46,8 @@ coverage html --skip-covered
 if [[ "$CODACY_PROJECT_TOKEN" != "" ]]; then
     coverage xml
     python-codacy-coverage -r coverage.xml
-    ls -la probemanager/suricata
-    python-codacy-coverage -d probemanager/suricata -r coverage.xml
-    python-codacy-coverage -d probemanager/checkcve -r coverage.xml
+    python-codacy-coverage -d probemanager/suricata -r coverage.xml -t $CODACY_SURICATA_TOKEN
+    python-codacy-coverage -d probemanager/checkcve -r coverage.xml -t $CODACY_CHECKCVE_TOKEN
 fi
 if [ -f .coveralls.yml ]; then
     coveralls
