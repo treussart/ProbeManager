@@ -5,11 +5,11 @@ Probe Manager
 |Licence| |Version|
 
 
-.. image:: https://api.codacy.com/project/badge/Grade/afc2ab5226584ac3b594eb09ebcc2ccc?branch=develop
+.. image:: https://api.codacy.com/project/badge/Grade/afc2ab5226584ac3b594eb09ebcc2ccc?branch=master
    :alt: Codacy Grade
    :target: https://app.codacy.com/app/treussart/ProbeManager?utm_source=github.com&utm_medium=referral&utm_content=treussart/ProbeManager&utm_campaign=badger
 
-.. image:: https://api.codacy.com/project/badge/Coverage/8c16c475964d4db58ce0c7de0d03abbf?branch=develop
+.. image:: https://api.codacy.com/project/badge/Coverage/8c16c475964d4db58ce0c7de0d03abbf?branch=master
    :alt: Codacy Coverage
    :target: https://www.codacy.com/app/treussart/ProbeManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=treussart/ProbeManager&amp;utm_campaign=Badge_Coverage
 
@@ -25,7 +25,7 @@ Probe Manager
 .. |Downloads| image:: https://img.shields.io/github/downloads/treussart/ProbeManager/total.svg
 .. |Version| image:: https://img.shields.io/github/tag/treussart/ProbeManager.svg
 .. |Commits| image:: https://img.shields.io/github/commits-since/treussart/ProbeManager/latest.svg
-.. |Build_Status| image:: https://travis-ci.org/treussart/ProbeManager.svg?branch=develop
+.. |Build_Status| image:: https://travis-ci.org/treussart/ProbeManager.svg?branch=master
    :target: https://travis-ci.org/treussart/ProbeManager
 
 Presentation
