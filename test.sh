@@ -48,11 +48,11 @@ if [[ "$CODACY_PROJECT_TOKEN" != "" ]]; then
     python-codacy-coverage -r coverage.xml
 
     coverage xml -o coverage-suricata.xml --include='probemanager/suricata/*'
-    python probemanager/scripts/remove_in_file.py -p probemanager/suricata/ probemanager.suricata. probemanager.suricata -f coverage-suricata.xml
+    python probemanager/scripts/remove_in_file.py -p probemanager/suricata/ -p probemanager.suricata. -p probemanager.suricata -f coverage-suricata.xml
     python-codacy-coverage -d probemanager/suricata -r coverage-suricata.xml -t $CODACY_SURICATA_TOKEN
 
     coverage xml -o coverage-checkcve.xml --include='probemanager/checkcve/*'
-    python probemanager/scripts/remove_in_file.py -p probemanager/checkcve/ probemanager.checkcve. probemanager.checkcve -f coverage-checkcve.xml
+    python probemanager/scripts/remove_in_file.py -p probemanager/checkcve/ -p probemanager.checkcve. -p probemanager.checkcve -f coverage-checkcve.xml
     python-codacy-coverage -d probemanager/checkcve -r coverage-checkcve.xml -t $CODACY_CHECKCVE_TOKEN
 fi
 if [ -f .coveralls.yml ]; then
