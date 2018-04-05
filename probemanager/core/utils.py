@@ -162,9 +162,8 @@ def update_progress(value):
     else:
         progress = dict()
         progress['progress'] = value
-        f = open(tmpdir + 'progress.json', 'w', encoding='utf_8')
-        f.write(json.dumps(progress))
-        f.close()
+        with open(tmpdir + 'progress.json', 'w', encoding='utf_8') as f:
+            f.write(json.dumps(progress))
 
 
 def add_1_hour(crontab):

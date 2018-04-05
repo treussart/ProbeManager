@@ -19,5 +19,4 @@ if __name__ == "__main__":
 
     with open(args.dest + 'password_db.txt', 'w') as f:
         f.write(password_encrypted)
-    f.close()
     exit(password)
