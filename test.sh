@@ -55,9 +55,6 @@ if [[ "$CODACY_PROJECT_TOKEN" != "" ]]; then
     python probemanager/scripts/remove_in_file.py -p probemanager/checkcve/ -p probemanager.checkcve -r ProbeManager:ProbeManager/probemanager/checkcve -f coverage-checkcve.xml
     ( cd probemanager/checkcve && python-codacy-coverage -r ../../coverage-checkcve.xml -t $CODACY_CHECKCVE_TOKEN )
 fi
-if [ -f .coveralls.yml ]; then
-    coveralls
-fi
 if [ -f "$LOG_PATH"probemanager-error.log ]; then
     echo "#### ERROR LOGS ####"
     cat "$LOG_PATH"probemanager-error.log
