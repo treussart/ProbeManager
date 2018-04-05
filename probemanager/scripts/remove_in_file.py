@@ -9,7 +9,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     with open(args.file, 'r') as f:
         replaced = re.sub(args.pattern, '', f.read())
-        print(replaced)
     with open(args.file, 'w') as f:
         f.write(replaced)
     exit()

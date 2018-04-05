@@ -47,15 +47,11 @@ if [[ "$CODACY_PROJECT_TOKEN" != "" ]]; then
     coverage xml
     python-codacy-coverage -r coverage.xml
 
-    coverage erase
-    coverage run probemanager/runtests.py suricata
-    coverage xml -o coverage-suricata.xml
+    coverage xml -o coverage-suricata.xml --include='probemanager/suricata/*'
     python probemanager/scripts/remove_in_file.py -p probemanager/suricata/ -f coverage-suricata.xml
     python-codacy-coverage -d probemanager/suricata -r coverage-suricata.xml -t $CODACY_SURICATA_TOKEN
 
-    coverage erase
-    coverage run probemanager/runtests.py checkcve
-    coverage xml -o coverage-checkcve.xml
+    coverage xml -o coverage-checkcve.xml --include='probemanager/checkcve/*'
     python probemanager/scripts/remove_in_file.py -p probemanager/checkcve/ -f coverage-checkcve.xml
     python-codacy-coverage -d probemanager/checkcve -r coverage-checkcve.xml -t $CODACY_CHECKCVE_TOKEN
 fi
