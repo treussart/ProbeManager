@@ -1,7 +1,6 @@
 from jinja2 import Template
 from core.utils import encrypt
 import os
-import sys
 from getpass import getpass
 from shutil import copyfile
 from django.conf import settings
@@ -47,7 +46,7 @@ template_server_test = """
 def run():
     skip = input('Add datas Tests ? (y/N) ')
     if skip.lower() == 'n' or not skip:
-        sys.exit(0)
+        exit(0)
     else:
         print("Conf for tests")
         pushbullet_key = input("PushBullet API key : ")
@@ -69,7 +68,7 @@ def run():
             os.chmod(ssh_dir + ssh_private_key_file_basename, 0o600)
         except Exception as e:
             print("Error in the path of the file : " + str(e))
-            sys.exit(1)
+            exit(1)
 
         t = Template(template_server_test)
         server_test = t.render(host=host,
@@ -84,5 +83,4 @@ def run():
                                )
         with open(settings.BASE_DIR + '/core/fixtures/test-core-secrets.json', 'w') as f:
             f.write(server_test)
-        f.close()
-        sys.exit(0)
+        exit(0)

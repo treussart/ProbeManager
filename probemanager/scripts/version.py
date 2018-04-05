@@ -1,4 +1,3 @@
-import sys
 from django.apps.registry import apps
 from django.conf import settings
 from core.git import git_tag
@@ -15,7 +14,6 @@ def run(*args):
     # en prod git_tag prendre des sources ou copier git_root = settings.BASE_DIR
     with open(dest + '/version.txt', 'w') as f:
         f.write(git_tag(source))
-    f.close()
     for app in apps.get_app_configs():
         for model in app.get_models():
             if issubclass(model, Probe):
@@ -24,4 +22,4 @@ def run(*args):
                     source_app = source + "/" + app.label + '/'
                     with open(dest_app + 'version.txt', 'w') as f:
                         f.write(git_tag(source_app))
-    sys.exit(0)
+    exit(0)
