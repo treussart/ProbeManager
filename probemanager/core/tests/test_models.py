@@ -7,7 +7,6 @@ from datetime import timedelta, datetime
 from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job, Server, Configuration
 
 
-# from unittest import skip
 class JobTest(TestCase):
     fixtures = ['init']
 
@@ -151,6 +150,7 @@ class ServerTest(TestCase):
         self.assertEqual(Server.get_by_host("localhost"), Server.get_by_id(1))
         self.assertFalse(Server.get_by_host("localhost").test())
         self.assertFalse(Server.get_by_host("localhost").test_root())
+        self.assertEqual(Server.get_by_host("unknown"), None)
 
 
 class ConfTest(TestCase):
