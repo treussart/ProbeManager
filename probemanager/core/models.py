@@ -85,7 +85,7 @@ class Server(CommonMixin, models.Model):
     become_pass = models.CharField(max_length=400, blank=True, null=True)
 
     def __str__(self):
-        return self.name + ' - ' + self.host + ', Os : ' + str(self.os)
+        return str(self.name) + ' - ' + str(self.host) + ', Os : ' + str(self.os)
 
     @classmethod
     def get_by_host(cls, host):
