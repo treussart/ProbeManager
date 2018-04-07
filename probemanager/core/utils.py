@@ -1,12 +1,9 @@
 import json
 import logging
-import os
 
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
-
-from probemanager.settings import BASE_DIR
 
 
 fernet_key = Fernet(settings.FERNET_KEY)
@@ -150,20 +147,6 @@ def add_10_min(crontab):
             raise ValueError()
     except ValueError:
         return schedule
-
-
-def update_progress(value):
-    tmpdir = BASE_DIR + "/tmp/"
-    if not os.path.exists(tmpdir):
-        os.makedirs(tmpdir)
-    if value >= 100:
-        if os.path.isfile(tmpdir + 'progress.json'):
-            os.remove(tmpdir + 'progress.json')
-    else:
-        progress = dict()
-        progress['progress'] = value
-        with open(tmpdir + 'progress.json', 'w', encoding='utf_8') as f:
-            f.write(json.dumps(progress))
 
 
 def add_1_hour(crontab):
