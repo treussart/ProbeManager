@@ -1,14 +1,10 @@
 import importlib
-import json
 import logging
-import os
 
 from django.apps.registry import apps
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
-from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
