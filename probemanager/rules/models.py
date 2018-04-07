@@ -1,4 +1,5 @@
 import logging
+import time
 
 from django.db import models
 from django.utils import timezone
@@ -122,7 +123,7 @@ class Source(CommonMixin, models.Model):
     scheduled_rules_deployment_crontab = models.ForeignKey(CrontabSchedule, blank=True, null=True,
                                                            on_delete=models.CASCADE)
     scheduled_deploy = models.BooleanField(default=False)
-    file = models.FileField(name='file', upload_to='tmp/upload/', blank=True)
+    file = models.FileField(name='file', upload_to='tmp/source/' + str(time.time()), blank=True)
     type = models.CharField(max_length=100, blank=True, default='', editable=False)
 
     def __str__(self):
