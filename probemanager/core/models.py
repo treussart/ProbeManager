@@ -234,7 +234,7 @@ class Probe(CommonMixin, models.Model):
         logger.debug("output : " + str(response))
         return {'status': True}
 
-    def install(self):
+    def install(self):  # pragma: no cover
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command1 = "apt update"
             command2 = "apt install " + self.__class__.__name__.lower()
@@ -251,7 +251,7 @@ class Probe(CommonMixin, models.Model):
         logger.debug("output : " + str(response))
         return {'status': True}
 
-    def update(self):
+    def update(self):  # pragma: no cover
         return self.install()
 
     @classmethod
