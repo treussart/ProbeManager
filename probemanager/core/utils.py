@@ -1,5 +1,9 @@
 import json
 import logging
+import os
+import time
+import shutil
+from contextlib import contextmanager
 
 from cryptography.fernet import Fernet
 from django.conf import settings
@@ -185,3 +189,17 @@ def add_1_hour(crontab):
             return schedule
     except ValueError:
         return schedule
+
+
+@contextmanager
+def get_tmp_dir(folder_name=None):
+    if folder_name:
+        tmp_dir = settings.BASE_DIR + '/tmp/' + str(folder_name) + '/' + str(time.time()) + '/'
+    else:
+        tmp_dir = settings.BASE_DIR + '/tmp/' + str(time.time()) + '/'
+    try:
+        if not os.path.exists(tmp_dir):
+            os.makedirs(tmp_dir)
+        yield tmp_dir
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
