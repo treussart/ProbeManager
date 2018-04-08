@@ -332,10 +332,10 @@ update_repo(){
 launch_celery(){
     if [[ "$arg" = 'prod' ]]; then
         if [ -f /var/log/probemanager-celery.log ]; then
-            sudo chown $(whoami) /var/log/probemanager-celery.log
+            sudo chown $(whoami):www-data /var/log/probemanager-celery.log
         else
             sudo touch /var/log/probemanager-celery.log
-            sudo chown $(whoami) /var/log/probemanager-celery.log
+            sudo chown $(whoami):www-data /var/log/probemanager-celery.log
         fi
         if [ ! -f "$destfull"probemanager/celery.pid ]; then
             echo '## Start Celery ##'
@@ -372,15 +372,19 @@ post_install() {
         fi
         if [ -f /var/log/probemanager.log ]; then
             sudo chown www-data:$(whoami) /var/log/probemanager.log
+            sudo chmod 774 /var/log/probemanager.log
         else
             sudo touch /var/log/probemanager.log
             sudo chown www-data:$(whoami) /var/log/probemanager.log
+            sudo chmod 774 /var/log/probemanager.log
         fi
         if [ -f /var/log/probemanager-error.log ]; then
             sudo chown www-data:$(whoami) /var/log/probemanager-error.log
+            sudo chmod 774 /var/log/probemanager-error.log
         else
             sudo touch /var/log/probemanager-error.log
             sudo chown www-data:$(whoami) /var/log/probemanager-error.log
+            sudo chmod 774 /var/log/probemanager-error.log
         fi
         sudo a2dissite 000-default.conf
         sudo a2dismod deflate -f
