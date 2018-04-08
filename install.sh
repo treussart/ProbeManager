@@ -356,7 +356,8 @@ launch_celery(){
 post_install() {
     if [[ "$arg" = 'prod' ]]; then
         echo '## Post Install ##'
-        sudo chown -R www-data:$(whoami) "$destfull"
+        sudo chown -R $(whoami):www-data "$destfull"
+        sudo chmod -R 744 "$destfull"
         if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
              sudo chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
         fi
