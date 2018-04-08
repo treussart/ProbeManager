@@ -1,6 +1,6 @@
-=============
-Probe Manager
-=============
+============
+ProbeManager
+============
 
 |Licence| |Version|
 
@@ -41,15 +41,21 @@ Features
 ========
 
  * Search rules in all probes.
- * List of installed probes and their status.
+ * List of installed probes and their status (Running or not, uptime ...).
+ * Install, update probe.
+ * Start, stop, reload and restart probe.
  * Push, Email notifications (change of status, ...).
  * API Restfull.
+ * See all asynchronous jobs.
 
+Usage
+~~~~~
 
-TODO
-====
+.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/docs/data/Deployement_example_for_Probemanager_in_a_network.png
+   :alt: Deployement example for Probemanager in a network
 
- * Increase tests
+.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/docs/data/Deployement_example_for_Probemanager_on_a_VPS.png
+   :alt: Deployement example for Probemanager on a VPS
 
 Installation
 ~~~~~~~~~~~~
