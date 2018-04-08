@@ -1,12 +1,13 @@
 import json
 import logging
 import os
+import time
+import shutil
+from contextlib import contextmanager
 
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
-
-from probemanager.settings import BASE_DIR
 
 
 fernet_key = Fernet(settings.FERNET_KEY)
@@ -152,20 +153,6 @@ def add_10_min(crontab):
         return schedule
 
 
-def update_progress(value):
-    tmpdir = BASE_DIR + "/tmp/"
-    if not os.path.exists(tmpdir):
-        os.makedirs(tmpdir)
-    if value >= 100:
-        if os.path.isfile(tmpdir + 'progress.json'):
-            os.remove(tmpdir + 'progress.json')
-    else:
-        progress = dict()
-        progress['progress'] = value
-        with open(tmpdir + 'progress.json', 'w', encoding='utf_8') as f:
-            f.write(json.dumps(progress))
-
-
 def add_1_hour(crontab):
     schedule = crontab
     try:
@@ -202,3 +189,17 @@ def add_1_hour(crontab):
             return schedule
     except ValueError:
         return schedule
+
+
+@contextmanager
+def get_tmp_dir(folder_name=None):
+    if folder_name:
+        tmp_dir = settings.BASE_DIR + '/tmp/' + str(folder_name) + '/' + str(time.time()) + '/'
+    else:
+        tmp_dir = settings.BASE_DIR + '/tmp/' + str(time.time()) + '/'
+    try:
+        if not os.path.exists(tmp_dir):
+            os.makedirs(tmp_dir)
+        yield tmp_dir
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)

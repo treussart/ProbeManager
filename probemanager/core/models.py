@@ -85,7 +85,7 @@ class Server(CommonMixin, models.Model):
     become_pass = models.CharField(max_length=400, blank=True, null=True)
 
     def __str__(self):
-        return self.name + ' - ' + self.host + ', Os : ' + str(self.os)
+        return str(self.name) + ' - ' + str(self.host) + ', Os : ' + str(self.os)
 
     @classmethod
     def get_by_host(cls, host):
@@ -146,7 +146,6 @@ class Probe(CommonMixin, models.Model):
     def uptime(self):
         if self.installed:
             if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
-                # command = "ps -eo lstart\=,cmd | grep " + self.type.lower() + " | sed -n '3 p'  |  cut -d '/' -f 1"
                 command = "service " + self.type.lower() + " status | grep since"
             else:  # pragma: no cover
                 raise Exception("Not yet implemented")
@@ -156,7 +155,7 @@ class Probe(CommonMixin, models.Model):
             except Exception as e:
                 logger.exception("Error during the uptime")
                 return 'Failed to get the uptime on the host : ' + str(e)
-            logger.warning("output : " + str(response))
+            logger.debug("output : " + str(response))
             return response['uptime']
         else:
             return 'Not installed'
@@ -200,7 +199,7 @@ class Probe(CommonMixin, models.Model):
         except Exception:
             logger.exception("Error during stop")
             return {'status': False, 'errors': "Error during stop"}
-        self.get_logger().debug("output : " + str(response))
+        logger.debug("output : " + str(response))
         return {'status': True}
 
     def status(self):
@@ -234,7 +233,7 @@ class Probe(CommonMixin, models.Model):
         logger.debug("output : " + str(response))
         return {'status': True}
 
-    def install(self):
+    def install(self):  # pragma: no cover
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command1 = "apt update"
             command2 = "apt install " + self.__class__.__name__.lower()
@@ -251,7 +250,7 @@ class Probe(CommonMixin, models.Model):
         logger.debug("output : " + str(response))
         return {'status': True}
 
-    def update(self):
+    def update(self):  # pragma: no cover
         return self.install()
 
     @classmethod
