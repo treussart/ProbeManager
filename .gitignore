@@ -162,6 +162,7 @@ probemanager/build
 probemanager/static/
 /probemanager/probemanager/fixtures/test-suricata-probe.json
 /probemanager/ssh_keys/
+/probemanager/pcap_success/
 /conf.ini
 /progress.json
 /probemanager/tmp/
