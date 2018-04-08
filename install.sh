@@ -331,11 +331,15 @@ update_repo(){
 
 launch_celery(){
     if [[ "$arg" = 'prod' ]]; then
-        sudo touch /var/log/probemanager-celery.log
-        sudo chown $(whoami) /var/log/probemanager-celery.log
+        if [ -f /var/log/probemanager-celery.log ]; then
+            sudo chown $(whoami) /var/log/probemanager-celery.log
+        else
+            sudo touch /var/log/probemanager-celery.log
+            sudo chown $(whoami) /var/log/probemanager-celery.log
+        fi
         if [ ! -f "$destfull"probemanager/celery.pid ]; then
             echo '## Start Celery ##'
-            (cd "$destfull"probemanager/ && sudo celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
         else
             echo '## Restart Celery ##'
             sudo kill $( cat "$destfull"probemanager/celery.pid)
@@ -344,7 +348,7 @@ launch_celery(){
                 sudo rm "$destfull"probemanager/celery.pid
             fi
             sleep 8
-            (cd "$destfull"probemanager/ && sudo celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
         fi
     fi
 }
@@ -358,10 +362,13 @@ post_install() {
         fi
         sudo chmod 440 "$destfull"fernet_key.txt
         sudo chmod 440 "$destfull"secret_key.txt
+        sudo chmod 440 "$destfull"conf.ini
         if [ -f "$destfull"password_db.txt ]; then
             sudo chmod 440 "$destfull"password_db.txt
         fi
-        sudo chmod 440 "$destfull"conf.ini
+        if [ -f "$destfull"password_email.txt ]; then
+            sudo chmod 440 "$destfull"password_email.txt
+        fi
 
         sudo chown www-data:$(whoami) /var/log/probemanager.log
         sudo chown www-data:$(whoami) /var/log/probemanager-error.log
