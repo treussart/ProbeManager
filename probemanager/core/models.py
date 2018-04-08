@@ -155,7 +155,7 @@ class Probe(CommonMixin, models.Model):
             except Exception as e:
                 logger.exception("Error during the uptime")
                 return 'Failed to get the uptime on the host : ' + str(e)
-            logger.warning("output : " + str(response))
+            logger.debug("output : " + str(response))
             return response['uptime']
         else:
             return 'Not installed'
@@ -199,7 +199,7 @@ class Probe(CommonMixin, models.Model):
         except Exception:
             logger.exception("Error during stop")
             return {'status': False, 'errors': "Error during stop"}
-        self.get_logger().debug("output : " + str(response))
+        logger.debug("output : " + str(response))
         return {'status': True}
 
     def status(self):
