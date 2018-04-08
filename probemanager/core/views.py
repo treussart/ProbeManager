@@ -195,9 +195,8 @@ def install(request, pk):
     except Exception as e:
         logger.exception('Error during the install : ' + str(e))
         messages.add_message(request, messages.ERROR, 'Error during the install : ' + str(e))
-    messages.add_message(request, messages.SUCCESS,
-                         "Install probe launched with succeed. " +
-                         mark_safe("<a href='/admin/core/job/'>View Job</a>"))
+    messages.add_message(request, messages.SUCCESS, mark_safe("Install probe launched with succeed. " +
+                         "<a href='/admin/core/job/'>View Job</a>"))
     return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -219,9 +218,8 @@ def update(request, pk):
     except Exception as e:
         logger.exception('Error during the update : ' + str(e))
         messages.add_message(request, messages.ERROR, 'Error during the update : ' + str(e))
-    messages.add_message(request, messages.SUCCESS,
-                         "Update probe launched with succeed. " +
-                         mark_safe("<a href='/admin/core/job/'>View Job</a>"))
+    messages.add_message(request, messages.SUCCESS, mark_safe("Update probe launched with succeed. " +
+                         "<a href='/admin/core/job/'>View Job</a>"))
     return render(request, probe.type.lower() + '/index.html', {'probe': probe})
 
 
@@ -280,9 +278,9 @@ def deploy_rules(request, pk):
     probe = my_class.get_by_id(pk)
     try:
         deploy_rules_probe.delay(probe.name)
-        messages.add_message(request, messages.SUCCESS,
+        messages.add_message(request, messages.SUCCESS, mark_safe(
                              "Deployed rules launched with succeed. " +
-                             mark_safe("<a href='/admin/core/job/'>View Job</a>"))
+                             "<a href='/admin/core/job/'>View Job</a>"))
     except Exception as e:
         logger.exception('Error during the rules deployment : ' + str(e))
         messages.add_message(request, messages.ERROR, 'Error during the rules deployment : ' + str(e))
