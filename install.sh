@@ -357,7 +357,7 @@ post_install() {
     if [[ "$arg" = 'prod' ]]; then
         echo '## Post Install ##'
         sudo chown -R $(whoami):www-data "$destfull"
-        sudo chmod -R 744 "$destfull"
+        sudo chmod -R 774 "$destfull"
         if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
              sudo chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
         fi
@@ -391,7 +391,8 @@ post_install() {
 first=false
 if [ ! -d "$destfull" ]; then
     sudo mkdir $destfull
-    sudo chown $(whoami) $destfull
+    sudo chown $(whoami):www-data $destfull
+    sudo chmod 774 "$destfull"
     first=true
 elif [ ! -f "$destfull"probemanager/version.txt ]; then
     first=true
