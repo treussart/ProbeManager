@@ -1,6 +1,6 @@
-=============
-Probe Manager
-=============
+============
+ProbeManager
+============
 
 |Licence| |Version|
 
