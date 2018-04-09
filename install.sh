@@ -302,6 +302,7 @@ generate_doc(){
     echo '## Generate doc ##'
     python "$destfull"probemanager/manage.py runscript generate_doc --settings=probemanager.settings.$arg
     sphinx-build -b html "$destfull"docs "$destfull"docs/_build/html
+    touch "$destfull"docs/_build/html/.nojekyll
 }
 
 setup_tests(){
