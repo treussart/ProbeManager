@@ -1,6 +1,6 @@
 
-Welcome to Probe Manager documentation!
-=======================================
+Welcome to ProbeManager documentation!
+======================================
 
 :Last Rewiewed: |last_reviewed|
 
@@ -10,7 +10,7 @@ Return to :site_url:`ProbeManager </>`
 
 .. toctree::
    :maxdepth: 2
-   :caption: Probe Manager
+   :caption: ProbeManager
 
    readme
    changelog
