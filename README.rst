@@ -76,7 +76,7 @@ Requirements
 Retrieve the project
 ====================
 
-`Source code <https://github.com/treussart/ProbeManager/>`_
+`Source code on Github <https://github.com/treussart/ProbeManager/>`_
 
 .. code-block:: sh
 
