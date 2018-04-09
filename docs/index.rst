@@ -5,9 +5,6 @@ Welcome to ProbeManager documentation!
 :Last Rewiewed: |last_reviewed|
 
 
-Return to :site_url:`ProbeManager </>`
-
-
 .. toctree::
    :maxdepth: 2
    :caption: ProbeManager
@@ -24,9 +21,9 @@ Return to :site_url:`ProbeManager </>`
 .. toctree::
    :maxdepth: 2
    :caption: Modules
-   
+
    modules/index
-   
+
 
 Indices and tables
 ==================
@@ -34,4 +31,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-* :site_url:`ProbeManager </>`

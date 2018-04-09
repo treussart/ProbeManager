@@ -23,11 +23,6 @@ def get_infos():
 last_reviewed = datetime.date.today().strftime('%d, %b %Y')
 rst_epilog = '.. |last_reviewed| replace:: %s' % last_reviewed
 
-if settings.DEBUG:
-    extlinks = {'site_url': ('http://localhost:8000' + '%s', None)}
-else:
-    extlinks = {'site_url': ('https://' + settings.ALLOWED_HOSTS[0] + '%s', None)}
-
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
