@@ -76,6 +76,8 @@ Requirements
 Retrieve the project
 ====================
 
+`Source code <https://github.com/treussart/ProbeManager/>`_
+
 .. code-block:: sh
 
     git clone --recursive https://github.com/treussart/ProbeManager.git
