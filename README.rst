@@ -170,6 +170,7 @@ Open the file with a web browser :
 
     docs/_build/html/index.html
 
+Or retrieve the full documentation `here <https://treussart.github.io/ProbeManager/>`_
 
 Conventions
 ~~~~~~~~~~~

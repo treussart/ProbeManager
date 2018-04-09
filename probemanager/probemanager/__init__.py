@@ -15,5 +15,5 @@ warnings.filterwarnings('ignore', 'could not open display')
 __all__ = ['celery_app']
 __author__ = 'TREUSSART Matthieu'
 __author_email__ = 'matthieu@treussart.com'
-__title__ = 'Probe Manager'
+__title__ = 'ProbeManager'
 __licence__ = 'GNU GPLv3'
