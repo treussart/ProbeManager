@@ -50,9 +50,11 @@ class CommonMixin:
     @contextmanager
     def get_tmp_dir(cls, folder_name=None):
         if folder_name:
-            tmp_dir = settings.BASE_DIR + '/tmp/' + cls.__name__ + '/' + str(folder_name) + '/' + str(time.time()) + '/'
+            tmp_dir = settings.BASE_DIR + '/tmp/' + os.path.basename(os.path.dirname(inspect.getsourcefile(cls))) + \
+                      '/' + cls.__name__ + '/' + str(folder_name) + '/' + str(time.time()) + '/'
         else:
-            tmp_dir = settings.BASE_DIR + '/tmp/' + cls.__name__ + '/' + str(time.time()) + '/'
+            tmp_dir = settings.BASE_DIR + '/tmp/' + os.path.basename(os.path.dirname(inspect.getsourcefile(cls))) + \
+                      '/' + cls.__name__ + '/' + str(time.time()) + '/'
         try:
             if not os.path.exists(tmp_dir):
                 os.makedirs(tmp_dir)
