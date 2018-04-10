@@ -3,13 +3,9 @@ import os
 import sys
 import argparse
 import glob
-import scripted
 import django
 from django.conf import settings
 from django.test.utils import get_runner
-
-
-assert scripted
 
 
 def runtests():
