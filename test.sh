@@ -25,7 +25,7 @@ if [[ "$VIRTUAL_ENV" = "" ]]; then
 fi
 
 if [[ "$TRAVIS" = true ]]; then
-    export DJANGO_SETTINGS_MODULE="probemanager.settings.prod"
+    export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
     LOG_PATH="/var/log/"
 else
     export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
