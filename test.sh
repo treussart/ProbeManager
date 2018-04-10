@@ -41,7 +41,12 @@ fi
 flake8 $source --config=.flake8
 coverage erase
 coverage run $sourcecoverage probemanager/runtests.py $arg
-coverage report
+echo "$?"
+coverage report --fail-under=90
+result="$?"
+if [ "$result" -ne 0 ]; then
+    exit "$result"
+fi
 coverage html --skip-covered
 
 if [[ "$CODACY_PROJECT_TOKEN" != "" && "$TRAVIS_JOB_NUM_MIN" = "1" ]]; then
