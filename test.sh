@@ -27,12 +27,11 @@ fi
 if [[ "$TRAVIS" = true ]]; then
     export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
     LOG_PATH="/var/log/"
+    TRAVIS_JOB_NUM_MIN=$( echo $TRAVIS_JOB_NUMBER | cut -f2 -d '.' )
 else
     export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
     LOG_PATH="probemanager/"
 fi
-
-TRAVIS_JOB_NUM_MIN=$( echo $TRAVIS_JOB_NUMBER | cut -f2 -d '.' )
 
 # test if fixtures secrets files are here
 if [ ! -f probemanager/core/fixtures/test-core-secrets.json ]; then
