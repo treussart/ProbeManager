@@ -31,7 +31,10 @@ else
     export DJANGO_SETTINGS_MODULE="probemanager.settings.dev"
     LOG_PATH="probemanager/"
 fi
-
+echo 'TRAVIS_JOB_ID'
+echo $TRAVIS_JOB_ID
+echo 'TRAVIS_JOB_NUMBER'
+echo $TRAVIS_JOB_NUMBER
 # test if fixtures secrets files are here
 if [ ! -f probemanager/core/fixtures/test-core-secrets.json ]; then
     echo 'Secrets fixtures not found'
@@ -43,7 +46,7 @@ coverage run $sourcecoverage probemanager/runtests.py $arg
 coverage report
 coverage html --skip-covered
 
-if [[ "$CODACY_PROJECT_TOKEN" != "" ]]; then
+if [[ "$CODACY_PROJECT_TOKEN" != "" && "$TRAVIS_JOB_ID" = "1" ]]; then
     coverage xml
     python-codacy-coverage -r coverage.xml
 
