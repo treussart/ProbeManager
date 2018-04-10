@@ -2,10 +2,7 @@ from probemanager.settings.base import *  # noqa
 from core.git import git_tag
 import configparser
 import os
-import importlib
 
-
-assert importlib
 
 config = configparser.ConfigParser()
 config.read(os.path.join(ROOT_DIR, 'conf.ini'))
