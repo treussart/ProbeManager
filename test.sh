@@ -38,15 +38,15 @@ if [ ! -f probemanager/core/fixtures/test-core-secrets.json ]; then
     echo 'Secrets fixtures not found'
     exit 1
 fi
-fail-under="88"
+FAIL_UNDER="88"
 flake8 $source --config=.flake8
 coverage erase
 coverage run $sourcecoverage probemanager/runtests.py $arg
 echo "$?"
-coverage report --fail-under="$fail-under"
+coverage report --fail-under="$FAIL_UNDER"
 result="$?"
 if [ "$result" -ne 0 ]; then
-    echo "Tests failed : Coverage under $fail-under %"
+    echo "Tests failed : Coverage under $FAIL_UNDER %"
     exit "$result"
 fi
 coverage html --skip-covered
