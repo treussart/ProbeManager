@@ -42,7 +42,11 @@ FAIL_UNDER="88"
 flake8 $source --config=.flake8
 coverage erase
 coverage run $sourcecoverage probemanager/runtests.py $arg
-echo "$?"
+result="$?"
+if [ "$result" -ne 0 ]; then
+    echo "Tests failed"
+    exit "$result"
+fi
 coverage report --fail-under="$FAIL_UNDER"
 result="$?"
 if [ "$result" -ne 0 ]; then
