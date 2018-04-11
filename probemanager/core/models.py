@@ -233,7 +233,7 @@ class Probe(CommonMixin, models.Model):
         logger.debug("output : " + str(response))
         return {'status': True}
 
-    def install(self):  # pragma: no cover
+    def install(self, version=None):  # pragma: no cover
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command1 = "apt update"
             command2 = "apt install " + self.__class__.__name__.lower()
