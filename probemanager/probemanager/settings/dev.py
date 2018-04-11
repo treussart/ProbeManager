@@ -40,7 +40,7 @@ DATABASES = {
     }
 }
 
-DEV_APPS = ['suricata', 'checkcve', 'ossec']
+DEV_APPS = ['suricata', 'checkcve', 'ossec', 'bro']
 INSTALLED_APPS = BASE_APPS + DEV_APPS
 
 for app in DEV_APPS:
