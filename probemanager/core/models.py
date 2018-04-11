@@ -278,7 +278,6 @@ class Configuration(models.Model):
     """
     Configuration for the application.
     """
-    # General
     key = models.CharField(max_length=100, unique=True, blank=False, null=False)
     value = models.CharField(max_length=300, blank=True, null=False)
 
