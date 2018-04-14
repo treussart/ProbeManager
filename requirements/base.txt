@@ -7,6 +7,7 @@ django-extensions==2.0.3
 django-rest-swagger==2.1.2
 django-select2-forms==2.0.2
 djangorestframework==3.7.7
+Jinja2==2.10
 lxml==4.1.1
 paramiko==2.4.0
 psycopg2-binary==2.7.4
