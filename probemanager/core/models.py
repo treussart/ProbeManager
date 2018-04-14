@@ -250,8 +250,8 @@ class Probe(CommonMixin, models.Model):
         logger.debug("output : " + str(response))
         return {'status': True}
 
-    def update(self):  # pragma: no cover
-        return self.install()
+    def update(self, version=None):  # pragma: no cover
+        return self.install(version=None)
 
     @classmethod
     def get_by_name(cls, name):
