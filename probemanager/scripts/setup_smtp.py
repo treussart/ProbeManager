@@ -3,15 +3,15 @@ import sys
 from getpass import getpass
 
 from cryptography.fernet import Fernet
-from jinja2 import Template
+from string import Template
 
 template_smtp = """
 [EMAIL]
-EMAIL_HOST = {{ host }}
-EMAIL_PORT = {{ port }}
-EMAIL_HOST_USER = {{ host_user }}
-DEFAULT_FROM_EMAIL = {{ default_from_email }}
-EMAIL_USE_TLS = {{ use_tls }}
+EMAIL_HOST = ${host}
+EMAIL_PORT = ${port}
+EMAIL_HOST_USER = ${host_user}
+DEFAULT_FROM_EMAIL = ${default_from_email}
+EMAIL_USE_TLS = ${use_tls}
 """
 
 
@@ -35,12 +35,12 @@ if __name__ == "__main__":
     use_tls = input('The SMTP host use TLS ? : (True/False) ')
 
     t = Template(template_smtp)
-    final = t.render(host=host,
-                     port=port,
-                     host_user=host_user,
-                     default_from_email=default_from_email,
-                     use_tls=str(use_tls)
-                     )
+    final = t.substitute(host=host,
+                         port=port,
+                         host_user=host_user,
+                         default_from_email=default_from_email,
+                         use_tls=str(use_tls)
+                         )
 
     with open(args.dest + 'conf.ini', 'a', encoding='utf_8') as f:
         f.write(final)

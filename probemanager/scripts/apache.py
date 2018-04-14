@@ -1,35 +1,35 @@
-from jinja2 import Template
+from string import Template
 from probemanager.settings.prod import APACHE_PORT, PROJECT_NAME
 import os
 
 
 def generate_apache_conf(project_name, dest, port):
     template_conf = """
-WSGIPythonHome {{ dest }}/venv
-WSGIPythonPath {{ dest }}/{{ project_name }}
+WSGIPythonHome ${dest}/venv
+WSGIPythonPath ${dest}/${project_name}
 
-<VirtualHost *:{{ port }}>
+<VirtualHost *:${port}>
 
-    Alias /static/ {{ dest }}/{{ project_name }}/static/
+    Alias /static/ ${dest}/${project_name}/static/
 
-    <Directory {{ dest }}/{{ project_name }}/static>
+    <Directory ${dest}/${project_name}/static>
     Require all granted
     </Directory>
 
-    Alias /docs/ {{ dest }}/docs/_build/html/
+    Alias /docs/ ${dest}/docs/_build/html/
 
-    <Directory "{{ dest }}/docs/_build/html">
+    <Directory "${dest}/docs/_build/html">
     Require all granted
     </Directory>
 
-    WSGIScriptAlias / {{ dest }}/{{ project_name }}/{{ project_name }}/wsgi.py
-    SetEnv DJANGO_SETTINGS_MODULE {{ dest }}/{{ project_name }}/{{ project_name }}/settings/prod.py
+    WSGIScriptAlias / ${dest}/${project_name}/${project_name}/wsgi.py
+    SetEnv DJANGO_SETTINGS_MODULE ${dest}/${project_name}/${project_name}/settings/prod.py
 
     LogFormat "%v %h %l %u %t \\"%r\\" %>s %b" serveur_virtuel_commun
-    CustomLog         /var/log/apache2/{{ project_name }}-access.log serveur_virtuel_commun
-    ErrorLog          /var/log/apache2/{{ project_name }}-error.log
+    CustomLog         /var/log/apache2/${project_name}-access.log serveur_virtuel_commun
+    ErrorLog          /var/log/apache2/${project_name}-error.log
 
-    <Directory {{ dest }}/{{ project_name }}/{{ project_name }}>
+    <Directory ${dest}/${project_name}/${project_name}>
     <Files wsgi.py>
     Require all granted
     </Files>
@@ -38,7 +38,7 @@ WSGIPythonPath {{ dest }}/{{ project_name }}
 </VirtualHost>
 """
     t = Template(template_conf)
-    apache_conf = t.render(project_name=project_name, dest=dest, port=port)
+    apache_conf = t.substitute(project_name=project_name, dest=dest, port=port)
     if os.path.isdir('/etc/apache2/sites-enabled/'):
         install_dir = '/etc/apache2/sites-enabled/'
     else:

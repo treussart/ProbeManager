@@ -1,4 +1,4 @@
-from jinja2 import Template
+from string import Template
 from core.utils import encrypt
 import os
 from getpass import getpass
@@ -13,7 +13,7 @@ template_server_test = """
     "pk": 1,
     "fields": {
         "key": "PUSHBULLET_API_KEY",
-        "value": "{{ pushbullet_key }}"
+        "value": "${pushbullet_key}"
     }
 },
 {
@@ -21,21 +21,21 @@ template_server_test = """
     "pk": 1,
     "fields": {
         "name": "test",
-        "file": "ssh_keys/{{ ssh_private_key_file }}"
+        "file": "ssh_keys/${ssh_private_key_file}"
     }
 },
 {
     "model": "core.server",
     "pk": 1,
     "fields": {
-        "host": "{{ host }}",
+        "host": "${host}",
         "os": 1,
-        "remote_user": "{{ remote_user }}",
-        "remote_port": {{ remote_port }},
-        "become": {{ become }},
-        "become_method": "{{ become_method }}",
-        "become_user": "{{ become_user }}",
-        "become_pass": "{{ become_pass }}",
+        "remote_user": "${remote_user}",
+        "remote_port": ${remote_port},
+        "become": ${become }},
+        "become_method": "${become_method}",
+        "become_user": "${become_user}",
+        "become_pass": "${become_pass}",
         "ssh_private_key_file": 1
     }
 }
@@ -71,16 +71,16 @@ def run():
             exit(1)
 
         t = Template(template_server_test)
-        server_test = t.render(host=host,
-                               become=become,
-                               become_user=become_user,
-                               become_method=become_method,
-                               become_pass=encrypt(become_pass),
-                               remote_user=remote_user,
-                               remote_port=remote_port,
-                               ssh_private_key_file=ssh_private_key_file_basename,
-                               pushbullet_key=pushbullet_key
-                               )
+        server_test = t.substitute(host=host,
+                                   become=become,
+                                   become_user=become_user,
+                                   become_method=become_method,
+                                   become_pass=encrypt(become_pass),
+                                   remote_user=remote_user,
+                                   remote_port=remote_port,
+                                   ssh_private_key_file=ssh_private_key_file_basename,
+                                   pushbullet_key=pushbullet_key
+                                   )
         with open(settings.BASE_DIR + '/core/fixtures/test-core-secrets.json', 'w') as f:
             f.write(server_test)
         exit(0)
