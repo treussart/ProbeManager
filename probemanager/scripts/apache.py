@@ -38,7 +38,7 @@ WSGIPythonPath ${dest}/${project_name}
 </VirtualHost>
 """
     t = Template(template_conf)
-    apache_conf = t.substitute(project_name=project_name, dest=dest, port=port)
+    apache_conf = t.safe_substitute(project_name=project_name, dest=dest, port=port)
     if os.path.isdir('/etc/apache2/sites-enabled/'):
         install_dir = '/etc/apache2/sites-enabled/'
     else:
