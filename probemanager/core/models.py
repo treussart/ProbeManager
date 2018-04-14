@@ -251,7 +251,7 @@ class Probe(CommonMixin, models.Model):
         return {'status': True}
 
     def update(self, version=None):  # pragma: no cover
-        return self.install(version=None)
+        return self.install(version=version)
 
     @classmethod
     def get_by_name(cls, name):
