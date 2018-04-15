@@ -40,20 +40,25 @@ if [ ! -f probemanager/core/fixtures/test-core-secrets.json ]; then
 fi
 FAIL_UNDER="88"
 flake8 $source --config=.flake8
+result_flake8="$?"
+if [ "$result_flake8" -ne 0 ]; then
+    echo "Tests failed : PEP-8 Not Compliant"
+    exit "$result_flake8"
+fi
 coverage erase
 coverage run $sourcecoverage probemanager/runtests.py $arg
-result="$?"
-if [ "$result" -ne 0 ]; then
+result_run="$?"
+if [ "$result_run" -ne 0 ]; then
     echo "Tests failed"
-    exit "$result"
+    exit "$result_run"
 fi
 coverage report --fail-under="$FAIL_UNDER"
-result="$?"
-if [ "$result" -ne 0 ]; then
-    echo "Tests failed : Coverage under $FAIL_UNDER %"
-    exit "$result"
-fi
+result_report="$?"
 coverage html --skip-covered
+if [ "$result_report" -ne 0 ]; then
+    echo "Tests failed : Coverage under $FAIL_UNDER %"
+    exit "$result_report"
+fi
 
 if [[ "$CODACY_PROJECT_TOKEN" != "" && "$TRAVIS_JOB_NUM_MIN" = "1" ]]; then
     coverage xml
