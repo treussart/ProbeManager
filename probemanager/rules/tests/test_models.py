@@ -70,7 +70,7 @@ class MethodUploadTest(TestCase):
     def test_method_upload(self):
         all_method_upload = MethodUpload.get_all()
         method_upload = MethodUpload.get_by_id(1)
-        self.assertEqual(len(all_method_upload), 2)
+        self.assertEqual(len(all_method_upload), 3)
         self.assertEqual(method_upload.name, "Upload file")
         self.assertEqual(str(method_upload), "Upload file")
 
