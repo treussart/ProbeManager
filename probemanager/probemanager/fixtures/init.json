@@ -46,6 +46,22 @@
     }
 },
 {
+    "model": "core.configuration",
+    "pk": 5,
+    "fields": {
+        "key": "MISP_HOST",
+        "value": ""
+    }
+},
+{
+    "model": "core.configuration",
+    "pk": 6,
+    "fields": {
+        "key": "MISP_API_KEY",
+        "value": ""
+    }
+},
+{
     "model": "rules.classtype",
     "pk": 0,
     "fields": {
