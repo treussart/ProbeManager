@@ -394,5 +394,12 @@
     "fields": {
         "name": "Upload file"
     }
+},
+{
+    "model": "rules.methodupload",
+    "pk": 2,
+    "fields": {
+        "name": "MISP"
+    }
 }
 ]

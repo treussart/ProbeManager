@@ -12,6 +12,7 @@ lxml==4.1.1
 paramiko==2.4.0
 psycopg2-binary==2.7.4
 pushbullet.py==0.11.0
+pymisp==2.4.89
 PyYAML==3.12
 Sphinx==1.7.1
 sphinx-rtd-theme==0.2.4
