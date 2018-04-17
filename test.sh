@@ -38,7 +38,7 @@ if [ ! -f probemanager/core/fixtures/test-core-secrets.json ]; then
     echo 'Secrets fixtures not found'
     exit 1
 fi
-FAIL_UNDER="88"
+FAIL_UNDER="87"
 flake8 $source --config=.flake8
 result_flake8="$?"
 if [ "$result_flake8" -ne 0 ]; then
