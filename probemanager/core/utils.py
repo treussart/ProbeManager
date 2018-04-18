@@ -240,4 +240,4 @@ def process_cmd(cmd, tmp_dir, value=None):
     elif value:
         if value in outdata or value in errdata:
             return {'status': False, 'errors': errdata}
-   return {'status': True}
+    return {'status': True}
