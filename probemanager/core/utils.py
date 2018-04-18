@@ -229,13 +229,15 @@ def generic_import_csv(cls, request):
             return render(request, 'import_csv.html')
 
 
-def process_cmd(cmd, tmp_dir, value):
+def process_cmd(cmd, tmp_dir, value=None):
     process = subprocess.Popen(cmd, cwd=tmp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                universal_newlines=True)
     outdata, errdata = process.communicate()
     logger.debug("outdata : " + str(outdata), "errdata : " + str(errdata))
     # if success ok
-    if value in outdata or value in errdata or process.returncode != 0:
+    if process.returncode != 0:
         return {'status': False, 'errors': errdata}
-    else:
-        return {'status': True}     
+    elif value:
+        if value in outdata or value in errdata:
+            return {'status': False, 'errors': errdata}
+   return {'status': True}     
