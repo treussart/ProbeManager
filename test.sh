@@ -71,6 +71,10 @@ if [[ "$CODACY_PROJECT_TOKEN" != "" && "$TRAVIS_JOB_NUM_MIN" = "1" ]]; then
     coverage xml -o coverage-checkcve.xml --include='probemanager/checkcve/*'
     python probemanager/scripts/remove_in_file.py -p probemanager/checkcve/ -p probemanager.checkcve -r ProbeManager:ProbeManager/probemanager/checkcve -f coverage-checkcve.xml
     ( cd probemanager/checkcve && python-codacy-coverage -r ../../coverage-checkcve.xml -t $CODACY_CHECKCVE_TOKEN )
+
+    coverage xml -o coverage-bro.xml --include='probemanager/bro/*'
+    python probemanager/scripts/remove_in_file.py -p probemanager/bro/ -p probemanager.checkcve -r ProbeManager:ProbeManager/probemanager/bro -f coverage-bro.xml
+    ( cd probemanager/bro && python-codacy-coverage -r ../../coverage-bro.xml -t $CODACY_BRO_TOKEN )
 fi
 if [ -f "$LOG_PATH"probemanager-error.log ]; then
     echo "#### ERROR LOGS ####"
