@@ -16,6 +16,7 @@ Added
 ~~~~~
 
 -  Bro IDS.
+-  Import rules from MISP in Suricata
 
 Changed
 ~~~~~~~
