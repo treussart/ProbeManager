@@ -63,7 +63,7 @@ Installation
 Operating System
 ================
 
-OSX, Debian and Ubuntu are Supported.
+OSX 12+ (Only for project development), Debian stable and Ubuntu 14.04+ are Supported.
 
 Requirements
 ============

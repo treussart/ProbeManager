@@ -3,10 +3,6 @@ from cryptography.fernet import Fernet
 import configparser
 import ast
 import os
-import importlib
-
-
-assert importlib
 
 
 config = configparser.ConfigParser()
@@ -78,16 +74,7 @@ LOGGING['handlers']['file-error'].update({'filename': config['LOG']['FILE_ERROR_
 
 TIME_ZONE = config['DEFAULT']['TIME_ZONE']
 
-if os.path.isfile(os.path.join(BASE_DIR, 'core/fixtures/test-core-secrets.ini')):
-    config_secrets = configparser.ConfigParser()
-    config_secrets.read(os.path.join(BASE_DIR, 'core/fixtures/test-core-secrets.ini'))
-    EMAIL_HOST = config_secrets['EMAIL']['EMAIL_HOST']
-    EMAIL_PORT = int(config_secrets['EMAIL']['EMAIL_PORT'])
-    EMAIL_HOST_USER = config_secrets['EMAIL']['EMAIL_HOST_USER']
-    DEFAULT_FROM_EMAIL = config_secrets['EMAIL']['DEFAULT_FROM_EMAIL']
-    EMAIL_USE_TLS = config_secrets.getboolean('EMAIL', 'EMAIL_USE_TLS')
-    EMAIL_HOST_PASSWORD = config_secrets['EMAIL']['EMAIL_HOST_PASSWORD']
-else:
+if not os.path.isfile(os.path.join(BASE_DIR, 'core/fixtures/test-core-secrets.ini')):
     EMAIL_HOST = config['EMAIL']['EMAIL_HOST']
     EMAIL_PORT = int(config['EMAIL']['EMAIL_PORT'])
     EMAIL_HOST_USER = config['EMAIL']['EMAIL_HOST_USER']

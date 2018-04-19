@@ -1,3 +1,2 @@
-ChangeLog
-~~~~~~~~~
+.. include:: ../CHANGELOG.rst
 

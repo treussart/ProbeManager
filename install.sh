@@ -42,6 +42,11 @@ install_modules(){
         if [[ -d $f ]]; then
             if test -f "$f"/install.sh ; then
                 ./"$f"/install.sh "$arg" "$destfull"
+                result="$?"
+                if [ "$result" -ne 0 ]; then
+                    echo "Install failed of "$f
+                    exit "$result"
+                fi
             fi
         fi
     done

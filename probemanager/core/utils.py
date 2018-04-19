@@ -3,11 +3,14 @@ import logging
 import os
 import time
 import shutil
+import subprocess
 from contextlib import contextmanager
 
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
+from django.shortcuts import render
+from django.contrib import messages
 
 
 fernet_key = Fernet(settings.FERNET_KEY)
@@ -203,3 +206,38 @@ def get_tmp_dir(folder_name=None):
         yield tmp_dir
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
+
+
+def generic_import_csv(cls, request):
+    if request.method == 'GET':
+        return render(request, 'import_csv.html')
+    elif request.method == 'POST':
+        if request.FILES['file']:
+            try:
+                with get_tmp_dir('csv') as tmp_dir:
+                    with open(tmp_dir + 'imported.csv', 'wb+') as destination:
+                        for chunk in request.FILES['file'].chunks():
+                            destination.write(chunk)
+                    cls.import_from_csv(tmp_dir + 'imported.csv')
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, 'Error during the import : ' + str(e))
+                return render(request, 'import_csv.html')
+            messages.add_message(request, messages.SUCCESS, 'CSV file imported successfully !')
+            return render(request, 'import_csv.html')
+        else:  # pragma: no cover
+            messages.add_message(request, messages.ERROR, 'No file submitted')
+            return render(request, 'import_csv.html')
+
+
+def process_cmd(cmd, tmp_dir, value=None):
+    process = subprocess.Popen(cmd, cwd=tmp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               universal_newlines=True)
+    outdata, errdata = process.communicate()
+    logger.debug("outdata : " + str(outdata), "errdata : " + str(errdata))
+    # if success ok
+    if process.returncode != 0:
+        return {'status': False, 'errors': errdata}
+    elif value:
+        if value in outdata or value in errdata:
+            return {'status': False, 'errors': errdata}
+    return {'status': True}

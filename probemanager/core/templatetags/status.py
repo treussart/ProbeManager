@@ -20,7 +20,7 @@ def status(probe_id):
         my_class = getattr(importlib.import_module(probe.type.lower() + ".models"), probe.type)
     probe = my_class.get_by_id(probe_id)
     response = probe.status()
-    if 'active (running)' in response:
+    if 'running' in response:
         return 'success'
     else:
         return 'danger'

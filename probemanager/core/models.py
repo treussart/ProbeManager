@@ -233,7 +233,7 @@ class Probe(CommonMixin, models.Model):
         logger.debug("output : " + str(response))
         return {'status': True}
 
-    def install(self):  # pragma: no cover
+    def install(self, version=None):  # pragma: no cover
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
             command1 = "apt update"
             command2 = "apt install " + self.__class__.__name__.lower()
@@ -250,8 +250,8 @@ class Probe(CommonMixin, models.Model):
         logger.debug("output : " + str(response))
         return {'status': True}
 
-    def update(self):  # pragma: no cover
-        return self.install()
+    def update(self, version=None):  # pragma: no cover
+        return self.install(version=version)
 
     @classmethod
     def get_by_name(cls, name):
@@ -278,7 +278,6 @@ class Configuration(models.Model):
     """
     Configuration for the application.
     """
-    # General
     key = models.CharField(max_length=100, unique=True, blank=False, null=False)
     value = models.CharField(max_length=300, blank=True, null=False)
 
