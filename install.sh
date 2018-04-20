@@ -442,7 +442,8 @@ if [ "$first" = true ]; then
 else
     echo 'Update install'
 
-    update_repo
+    #update_repo
+    install_modules
     copy_files
     install_virtualenv
     generate_version
