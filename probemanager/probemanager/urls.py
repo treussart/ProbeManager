@@ -1,18 +1,14 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework_swagger.views import get_swagger_view
-from django.apps.registry import apps
-from core.models import Probe
+from django.conf import settings
 
 
 schema_view = get_swagger_view(title='ProbeManager API', url='/')
 
 urlpatterns_modules = list()
-for app in apps.get_app_configs():
-    for model in app.get_models():
-        if issubclass(model, Probe):
-            if app.verbose_name != "Core":
-                urlpatterns_modules.append(url(r'^' + app.label + '/', include(app.label + '.urls')))
+for app in settings.SPECIFIC_APPS:
+    urlpatterns_modules.append(url(r'^' + app + '/', include(app + '.urls')))
 
 urlpatterns = [
     url(r'^api/v1/doc/$', schema_view),

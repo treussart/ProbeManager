@@ -40,10 +40,10 @@ DATABASES = {
     }
 }
 
-DEV_APPS = ['suricata', 'checkcve', 'ossec', 'bro']
-INSTALLED_APPS = BASE_APPS + DEV_APPS
+SPECIFIC_APPS = ['suricata', 'checkcve', 'ossec', 'bro']
+INSTALLED_APPS = BASE_APPS + SPECIFIC_APPS
 
-for app in DEV_APPS:
+for app in SPECIFIC_APPS:
     LOGGING['loggers'].update({app: {'handlers': ['console'], 'propagate': True}})
     if os.path.isfile(BASE_DIR + "/" + app + "/settings.py"):
         exec(open(BASE_DIR + "/" + app + "/settings.py").read())
