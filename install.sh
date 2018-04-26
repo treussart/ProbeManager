@@ -444,7 +444,6 @@ else
     echo 'Update install'
 
     update_repo
-    #install_modules # not here
     copy_files
     install_virtualenv
     generate_version
