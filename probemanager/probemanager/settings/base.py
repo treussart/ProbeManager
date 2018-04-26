@@ -11,7 +11,7 @@ config = configparser.ConfigParser()
 config.read(os.path.join(ROOT_DIR, 'conf.ini'))
 
 MEDIA_ROOT = BASE_DIR
-FILE_UPLOAD_PERMISSIONS = 0o644
+FILE_UPLOAD_PERMISSIONS = 0o640
 
 BASE_APPS = [
     'django.contrib.admin',
