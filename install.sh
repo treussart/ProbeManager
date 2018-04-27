@@ -14,9 +14,9 @@ SERVER_USER="www-data"
 CURRENT_USER=$(whoami)
 LOG_PATH="/var/log/"
 
-export $SERVER_USER
-export $CURRENT_USER
-export $LOG_PATH
+export SERVER_USER
+export CURRENT_USER
+export LOG_PATH
 
 # Get args
 if [ -z $1 ] || [[ "$1" = 'dev' ]]; then
