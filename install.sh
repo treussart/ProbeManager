@@ -229,8 +229,8 @@ set_logs(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Set logs ##'
         echo "[LOG]" >> "$destfull"conf.ini
-        echo "FILE_PATH = '$LOG_PATH'probemanager.log" >> "$destfull"conf.ini
-        echo "FILE_ERROR_PATH = '$LOG_PATH'probemanager-error.log" >> "$destfull"conf.ini
+        echo "FILE_PATH = ""$LOG_PATH""probemanager.log" >> "$destfull"conf.ini
+        echo "FILE_ERROR_PATH = ""$LOG_PATH""probemanager-error.log" >> "$destfull"conf.ini
         sudo touch "$LOG_PATH"probemanager.log
         sudo touch "$LOG_PATH"probemanager-error.log
         sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager.log
