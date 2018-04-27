@@ -370,7 +370,7 @@ launch_celery(){
 post_install() {
     if [[ "$arg" = 'prod' ]]; then
         echo '## Post Install ##'
-        sudo usermod -a -G "$SERVER_USER" matthieu
+        sudo usermod -a -G "$SERVER_USER" "$CURRENT_USER"
         sudo chown -R "$SERVER_USER":"$CURRENT_USER" "$destfull"
         sudo chmod -R 774 "$destfull"
         if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
