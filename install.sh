@@ -9,6 +9,14 @@ Example :
 ./install.sh dev
 ./install.sh prod /usr/local/share
 "
+# Variables
+SERVER_USER="www-data"
+CURRENT_USER=$(whoami)
+LOG_PATH="/var/log/"
+
+export SERVER_USER
+export CURRENT_USER
+export LOG_PATH
 
 # Get args
 if [ -z $1 ] || [[ "$1" = 'dev' ]]; then
@@ -221,12 +229,12 @@ set_logs(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Set logs ##'
         echo "[LOG]" >> "$destfull"conf.ini
-        echo "FILE_PATH = /var/log/probemanager.log" >> "$destfull"conf.ini
-        echo "FILE_ERROR_PATH = /var/log/probemanager-error.log" >> "$destfull"conf.ini
-        sudo touch /var/log/probemanager.log
-        sudo touch /var/log/probemanager-error.log
-        sudo chown $(whoami) /var/log/probemanager.log
-        sudo chown $(whoami) /var/log/probemanager-error.log
+        echo "FILE_PATH = '$LOG_PATH'probemanager.log" >> "$destfull"conf.ini
+        echo "FILE_ERROR_PATH = '$LOG_PATH'probemanager-error.log" >> "$destfull"conf.ini
+        sudo touch "$LOG_PATH"probemanager.log
+        sudo touch "$LOG_PATH"probemanager-error.log
+        sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager.log
+        sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager-error.log
     fi
 }
 
@@ -321,7 +329,7 @@ apache_conf(){
     if [[ "$arg" = 'prod' ]]; then
         echo '## Create Apache configuration ##'
         sudo touch /etc/apache2/sites-enabled/probemanager.conf
-        sudo chown $(whoami) /etc/apache2/sites-enabled/probemanager.conf
+        sudo chown "$CURRENT_USER" /etc/apache2/sites-enabled/probemanager.conf
         python "$destfull"probemanager/manage.py runscript apache --script-args $destfull
     fi
 }
@@ -337,15 +345,15 @@ update_repo(){
 
 launch_celery(){
     if [[ "$arg" = 'prod' ]]; then
-        if [ -f /var/log/probemanager-celery.log ]; then
-            sudo chown $(whoami):www-data /var/log/probemanager-celery.log
+        if [ -f "$LOG_PATH"probemanager-celery.log ]; then
+            sudo chown "$CURRENT_USER":"$SERVER_USER" "$LOG_PATH"probemanager-celery.log
         else
-            sudo touch /var/log/probemanager-celery.log
-            sudo chown $(whoami):www-data /var/log/probemanager-celery.log
+            sudo touch "$LOG_PATH"probemanager-celery.log
+            sudo chown "$CURRENT_USER":"$SERVER_USER" "$LOG_PATH"probemanager-celery.log
         fi
         if [ ! -f "$destfull"probemanager/celery.pid ]; then
             echo '## Start Celery ##'
-            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f "$LOG_PATH"probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
         else
             echo '## Restart Celery ##'
             sudo kill $( cat "$destfull"probemanager/celery.pid)
@@ -354,7 +362,7 @@ launch_celery(){
                 sudo rm "$destfull"probemanager/celery.pid
             fi
             sleep 8
-            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f /var/log/probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
+            (cd "$destfull"probemanager/ && celery -A probemanager worker -D --pidfile celery.pid -B -l info -f "$LOG_PATH"probemanager-celery.log --scheduler django_celery_beat.schedulers:DatabaseScheduler)
         fi
     fi
 }
@@ -362,11 +370,11 @@ launch_celery(){
 post_install() {
     if [[ "$arg" = 'prod' ]]; then
         echo '## Post Install ##'
-        sudo usermod -a -G www-data matthieu
-        sudo chown -R $(whoami):www-data "$destfull"
+        sudo usermod -a -G "$SERVER_USER" "$CURRENT_USER"
+        sudo chown -R "$SERVER_USER":"$CURRENT_USER" "$destfull"
         sudo chmod -R 774 "$destfull"
         if [ -f /etc/apache2/sites-enabled/probemanager.conf ]; then
-             sudo chown www-data:www-data /etc/apache2/sites-enabled/probemanager.conf
+             sudo chown "$SERVER_USER":"$SERVER_USER" /etc/apache2/sites-enabled/probemanager.conf
         fi
         sudo chmod 440 "$destfull"fernet_key.txt
         sudo chmod 440 "$destfull"secret_key.txt
@@ -377,21 +385,21 @@ post_install() {
         if [ -f "$destfull"password_email.txt ]; then
             sudo chmod 440 "$destfull"password_email.txt
         fi
-        if [ -f /var/log/probemanager.log ]; then
-            sudo chown www-data:$(whoami) /var/log/probemanager.log
-            sudo chmod 774 /var/log/probemanager.log
+        if [ -f "$LOG_PATH"probemanager.log ]; then
+            sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager.log
+            sudo chmod 774 "$LOG_PATH"probemanager.log
         else
-            sudo touch /var/log/probemanager.log
-            sudo chown www-data:$(whoami) /var/log/probemanager.log
-            sudo chmod 774 /var/log/probemanager.log
+            sudo touch "$LOG_PATH"probemanager.log
+            sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager.log
+            sudo chmod 774 "$LOG_PATH"probemanager.log
         fi
-        if [ -f /var/log/probemanager-error.log ]; then
-            sudo chown www-data:$(whoami) /var/log/probemanager-error.log
-            sudo chmod 774 /var/log/probemanager-error.log
+        if [ -f "$LOG_PATH"probemanager-error.log ]; then
+            sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager-error.log
+            sudo chmod 774 "$LOG_PATH"probemanager-error.log
         else
-            sudo touch /var/log/probemanager-error.log
-            sudo chown www-data:$(whoami) /var/log/probemanager-error.log
-            sudo chmod 774 /var/log/probemanager-error.log
+            sudo touch "$LOG_PATH"probemanager-error.log
+            sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager-error.log
+            sudo chmod 774 "$LOG_PATH"probemanager-error.log
         fi
         sudo a2dissite 000-default.conf
         sudo a2dismod deflate -f
@@ -402,7 +410,11 @@ post_install() {
 first=false
 if [ ! -d "$destfull" ]; then
     sudo mkdir $destfull
-    sudo chown $(whoami):www-data $destfull
+    if [[ "$arg" = 'prod' ]]; then
+        sudo chown "$SERVER_USER":"$CURRENT_USER" $destfull
+    else
+        sudo chown "$CURRENT_USER":"$CURRENT_USER" $destfull
+    fi
     sudo chmod 774 "$destfull"
     first=true
 elif [ ! -f "$destfull"probemanager/version.txt ]; then
