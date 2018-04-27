@@ -235,6 +235,8 @@ set_logs(){
         sudo touch "$LOG_PATH"probemanager-error.log
         sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager.log
         sudo chown "$SERVER_USER":"$CURRENT_USER" "$LOG_PATH"probemanager-error.log
+        sudo chmod 770 "$LOG_PATH"probemanager.log
+        sudo chmod 770 "$LOG_PATH"probemanager-error.log
     fi
 }
 
