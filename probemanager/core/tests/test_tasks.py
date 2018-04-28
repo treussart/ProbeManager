@@ -2,7 +2,6 @@
 from django.test import TestCase
 from django.conf import settings
 
-from core.models import Probe
 from core.tasks import deploy_rules, reload_probe, install_probe, update_probe, check_probe
 
 
