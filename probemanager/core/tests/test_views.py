@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 
-from core.models import Server, SshKey, OsSupported
+from core.models import Server
 
 
 class ViewsCoreTest(TestCase):
