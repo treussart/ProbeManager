@@ -61,10 +61,10 @@ DATABASES = {
     }
 }
 
-PROD_APPS = ast.literal_eval(config['APPS']['PROD_APPS'])
-INSTALLED_APPS = BASE_APPS + PROD_APPS
+SPECIFIC_APPS = ast.literal_eval(config['APPS']['PROD_APPS'])
+INSTALLED_APPS = BASE_APPS + SPECIFIC_APPS
 
-for app in PROD_APPS:
+for app in SPECIFIC_APPS:
     LOGGING['loggers'].update({app: {'handlers': ['file', 'file-error'], 'propagate': True}})
     if os.path.isfile(BASE_DIR + "/" + app + "/settings.py"):
         exec(open(BASE_DIR + "/" + app + "/settings.py", encoding='utf_8').read())

@@ -9,4 +9,6 @@ git submodule foreach git merge develop
 git merge develop
 
 git submodule foreach git checkout develop
+git submodule foreach git pull origin develop
 git checkout develop
+git pull origin develop

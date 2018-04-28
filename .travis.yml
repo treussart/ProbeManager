@@ -13,6 +13,7 @@ env:
   - MOZ_HEADLESS=1
   - SURICATA_VERSION="4.0.4"
   - BRO_VERSION="2.5.3"
+  - OSSEC_VERSION="2.9.3"
 os:
 - linux
 sudo: required
