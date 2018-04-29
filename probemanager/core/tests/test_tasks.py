@@ -1,6 +1,6 @@
 """ venv/bin/python probemanager/manage.py test core.tests.test_tasks --settings=probemanager.settings.dev """
-from django.test import TestCase
 from django.conf import settings
+from django.test import TestCase
 
 from core.tasks import deploy_rules, reload_probe, install_probe, update_probe, check_probe
 
