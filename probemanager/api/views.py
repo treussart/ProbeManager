@@ -73,9 +73,9 @@ class SshKeyView(ListModelMixin, RetrieveModelMixin, DestroyModelMixin, viewsets
     serializer_class = SshKeySerializer
 
     def create(self, request):
-        with open(settings.BASE_DIR + "/ssh_keys/"+ request.data['name'], 'w', encoding="utf_8") as f:
+        with open(settings.BASE_DIR + "/ssh_keys/" + request.data['name'], 'w', encoding="utf_8") as f:
             f.write(request.data['file'])
-        os.chmod(settings.BASE_DIR + "/ssh_keys/"+ request.data['name'], 0o640)
+        os.chmod(settings.BASE_DIR + "/ssh_keys/" + request.data['name'], 0o640)
         sshkey = SshKey(name=request.data['name'], file="ssh_keys/" + request.data['file'])
         sshkey.save()
         return Response(status=204)
