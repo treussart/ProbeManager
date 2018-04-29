@@ -1,7 +1,7 @@
-from cryptography.fernet import Fernet
-from django.utils.crypto import get_random_string
 import argparse
 
+from cryptography.fernet import Fernet
+from django.utils.crypto import get_random_string
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

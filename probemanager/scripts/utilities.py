@@ -2,9 +2,10 @@
 # -d /usr/local/share/ProbeManager/
 # venv/bin/python probemanager/scripts/utilities.py -d ~/git/Probemanager/
 import argparse
-import sys
 import os
+import sys
 from getpass import getpass
+
 from cryptography.fernet import Fernet
 
 

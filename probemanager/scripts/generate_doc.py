@@ -1,8 +1,10 @@
-from django.apps.registry import apps
-from jinja2 import Template
-from core.models import Probe
 import os
+
+from django.apps.registry import apps
 from django.conf import settings
+from jinja2 import Template
+
+from core.models import Probe
 
 
 def run(*args):
