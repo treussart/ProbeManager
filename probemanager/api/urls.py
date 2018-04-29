@@ -4,7 +4,7 @@ import os
 from django.apps.registry import apps
 from django.conf import settings
 from rest_framework import routers
-
+from .views import SshKeyView
 from . import views
 
 
@@ -13,6 +13,9 @@ router = routers.DefaultRouter()
 router.register(r'^admin/users', views.UserViewSet)
 router.register(r'^admin/groups', views.GroupViewSet)
 router.register(r'^rules/classtype', views.ClassTypeViewSet)
+router.register(r'^core/server', views.ServerViewSet, base_name="core")
+router.register(r'^core/sshkey', SshKeyView, base_name="core")
+router.register(r'^core/configuration', views.ConfigurationViewSet, base_name="core")
 router.register(r'^celerybeat/crontabschedule', views.CrontabScheduleViewSet)
 router.register(r'^celerybeat/periodictask', views.PeriodicTaskViewSet)
 

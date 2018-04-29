@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
 from rules.models import ClassType
+from core.models import Server, SshKey, Configuration
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
 
 
@@ -32,4 +33,22 @@ class PeriodicTaskSerializer(serializers.ModelSerializer):
 class CrontabScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = CrontabSchedule
+        fields = "__all__"
+
+
+class ServerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Server
+        fields = "__all__"
+
+
+class SshKeySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SshKey
+        fields = "__all__"
+
+
+class ConfigurationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Configuration
         fields = "__all__"
