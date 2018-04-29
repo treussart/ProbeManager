@@ -52,3 +52,9 @@ class ConfigurationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Configuration
         fields = "__all__"
+
+
+class ConfigurationUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Configuration
+        fields = ('value', )

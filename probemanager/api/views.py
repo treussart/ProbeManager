@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
 from rest_framework import status
 from rest_framework import viewsets
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyModelMixin
+from rest_framework import mixins
 from rest_framework.response import Response
 from django.conf import settings
 import os
@@ -10,7 +10,7 @@ import os
 from core.models import Server, SshKey, Configuration
 from rules.models import ClassType
 from .serializers import UserSerializer, GroupSerializer, ClassTypeSerializer, CrontabScheduleSerializer, \
-    PeriodicTaskSerializer, ServerSerializer, SshKeySerializer, ConfigurationSerializer
+    PeriodicTaskSerializer, ServerSerializer, SshKeySerializer, ConfigurationSerializer, ConfigurationUpdateSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -29,7 +29,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-class ClassTypeViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
+class ClassTypeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     """
     API endpoint that allows class type to be viewed or edited. ex : Not Suspicious Traffic
     """
@@ -52,23 +52,23 @@ class ServerViewSet(viewsets.ModelViewSet):
     serializer_class = ServerSerializer
 
 
-class ConfigurationViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
+class ConfigurationViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Configuration.objects.all()
     serializer_class = ConfigurationSerializer
 
     def update(self, request, pk=None):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def partial_update(self, request, pk=None):
         conf = self.get_object()
-        serializer = ConfigurationSerializer(conf, data=request.data)
+        serializer = ConfigurationUpdateSerializer(conf, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def partial_update(self, request, pk=None):
-        return self.update(request)
 
-
-class SshKeyView(ListModelMixin, RetrieveModelMixin, DestroyModelMixin, viewsets.GenericViewSet):
+class SshKeyView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = SshKey.objects.all()
     serializer_class = SshKeySerializer
 
