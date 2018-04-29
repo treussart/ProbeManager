@@ -2,6 +2,7 @@ import logging
 
 from django.contrib import admin
 from django.contrib import messages
+from django_celery_beat.models import SolarSchedule, IntervalSchedule
 
 from .forms import ServerForm
 from .models import SshKey, Server, Job, Configuration
@@ -45,3 +46,6 @@ admin.site.register(SshKey)
 admin.site.register(Server, ServerAdmin)
 admin.site.register(Job, JobAdmin)
 admin.site.register(Configuration)
+
+admin.site.unregister(SolarSchedule)
+admin.site.unregister(IntervalSchedule)
