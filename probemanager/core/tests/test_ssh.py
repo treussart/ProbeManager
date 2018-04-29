@@ -1,10 +1,9 @@
 """ venv/bin/python probemanager/manage.py test core.tests.test_ssh --settings=probemanager.settings.dev """
+from django.conf import settings
 from django.test import TestCase
 
-
-from django.conf import settings
-from core.ssh import connection, execute, execute_copy
 from core.models import Server
+from core.ssh import connection, execute, execute_copy
 
 
 class SshCoreTest(TestCase):

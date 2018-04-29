@@ -1,9 +1,10 @@
 """ venv/bin/python probemanager/manage.py test core.tests.test_models --settings=probemanager.settings.dev """
-import pytz
+from datetime import timedelta, datetime
 
+import pytz
 from django.db.utils import IntegrityError
 from django.test import TestCase
-from datetime import timedelta, datetime
+
 from core.models import OsSupported, Probe, ProbeConfiguration, SshKey, Job, Server, Configuration
 
 

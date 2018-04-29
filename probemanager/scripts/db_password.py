@@ -1,5 +1,6 @@
 import argparse
 from getpass import getpass
+
 from cryptography.fernet import Fernet
 
 

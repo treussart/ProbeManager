@@ -1,10 +1,11 @@
-from string import Template
-from core.utils import encrypt
 import os
 from getpass import getpass
 from shutil import copyfile
+from string import Template
+
 from django.conf import settings
 
+from core.utils import encrypt
 
 template_server_test = """
 [

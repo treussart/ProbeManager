@@ -1,5 +1,6 @@
 from django.apps.registry import apps
 from django.conf import settings
+
 from core.git import git_tag
 from core.models import Probe
 

@@ -1,6 +1,7 @@
-from string import Template
-from probemanager.settings.prod import APACHE_PORT, PROJECT_NAME
 import os
+from string import Template
+
+from probemanager.settings.prod import APACHE_PORT, PROJECT_NAME
 
 
 def generate_apache_conf(project_name, dest, port):
