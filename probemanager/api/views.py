@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
-
+from django_celery_beat.models import PeriodicTask, CrontabSchedule
 from rules.models import ClassType
-from .serializers import UserSerializer, GroupSerializer, ClassTypeSerializer
+from .serializers import UserSerializer, GroupSerializer, ClassTypeSerializer, CrontabScheduleSerializer, \
+    PeriodicTaskSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -28,3 +29,13 @@ class ClassTypeViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewS
     """
     queryset = ClassType.objects.all()
     serializer_class = ClassTypeSerializer
+
+
+class PeriodicTaskViewSet(viewsets.ModelViewSet):
+    queryset = PeriodicTask.objects.all()
+    serializer_class = PeriodicTaskSerializer
+
+
+class CrontabScheduleViewSet(viewsets.ModelViewSet):
+    queryset = CrontabSchedule.objects.all()
+    serializer_class = CrontabScheduleSerializer
