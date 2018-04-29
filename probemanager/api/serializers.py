@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User, Group
+from django_celery_beat.models import PeriodicTask, CrontabSchedule
 from rest_framework import serializers
 
-from rules.models import ClassType
 from core.models import Server, SshKey, Configuration
-from django_celery_beat.models import PeriodicTask, CrontabSchedule
+from rules.models import ClassType
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -4,9 +4,9 @@ import os
 from django.apps.registry import apps
 from django.conf import settings
 from rest_framework import routers
-from .views import SshKeyView
-from . import views
 
+from . import views
+from .views import SshKeyView
 
 router = routers.DefaultRouter()
 
