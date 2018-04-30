@@ -12,7 +12,7 @@ def run(*args):
 
 {{ name }}
 {% for char in range(name|length) -%}
-~
+=
 {%- endfor %}
 
 .. toctree::
