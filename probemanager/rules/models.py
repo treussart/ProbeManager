@@ -10,28 +10,6 @@ from core.modelsmixins import CommonMixin
 logger = logging.getLogger(__name__)
 
 
-class ClassType(CommonMixin, models.Model):
-    """
-    Set of Classification for a signature.
-    The classtype keyword gives information about the classification of rules and alerts.
-    """
-    name = models.CharField(max_length=100, unique=True, db_index=True)
-    description = models.CharField(max_length=1000)
-    severity_level = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.name
-
-    @classmethod
-    def get_by_name(cls, name):
-        try:
-            obj = cls.objects.get(name=name)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return obj
-
-
 class Rule(CommonMixin, models.Model):
     """
     Represent a rule, who can be a script or a signature.

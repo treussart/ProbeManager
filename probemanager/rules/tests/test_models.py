@@ -3,34 +3,7 @@ from django.db.utils import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 
-from rules.models import DataTypeUpload, MethodUpload, ClassType, Source, RuleSet, Rule
-
-
-class ClassTypeTest(TestCase):
-    fixtures = ['init']
-
-    @classmethod
-    def setUpTestData(cls):
-        pass
-
-    def test_class_type(self):
-        all_class_type = ClassType.get_all()
-        class_type = ClassType.get_by_id(1)
-        self.assertEqual(len(all_class_type), 34)
-        self.assertEqual(class_type.name, "unknown")
-        self.assertEqual(str(class_type), "unknown")
-
-        class_type = ClassType.get_by_name("unknown")
-        self.assertEqual(class_type.name, "unknown")
-        with self.assertLogs('rules.models', level='DEBUG'):
-            ClassType.get_by_name("https")
-
-        class_type = ClassType.get_by_id(99)
-        self.assertEqual(class_type, None)
-        with self.assertRaises(AttributeError):
-            class_type.name
-        with self.assertRaises(IntegrityError):
-            ClassType.objects.create(name="unknown")
+from rules.models import DataTypeUpload, MethodUpload, Source, RuleSet, Rule
 
 
 class DataTypeUploadTest(TestCase):

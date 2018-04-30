@@ -1,1 +1,1 @@
-.. include:: ../../probemanager/core/docs/index.rst
+.. include:: ../../probemanager/core/README.rst

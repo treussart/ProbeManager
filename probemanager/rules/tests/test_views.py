@@ -6,7 +6,7 @@ from django.utils import timezone
 
 
 class ViewsRulesTest(TestCase):
-    fixtures = ['init', 'test-suricata-signature', 'test-suricata-script']
+    fixtures = ['init', 'init-suricata', 'test-suricata-signature', 'test-suricata-script']
 
     def setUp(self):
         self.client = Client()

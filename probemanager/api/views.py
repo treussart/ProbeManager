@@ -9,8 +9,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from core.models import Server, SshKey, Configuration
-from rules.models import ClassType
-from .serializers import UserSerializer, GroupSerializer, ClassTypeSerializer, CrontabScheduleSerializer, \
+from .serializers import UserSerializer, GroupSerializer, CrontabScheduleSerializer, \
     PeriodicTaskSerializer, ServerSerializer, SshKeySerializer, ConfigurationSerializer, ConfigurationUpdateSerializer
 
 
@@ -28,14 +27,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-
-
-class ClassTypeViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    """
-    API endpoint that allows class type to be viewed or edited. ex : Not Suspicious Traffic
-    """
-    queryset = ClassType.objects.all()
-    serializer_class = ClassTypeSerializer
 
 
 class PeriodicTaskViewSet(viewsets.ModelViewSet):

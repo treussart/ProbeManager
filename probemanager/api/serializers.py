@@ -3,7 +3,6 @@ from django_celery_beat.models import PeriodicTask, CrontabSchedule
 from rest_framework import serializers
 
 from core.models import Server, SshKey, Configuration
-from rules.models import ClassType
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,12 +15,6 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ('url', 'name')
-
-
-class ClassTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ClassType
-        fields = "__all__"
 
 
 class PeriodicTaskSerializer(serializers.ModelSerializer):
