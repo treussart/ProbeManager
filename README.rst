@@ -51,11 +51,11 @@ Features
 Usage
 =====
 
-.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/docs/data/Deployement_example_for_Probemanager_in_a_network.png
-   :alt: Deployement example for Probemanager in a network
+.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/docs/data/Deployement_example_of_Probemanager_in_a_network.png
+   :alt: Deployement example of Probemanager in a network
 
-.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/docs/data/Deployement_example_for_Probemanager_on_a_VPS.png
-   :alt: Deployement example for Probemanager on a VPS
+.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/docs/data/Deployement_example_of_Probemanager_in_a_VPS.png
+   :alt: Deployement example of Probemanager in a VPS
 
 Installation
 ============
