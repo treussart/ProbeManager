@@ -24,14 +24,14 @@ Usage
 Administration Page of the module :
 -----------------------------------
 
-.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/probemanager/core/data/admin-index.png
+.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-index.png
   :align: center
   :width: 80%
 
 Page to add a remote server :
 -----------------------------
 
-.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/probemanager/core/data/admin-server-add.png
+.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-server-add.png
   :align: center
   :width: 70%
 
@@ -50,7 +50,7 @@ Page to add a remote server :
 Page to add a SSH Key :
 -----------------------
 
-.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/probemanager/core/data/admin-sshkey-add.png
+.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-sshkey-add.png
   :align: center
   :width: 60%
 
@@ -60,6 +60,6 @@ Page to add a SSH Key :
 Page to see results of asynchronous jobs :
 ------------------------------------------
 
-.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/develop/probemanager/core/data/admin-jobs-full.png
+.. image:: https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-jobs-full.png
   :align: center
   :width: 90%
