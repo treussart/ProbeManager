@@ -6,7 +6,6 @@ from django_celery_beat.models import SolarSchedule, IntervalSchedule
 
 from .forms import ServerForm
 from .models import SshKey, Server, Job, Configuration
-from .utils import encrypt
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +14,6 @@ class ServerAdmin(admin.ModelAdmin):
     form = ServerForm
 
     def save_model(self, request, obj, form, change):
-        if obj.become_pass:
-            obj.become_pass = encrypt(obj.become_pass)
         super().save_model(request, obj, form, change)
         if obj.become:
             response = obj.test_root()
