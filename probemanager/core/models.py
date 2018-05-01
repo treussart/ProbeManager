@@ -103,25 +103,25 @@ class Server(CommonMixin, models.Model):
 
     def test(self):
         command = "cat /etc/hostname"
-        tasks = {"test": command}
+        tasks = {"test_connection": command}
         try:
             response = execute(self, tasks)
-        except Exception:
-            logger.exception("Error connecting to the server")
-            return False
+        except Exception as e:
+            logger.exception("Error during the connection to the server.")
+            return {'status': False, 'errors': str(e)}
         logger.debug("output : " + str(response))
-        return True
+        return {'status': True}
 
-    def test_root(self):
+    def test_become(self):
         command = "service ssh status"
-        tasks = {"test_root": command}
+        tasks = {"test_connection_and_become": command}
         try:
             response = execute(self, tasks, become=True)
-        except Exception:
-            logger.exception("Error connecting to the server")
-            return False
+        except Exception as e:
+            logger.exception("Error during the connection to the server.")
+            return {'status': False, 'errors': str(e)}
         logger.debug("output : " + str(response))
-        return True
+        return {'status': True}
 
 
 class Probe(CommonMixin, models.Model):
