@@ -5,7 +5,7 @@ Core
 Presentation
 ============
 
-App for general things about project and probe.
+Application for general things about project and probe.
 
 Features
 --------
@@ -16,7 +16,7 @@ Features
 * Ssh Key, to authenticate on the remote server.
 * General configuration of this application. (Pushbullet API KEY, MISP API KEY, SPLUNK HOST ...)
 * Generic Probe.
-* Genreic Probe configuration.
+* Generic Probe configuration.
 
 Usage
 =====
@@ -35,16 +35,16 @@ Page to add a remote server :
   :align: center
   :width: 70%
 
-* Name: Give a unique name for this instance, example: server-tap1.
+* Name: Give a unique name for this server, example: server-tap1.
 * Host: The IP address or Hostname.
 * Os: The Operating system (Debian or Ubuntu).
 * Remote User: The user used for the connection 'ssh user@hostname'
 * Remote port: The remote port 'ssh -p 22'.
-* Become: True or False, if he needs to elevate the privileges to be root.
+* Become: True or False, if the user needs to elevate his privileges to be root.
 * Become method:
-* Become user: Often root, but you can use an another user with fewer privileges than root.
-* Become pass: The password if needed for the user you have become.
-* Ssh private key file: The private key file for authenticate.
+* Become user: Often root, but you can use another user with fewer privileges than root.
+* Become pass: The password for the user you will want to become, if necessary.
+* Ssh private key file: The private key file to authenticate.
 
 
 Page to add a SSH Key :

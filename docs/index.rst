@@ -1,6 +1,6 @@
 
-Welcome to ProbeManager documentation!
-======================================
+Welcome to ProbeManager's documentation!
+========================================
 
 :Last Rewiewed: |last_reviewed|
 
