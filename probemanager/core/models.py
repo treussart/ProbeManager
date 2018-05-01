@@ -7,6 +7,7 @@ from django_celery_beat.models import CrontabSchedule
 
 from .modelsmixins import CommonMixin
 from .ssh import execute
+from .utils import encrypt
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +86,11 @@ class Server(CommonMixin, models.Model):
 
     def __str__(self):
         return str(self.name) + ' - ' + str(self.host) + ', Os : ' + str(self.os)
+
+    def save(self, **kwargs):
+        if self.become_pass:
+            self.become_pass = encrypt(self.become_pass)
+        super().save(**kwargs)
 
     @classmethod
     def get_by_host(cls, host):

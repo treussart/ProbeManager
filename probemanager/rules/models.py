@@ -21,6 +21,7 @@ class Rule(CommonMixin, models.Model):
     enabled = models.BooleanField(default=True)
     created_date = models.DateTimeField(default=timezone.now, editable=False)
     updated_date = models.DateTimeField(default=timezone.now, editable=False)
+    file_test_success = models.FileField(name='file_test_success', upload_to='file_test_success', blank=True)
 
     @classmethod
     def find(cls, pattern):

@@ -5,7 +5,7 @@ Rules
 Presentation
 ============
 
-Different generic things about rules.
+Application with generic things about rules.
 
 Features
 --------
