@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
 from rest_framework import serializers
 
-from core.models import Server, SshKey, Configuration
+from core.models import Server, SshKey, Configuration, Job
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,3 +51,9 @@ class ConfigurationUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Configuration
         fields = ('value', )
+
+
+class JobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = "__all__"
