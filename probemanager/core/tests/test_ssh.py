@@ -24,13 +24,18 @@ class SshCoreTest(TestCase):
 
     def test_execute(self):
         server = Server.get_by_id(1)
-        result = execute(server, {'test_hostame': "hostname"}, become=False)
-        self.assertEqual(result, {'test_hostame': 'test-travis'})
+        self.assertEqual(execute(server, {'test_hostame': "hostname"}, become=False),
+                         {'test_hostame': 'test-travis'})
+        self.assertEqual(execute(server, {'test_ok': "hostname 1>/dev/null"}, become=False),
+                         {'test_ok': 'OK'})
+        with self.assertRaises(Exception):
+            execute(server, {'test_fail': "service ssh status"}, become=False)
 
     def test_execute_become(self):
         server = Server.get_by_id(1)
-        result = execute(server, {'test_hostame': "hostname"}, become=True)
-        self.assertEqual(result, {'test_hostame': 'test-travis'})
+        self.assertEqual(execute(server, {'test_hostame': "hostname"}, become=True),
+                         {'test_hostame': 'test-travis'})
+        self.assertIn('ssh.service', execute(server, {'test_status': "service ssh status"}, become=True)['test_status'])
 
     def test_execute_copy_put(self):
         server = Server.get_by_id(1)

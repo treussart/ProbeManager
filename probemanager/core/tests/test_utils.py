@@ -9,7 +9,7 @@ from rules.models import Source
 
 
 class UtilsCoreTest(TestCase):
-    fixtures = ['init', 'crontab', 'test-rules-source', 'test-core-server', 'test-core-probe']
+    fixtures = ['init', 'crontab', 'test-rules-source', 'test-core-secrets', 'test-core-probe']
 
     @classmethod
     def setUpTestData(cls):
