@@ -92,15 +92,6 @@ class Server(CommonMixin, models.Model):
             self.become_pass = encrypt(self.become_pass)
         super().save(**kwargs)
 
-    @classmethod
-    def get_by_host(cls, host):
-        try:
-            host = cls.objects.get(host=host)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return host
-
     def test(self):
         command = "cat /etc/hostname"
         tasks = {"test_connection": command}
