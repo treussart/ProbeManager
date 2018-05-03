@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
-from core.models import Probe
+from core.models import Probe, Server
 from core.utils import create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, \
     add_1_hour, create_check_task
 from rules.models import Source
@@ -21,6 +21,22 @@ class UtilsCoreTest(TestCase):
         periodic_task = PeriodicTask.objects.get(name=Probe.get_by_id(1).name + '_check_task')
         self.assertEqual(periodic_task.task, 'core.tasks.check_probe')
         self.assertEqual(periodic_task.args, str([Probe.get_by_id(1).name, ]).replace("'", '"'))
+        self.assertEqual(periodic_task.crontab, CrontabSchedule.objects.get(id=4))
+        probe = Probe.objects.create(name="probe2",
+                                     description="test",
+                                     created_date="2017-09-23T21:00:53.094Z",
+                                     secure_deployment= True,
+                                     scheduled_check_enabled=True,
+                                     scheduled_check_crontab=CrontabSchedule.objects.get(id=2),
+                                     scheduled_rules_deployment_enabled= True,
+                                     scheduled_rules_deployment_crontab=CrontabSchedule.objects.get(id=2),
+                                     server=Server.get_by_id(1),
+                                     installed=True)
+        create_check_task(probe)
+        periodic_task = PeriodicTask.objects.get(name='probe2_check_task')
+        self.assertEqual(periodic_task.task, 'core.tasks.check_probe')
+        self.assertEqual(periodic_task.args, str([Probe.get_by_id(2).name, ]).replace("'", '"'))
+        self.assertEqual(periodic_task.crontab, CrontabSchedule.objects.get(id=2))
 
     def test_create_reload_task(self):
         create_reload_task(Probe.get_by_id(1))
@@ -35,6 +51,19 @@ class UtilsCoreTest(TestCase):
             name=probe.name + '_deploy_rules_' + str(probe.scheduled_rules_deployment_crontab))
         self.assertEqual(periodic_task.task, 'core.tasks.deploy_rules')
         self.assertEqual(periodic_task.args, str([probe.name, ]).replace("'", '"'))
+        probe = Probe.objects.create(name="probe2",
+                                     description="test",
+                                     created_date="2017-09-23T21:00:53.094Z",
+                                     secure_deployment= True,
+                                     scheduled_check_enabled=True,
+                                     scheduled_check_crontab=CrontabSchedule.objects.get(id=2),
+                                     scheduled_rules_deployment_enabled= False,
+                                     server=Server.get_by_id(1),
+                                     installed=True)
+        create_deploy_rules_task(probe)
+        periodic_task = PeriodicTask.objects.get(
+            name=probe.name + '_deploy_rules_' + str(CrontabSchedule.objects.get(id=4)))
+        self.assertEqual(periodic_task.task, 'core.tasks.deploy_rules')
 
     def test_create_deploy_rules_task_with_schedule(self):
         probe = Probe.get_by_id(1)
@@ -168,6 +197,9 @@ class UtilsCoreTest(TestCase):
         schedule_added = add_10_min(schedule)
         self.assertEqual(str(schedule_added), "52 */23- * * * (m/h/d/dM/MY)")
 
+        with self.assertRaises(Exception):
+            add_10_min("test")
+
     def test_add_1_hour(self):
         self.schedule, _ = CrontabSchedule.objects.get_or_create(minute='2',
                                                                  hour='2',
@@ -228,3 +260,6 @@ class UtilsCoreTest(TestCase):
         self.schedule.save()
         schedule_added = add_1_hour(self.schedule)
         self.assertEqual(str(schedule_added), "2 * 6 * * (m/h/d/dM/MY)")
+
+        with self.assertRaises(Exception):
+            add_1_hour("test")
