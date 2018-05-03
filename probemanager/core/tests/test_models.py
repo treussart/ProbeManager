@@ -27,6 +27,9 @@ class JobTest(TestCase):
         self.assertEqual(self.job2.status, 'Completed')
         jobs = Job.get_all()
         self.assertTrue(jobs[0].created > jobs[1].created)
+        for job in Job.get_all():
+            job.delete()
+        self.assertEqual(Job.get_last(), None)
 
 
 class OsSupportedTest(TestCase):
