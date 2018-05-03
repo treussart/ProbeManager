@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 
-from core.models import Configuration
+from core.models import Configuration, Server
 
 
 class APITest(APITestCase):
@@ -20,6 +20,12 @@ class APITest(APITestCase):
         self.client.logout()
 
     def test_server(self):
+        response = self.client.get('/api/v1/core/server/1/test_connection/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {'status': True})
+        server = Server.get_by_id(1)
+        server.become = False
+        server.save()
         response = self.client.get('/api/v1/core/server/1/test_connection/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {'status': True})
