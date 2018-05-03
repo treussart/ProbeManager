@@ -39,19 +39,20 @@ class SshCoreTest(TestCase):
         server.become_pass = None
         server.save()
         with self.assertRaises(Exception):
-            self.assertEqual(execute(server, {'test_hostame': "hostname"}, become=True),
-                             {'test_hostame': 'test-travis'})
-
+            execute(server, {'test_hostame': "hostname"}, become=True)
         server.become = False
         server.save()
         with self.assertRaises(Exception):
-            self.assertEqual(execute(server, {'test_hostame': "hostname"}, become=True),
-                             {'test_hostame': 'test-travis'})
+            execute(server, {'test_hostame': "hostname"}, become=True)
+        with self.assertRaises(Exception):
+            execute_copy(server, src=settings.ROOT_DIR + '/LICENSE', dest='/tmp/LICENSE', become=True)
 
     def test_execute_copy_put(self):
         server = Server.get_by_id(1)
         result = execute_copy(server, src=settings.ROOT_DIR + '/LICENSE', dest='LICENSE')
         self.assertEqual(result, {'copy': 'OK'})
+        with self.assertRaises(Exception):
+            execute_copy(server, src=settings.ROOT_DIR + '/LICENSE', dest='/')
 
     def test_execute_copy_put_become(self):
         server = Server.get_by_id(1)
