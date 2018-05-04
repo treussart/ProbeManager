@@ -1,10 +1,12 @@
 """ venv/bin/python probemanager/manage.py test core.tests.test_utils --settings=probemanager.settings.dev """
+import os
 from django.test import TestCase
+from django.conf import settings
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
 from core.models import Probe, Server
 from core.utils import create_deploy_rules_task, create_reload_task, encrypt, decrypt, add_10_min, \
-    add_1_hour, create_check_task
+    add_1_hour, create_check_task, get_tmp_dir, process_cmd, find_procs_by_name
 from rules.models import Source
 
 
@@ -263,3 +265,34 @@ class UtilsCoreTest(TestCase):
 
         with self.assertRaises(Exception):
             add_1_hour("test")
+
+    def test_get_temp_dir(self):
+        with get_tmp_dir("test") as tmp:
+            with open(tmp + 'test.txt', 'w') as f:
+                f.write("test")
+            self.assertTrue(os.path.exists(tmp + "test.txt"))
+        self.assertFalse(os.path.exists(tmp + "test.txt"))
+        self.assertFalse(os.path.exists(tmp))
+        with get_tmp_dir() as tmp:
+            with open(tmp + 'test.txt', 'w') as f:
+                f.write("test")
+            self.assertTrue(os.path.exists(tmp + "test.txt"))
+        self.assertFalse(os.path.exists(tmp + "test.txt"))
+        self.assertFalse(os.path.exists(tmp))
+        with self.assertRaises(Exception):
+            with get_tmp_dir() as tmp:
+                raise Exception("test")
+            self.assertFalse(os.path.exists(tmp))
+
+    def test_process_cmd(self):
+        self.assertTrue(process_cmd(['ls'], settings.BASE_DIR)['status'])
+        self.assertTrue(process_cmd(['echo', 'test'], settings.BASE_DIR, 'tset')['status'])
+        self.assertFalse(process_cmd(['echo', 'test'], settings.BASE_DIR, 'test')['status'])
+        self.assertIn('', process_cmd(['echo', 'test'], settings.BASE_DIR, 'test')['errors'])
+        self.assertFalse(process_cmd('exit 1', settings.BASE_DIR)['status'])
+        self.assertIn('No such file or directory', process_cmd('exit 1', settings.BASE_DIR)['errors'])
+        self.assertFalse(process_cmd(['ls'], "erererer")['status'])
+        self.assertIn('No such file or directory', process_cmd(['ls'], "erererer")['errors'])
+
+    def test_find_procs_by_name(self):
+        self.assertEqual(find_procs_by_name('bash')[0].as_dict()['name'], 'bash')

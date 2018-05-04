@@ -10,6 +10,7 @@ from django.utils.safestring import mark_safe
 
 from .models import Probe
 from .tasks import deploy_rules as deploy_rules_probe, install_probe, update_probe
+from .utils import get_tmp_dir
 
 logger = logging.getLogger(__name__)
 
@@ -285,3 +286,25 @@ def deploy_rules(request, pk):
         logger.exception('Error during the rules deployment : ' + str(e))
         messages.add_message(request, messages.ERROR, 'Error during the rules deployment : ' + str(e))
     return render(request, probe.type.lower() + '/index.html', {'probe': probe})
+
+
+def generic_import_csv(cls, request):
+    if request.method == 'GET':
+        return render(request, 'import_csv.html')
+    elif request.method == 'POST':
+        if request.FILES['file']:
+            try:
+                with get_tmp_dir('csv') as tmp_dir:
+                    with open(tmp_dir + 'imported.csv', 'wb+') as destination:
+                        for chunk in request.FILES['file'].chunks():
+                            destination.write(chunk)
+                    cls.import_from_csv(tmp_dir + 'imported.csv')
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, 'Error during the import : ' + str(e))
+                return render(request, 'import_csv.html')
+            messages.add_message(request, messages.SUCCESS, 'CSV file imported successfully !')
+            return render(request, 'import_csv.html')
+        else:  # pragma: no cover
+            messages.add_message(request, messages.ERROR, 'No file submitted')
+            return render(request, 'import_csv.html')
+
