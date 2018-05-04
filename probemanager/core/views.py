@@ -307,4 +307,3 @@ def generic_import_csv(cls, request):
         else:  # pragma: no cover
             messages.add_message(request, messages.ERROR, 'No file submitted')
             return render(request, 'import_csv.html')
-
