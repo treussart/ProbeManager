@@ -71,7 +71,8 @@ class ConfigurationViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, vie
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SshKeyViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class SshKeyViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet):
     queryset = SshKey.objects.all()
     serializer_class = SshKeySerializer
 
