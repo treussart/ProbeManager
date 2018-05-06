@@ -15,14 +15,7 @@ from .models import Configuration
 logger = logging.getLogger('core.notifications')
 
 
-def send_notification(title, body, html=False):
-    if html:
-        plain_body = html_lxml.fromstring(body).text_content()
-        html_body = body
-    else:
-        plain_body = body
-        html_body = '<pre>' + body + '</pre>'
-    # Pushbullet
+def pushbullet(title, plain_body):  # pragma: no cover
     if Configuration.get_value("PUSHBULLET_API_KEY"):
         try:
             pb = Pushbullet(Configuration.get_value("PUSHBULLET_API_KEY"))
@@ -32,7 +25,9 @@ def send_notification(title, body, html=False):
             logger.exception('Wrong PUSHBULLET_API_KEY')
         except PushError:
             logger.exception('Pushbullet pro required - too many notifications generated')
-    # Splunk
+
+
+def splunk(html_body):  # pragma: no cover
     if Configuration.get_value("SPLUNK_HOST"):
         if Configuration.get_value("SPLUNK_USER") and Configuration.get_value("SPLUNK_PASSWORD"):
             url = "https://" + Configuration.get_value(
@@ -44,8 +39,9 @@ def send_notification(title, body, html=False):
                 "SPLUNK_HOST") + ":8089/services/receivers/simple?source=ProbeManager&sourcetype=notification"
             r = requests.post(url, verify=False, data=html_body)
         logger.debug("Splunk " + str(r.text))
-        print(r.text)
-    # Email
+
+
+def email(title, plain_body, html_body):  # pragma: no cover
     users = User.objects.all()
     if settings.DEFAULT_FROM_EMAIL:
         try:
@@ -61,6 +57,21 @@ def send_notification(title, body, html=False):
             logger.exception("Error in sending email")
 
 
+def send_notification(title, body, html=False):  # pragma: no cover
+    if html:
+        plain_body = html_lxml.fromstring(body).text_content()
+        html_body = body
+    else:
+        plain_body = body
+        html_body = '<pre>' + body + '</pre>'
+    # Pushbullet
+    pushbullet(title, plain_body)
+    # Splunk
+    splunk(html_body)
+    # Email
+    email(title, plain_body, html_body)
+
+
 @receiver(post_save, sender=User)
-def my_handler(sender, instance, **kwargs):
+def my_handler(sender, instance, **kwargs):  # pragma: no cover
     send_notification(sender.__name__ + " created", str(instance.username) + " - " + str(instance.email))

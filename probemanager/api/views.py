@@ -7,10 +7,12 @@ from rest_framework import mixins
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
-from core.models import Server, SshKey, Configuration
+from core.models import Server, SshKey, Configuration, Job
 from .serializers import UserSerializer, GroupSerializer, CrontabScheduleSerializer, \
-    PeriodicTaskSerializer, ServerSerializer, SshKeySerializer, ConfigurationSerializer, ConfigurationUpdateSerializer
+    PeriodicTaskSerializer, ServerSerializer, SshKeySerializer, ConfigurationSerializer, \
+    ConfigurationUpdateSerializer, JobSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -43,6 +45,15 @@ class ServerViewSet(viewsets.ModelViewSet):
     queryset = Server.objects.all()
     serializer_class = ServerSerializer
 
+    @action(detail=True)
+    def test_connection(self, request, pk=None):
+        obj = self.get_object()
+        if obj.become:
+            response = obj.test_become()
+        else:
+            response = obj.test()
+        return Response(response)
+
 
 class ConfigurationViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Configuration.objects.all()
@@ -60,7 +71,8 @@ class ConfigurationViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, vie
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SshKeyView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class SshKeyViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet):
     queryset = SshKey.objects.all()
     serializer_class = SshKeySerializer
 
@@ -71,3 +83,8 @@ class SshKeyView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Destro
         sshkey = SshKey(name=request.data['name'], file="ssh_keys/" + request.data['file'])
         sshkey.save()
         return Response(status=204)
+
+
+class JobViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer

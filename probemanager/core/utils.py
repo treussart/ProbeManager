@@ -9,8 +9,6 @@ from contextlib import contextmanager
 import psutil
 from cryptography.fernet import Fernet
 from django.conf import settings
-from django.contrib import messages
-from django.shortcuts import render
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
 
 fernet_key = Fernet(settings.FERNET_KEY)
@@ -46,37 +44,34 @@ def create_check_task(probe):
 
 
 def create_deploy_rules_task(probe, schedule=None, source=None):
-    try:
-        if schedule is None:
-            try:
-                PeriodicTask.objects.get(
-                    name=probe.name + "_deploy_rules_" + str(probe.scheduled_rules_deployment_crontab))
-            except PeriodicTask.DoesNotExist:
-                if probe.scheduled_rules_deployment_crontab:
-                    PeriodicTask.objects.create(crontab=probe.scheduled_rules_deployment_crontab,
-                                                name=probe.name + "_deploy_rules_" + str(
-                                                    probe.scheduled_rules_deployment_crontab),
-                                                task='core.tasks.deploy_rules',
-                                                enabled=probe.scheduled_rules_deployment_enabled,
-                                                args=json.dumps([probe.name, ]))
-                else:
-                    PeriodicTask.objects.create(crontab=CrontabSchedule.objects.get(id=4),
-                                                name=probe.name + "_deploy_rules_" + str(
-                                                    probe.scheduled_rules_deployment_crontab),
-                                                task='core.tasks.deploy_rules',
-                                                enabled=probe.scheduled_rules_deployment_enabled,
-                                                args=json.dumps([probe.name, ]))
-        elif source is not None:
-            try:
-                PeriodicTask.objects.get(name=probe.name + "_" + source.uri + "_deploy_rules_" + str(schedule))
-            except PeriodicTask.DoesNotExist:
-                PeriodicTask.objects.create(crontab=schedule,
-                                            name=probe.name + "_" + source.uri + "_deploy_rules_" + str(schedule),
+    if schedule is None:
+        try:
+            PeriodicTask.objects.get(
+                name=probe.name + "_deploy_rules_" + str(probe.scheduled_rules_deployment_crontab))
+        except PeriodicTask.DoesNotExist:
+            if probe.scheduled_rules_deployment_crontab:
+                PeriodicTask.objects.create(crontab=probe.scheduled_rules_deployment_crontab,
+                                            name=probe.name + "_deploy_rules_" + str(
+                                                probe.scheduled_rules_deployment_crontab),
                                             task='core.tasks.deploy_rules',
                                             enabled=probe.scheduled_rules_deployment_enabled,
                                             args=json.dumps([probe.name, ]))
-    except Exception:
-        logger.warning("Error if 2 sources have the same crontab on the same probe -> useless")
+            else:
+                PeriodicTask.objects.create(crontab=CrontabSchedule.objects.get(id=4),
+                                            name=probe.name + "_deploy_rules_" + str(
+                                                CrontabSchedule.objects.get(id=4)),
+                                            task='core.tasks.deploy_rules',
+                                            enabled=probe.scheduled_rules_deployment_enabled,
+                                            args=json.dumps([probe.name, ]))
+    elif source is not None:
+        try:
+            PeriodicTask.objects.get(name=probe.name + "_" + source.uri + "_deploy_rules_" + str(schedule))
+        except PeriodicTask.DoesNotExist:
+            PeriodicTask.objects.create(crontab=schedule,
+                                        name=probe.name + "_" + source.uri + "_deploy_rules_" + str(schedule),
+                                        task='core.tasks.deploy_rules',
+                                        enabled=probe.scheduled_rules_deployment_enabled,
+                                        args=json.dumps([probe.name, ]))
 
 
 def decrypt(cipher_text):
@@ -158,39 +153,36 @@ def add_10_min(crontab):
 
 def add_1_hour(crontab):
     schedule = crontab
-    try:
-        if schedule.minute.isdigit():
-            if schedule.hour.isdigit():
-                hour = schedule.hour
-                if int(hour) in range(0, 22):
-                    # 2 1  ->  2 2
-                    hour = int(schedule.hour)
-                    hour += 1
-                    schedule.hour = str(hour)
-                    return schedule
-                else:
-                    # 2 23 -> 2 0  + 1 jour
-                    if schedule.day_of_week.isdigit():
-                        schedule.hour = str(0)
-                        if int(schedule.day_of_week) in range(0, 5):
-                            schedule.day_of_week = str(int(schedule.day_of_week) + 1)
-                        else:
-                            schedule.day_of_week = str(0)
-                    else:
-                        # 2 23 * -> 2 0  + 1 jour illogic
-                        pass
-                    return schedule
+    if schedule.minute.isdigit():
+        if schedule.hour.isdigit():
+            hour = schedule.hour
+            if int(hour) in range(0, 22):
+                # 2 1  ->  2 2
+                hour = int(schedule.hour)
+                hour += 1
+                schedule.hour = str(hour)
+                return schedule
             else:
-                # 50 * -> equal  illogic
-                # 10 */2 -> equal  illogic
+                # 2 23 -> 2 0  + 1 jour
+                if schedule.day_of_week.isdigit():
+                    schedule.hour = str(0)
+                    if int(schedule.day_of_week) in range(0, 5):
+                        schedule.day_of_week = str(int(schedule.day_of_week) + 1)
+                    else:
+                        schedule.day_of_week = str(0)
+                else:
+                    # 2 23 * -> 2 0  + 1 jour illogic
+                    pass
                 return schedule
         else:
-            # */2 1 ->  */2 2 illogic
-            # */2 * ->  equal  illogic
-            # * 23 -> * 0  + 1 jour  illogic
-            # * 1 -> * 2  illogic
+            # 50 * -> equal  illogic
+            # 10 */2 -> equal  illogic
             return schedule
-    except ValueError:
+    else:
+        # */2 1 ->  */2 2 illogic
+        # */2 * ->  equal  illogic
+        # * 23 -> * 0  + 1 jour  illogic
+        # * 1 -> * 2  illogic
         return schedule
 
 
@@ -208,39 +200,21 @@ def get_tmp_dir(folder_name=None):
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
-def generic_import_csv(cls, request):
-    if request.method == 'GET':
-        return render(request, 'import_csv.html')
-    elif request.method == 'POST':
-        if request.FILES['file']:
-            try:
-                with get_tmp_dir('csv') as tmp_dir:
-                    with open(tmp_dir + 'imported.csv', 'wb+') as destination:
-                        for chunk in request.FILES['file'].chunks():
-                            destination.write(chunk)
-                    cls.import_from_csv(tmp_dir + 'imported.csv')
-            except Exception as e:
-                messages.add_message(request, messages.ERROR, 'Error during the import : ' + str(e))
-                return render(request, 'import_csv.html')
-            messages.add_message(request, messages.SUCCESS, 'CSV file imported successfully !')
-            return render(request, 'import_csv.html')
-        else:  # pragma: no cover
-            messages.add_message(request, messages.ERROR, 'No file submitted')
-            return render(request, 'import_csv.html')
-
-
 def process_cmd(cmd, tmp_dir, value=None):
-    process = subprocess.Popen(cmd, cwd=tmp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               universal_newlines=True)
-    outdata, errdata = process.communicate()
-    logger.debug("outdata : " + str(outdata), "errdata : " + str(errdata))
-    # if success ok
-    if process.returncode != 0:
-        return {'status': False, 'errors': errdata}
-    elif value:
-        if value in outdata or value in errdata:
-            return {'status': False, 'errors': errdata}
-    return {'status': True}
+    try:
+        process = subprocess.Popen(cmd, cwd=tmp_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                   universal_newlines=True)
+        outdata, errdata = process.communicate()
+        logger.debug("outdata : " + str(outdata), "errdata : " + str(errdata))
+    except Exception as e:
+        return {'status': False, 'errors': str(e)}
+    else:
+        if process.returncode != 0:
+            return {'status': False, 'errors': outdata + errdata}
+        elif value:
+            if value in outdata or value in errdata:
+                return {'status': False, 'errors': outdata + errdata}
+        return {'status': True}
 
 
 def find_procs_by_name(name):

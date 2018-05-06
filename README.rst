@@ -63,7 +63,17 @@ Installation
 Operating System
 ----------------
 
-OSX 12+ (Only for project development), Debian stable and Ubuntu 14.04+ are Supported.
++------------+------------+-----------+
+|  OS        |    prod    |   test    |
++============+============+===========+
+|  OSX 12+   |            |     X     |
++------------+------------+-----------+
+|  Debian 9  |     X      |           |
++------------+------------+-----------+
+|  Ubuntu 14 |     X      |           |
++------------+------------+-----------+
+
+OSX 12+ (Only for project development), Debian stable and Ubuntu 14.04+ are Supported and tested.
 
 Requirements
 ------------

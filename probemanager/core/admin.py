@@ -16,10 +16,10 @@ class ServerAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
         if obj.become:
-            response = obj.test_root()
+            response = obj.test_become()
         else:
             response = obj.test()
-        if response:
+        if response['status']:
             messages.add_message(request, messages.SUCCESS, "Connection to the server OK")
         else:
             messages.add_message(request, messages.ERROR, "Connection to the server Failed")

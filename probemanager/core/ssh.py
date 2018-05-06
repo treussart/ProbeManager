@@ -22,7 +22,6 @@ def connection(server):
 
 def execute(server, commands, become=False):
     result = dict()
-    # commands is a dict {'name of command': command}
     for command_name, command in commands.items():
         if become:
             if server.become:

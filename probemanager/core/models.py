@@ -1,5 +1,4 @@
 import logging
-from collections import OrderedDict
 
 from django.db import models
 from django.utils import timezone
@@ -30,10 +29,7 @@ class Job(CommonMixin, models.Model):
         ordering = ('-created',)
 
     def __str__(self):
-        return self.name
-
-    def get_duration(self):
-        return self.created - self.completed
+        return str(self.name)
 
     @classmethod
     def create_job(cls, name, probe_name):
@@ -55,7 +51,7 @@ class OsSupported(CommonMixin, models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class SshKey(models.Model):
@@ -66,7 +62,7 @@ class SshKey(models.Model):
     file = models.FileField(upload_to='ssh_keys/')
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Server(CommonMixin, models.Model):
@@ -92,36 +88,29 @@ class Server(CommonMixin, models.Model):
             self.become_pass = encrypt(self.become_pass)
         super().save(**kwargs)
 
-    @classmethod
-    def get_by_host(cls, host):
-        try:
-            host = cls.objects.get(host=host)
-        except cls.DoesNotExist as e:
-            logger.debug('Tries to access an object that does not exist : ' + str(e))
-            return None
-        return host
-
     def test(self):
         command = "cat /etc/hostname"
-        tasks = {"test": command}
+        tasks = {"test_connection": command}
         try:
             response = execute(self, tasks)
-        except Exception:
-            logger.exception("Error connecting to the server")
-            return False
-        logger.debug("output : " + str(response))
-        return True
+        except Exception as e:
+            logger.exception("Error during the connection to the server.")
+            return {'status': False, 'errors': str(e)}
+        else:
+            logger.debug("output : " + str(response))
+            return {'status': True}
 
-    def test_root(self):
+    def test_become(self):
         command = "service ssh status"
-        tasks = {"test_root": command}
+        tasks = {"test_connection_and_become": command}
         try:
             response = execute(self, tasks, become=True)
-        except Exception:
-            logger.exception("Error connecting to the server")
-            return False
-        logger.debug("output : " + str(response))
-        return True
+        except Exception as e:
+            logger.exception("Error during the connection to the server.")
+            return {'status': False, 'errors': str(e)}
+        else:
+            logger.debug("output : " + str(response))
+            return {'status': True}
 
 
 class Probe(CommonMixin, models.Model):
@@ -146,7 +135,7 @@ class Probe(CommonMixin, models.Model):
     installed = models.BooleanField('Probe Already installed', default=False)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     def uptime(self):
         if self.installed:
@@ -160,8 +149,9 @@ class Probe(CommonMixin, models.Model):
             except Exception as e:
                 logger.exception("Error during the uptime")
                 return 'Failed to get the uptime on the host : ' + str(e)
-            logger.debug("output : " + str(response))
-            return response['uptime']
+            else:
+                logger.debug("output : " + str(response))
+                return response['uptime']
         else:
             return 'Not installed'
 
@@ -176,8 +166,9 @@ class Probe(CommonMixin, models.Model):
         except Exception:
             logger.exception("Error during restart")
             return {'status': False, 'errors': "Error during restart"}
-        logger.debug("output : " + str(response))
-        return {'status': True}
+        else:
+            logger.debug("output : " + str(response))
+            return {'status': True}
 
     def start(self):
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
@@ -190,8 +181,9 @@ class Probe(CommonMixin, models.Model):
         except Exception:
             logger.exception("Error during start")
             return {'status': False, 'errors': "Error during start"}
-        logger.debug("output : " + str(response))
-        return {'status': True}
+        else:
+            logger.debug("output : " + str(response))
+            return {'status': True}
 
     def stop(self):
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
@@ -204,8 +196,9 @@ class Probe(CommonMixin, models.Model):
         except Exception:
             logger.exception("Error during stop")
             return {'status': False, 'errors': "Error during stop"}
-        logger.debug("output : " + str(response))
-        return {'status': True}
+        else:
+            logger.debug("output : " + str(response))
+            return {'status': True}
 
     def status(self):
         if self.installed:
@@ -219,10 +212,11 @@ class Probe(CommonMixin, models.Model):
             except Exception:
                 logger.exception('Failed to get status')
                 return 'Failed to get status'
-            logger.debug("output : " + str(response))
-            return response['status']
+            else:
+                logger.debug("output : " + str(response))
+                return response['status']
         else:
-            return " "
+            return 'Not installed'
 
     def reload(self):
         if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
@@ -235,28 +229,9 @@ class Probe(CommonMixin, models.Model):
         except Exception:
             logger.exception("Error during reload")
             return {'status': False, 'errors': "Error during reload"}
-        logger.debug("output : " + str(response))
-        return {'status': True}
-
-    def install(self, version=None):  # pragma: no cover
-        if self.server.os.name == 'debian' or self.server.os.name == 'ubuntu':
-            command1 = "apt update"
-            command2 = "apt install " + self.__class__.__name__.lower()
-        else:  # pragma: no cover
-            raise NotImplementedError
-        tasks = OrderedDict(sorted({"1_update": command1, "2_install": command2}.items(), key=lambda t: t[0]))
-        try:
-            response = execute(self.server, tasks, become=True)
-            self.installed = True
-            self.save()
-        except Exception:
-            logger.exception("Error during install")
-            return {'status': False, 'errors': "Error during install"}
-        logger.debug("output : " + str(response))
-        return {'status': True}
-
-    def update(self, version=None):  # pragma: no cover
-        return self.install(version=version)
+        else:
+            logger.debug("output : " + str(response))
+            return {'status': True}
 
     @classmethod
     def get_by_name(cls, name):
@@ -276,7 +251,7 @@ class ProbeConfiguration(CommonMixin, models.Model):
     name = models.CharField(max_length=100, unique=True, blank=False, null=False)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Configuration(models.Model):
@@ -287,16 +262,13 @@ class Configuration(models.Model):
     value = models.CharField(max_length=300, blank=True, null=False)
 
     def __str__(self):
-        return self.key
+        return str(self.key)
 
     @classmethod
     def get_value(cls, key):
         try:
-            if cls.objects.get(key=key):
-                if cls.objects.get(key=key).value != "":
-                    return cls.objects.get(key=key).value
-                else:
-                    return None
+            if cls.objects.get(key=key).value != "":
+                return cls.objects.get(key=key).value
             else:
                 return None
         except cls.DoesNotExist:

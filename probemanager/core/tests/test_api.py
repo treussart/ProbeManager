@@ -4,11 +4,11 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 
-from core.models import Configuration
+from core.models import Configuration, Server
 
 
 class APITest(APITestCase):
-    fixtures = ['init', 'crontab']
+    fixtures = ['init', 'crontab', 'test-core-secrets']
 
     def setUp(self):
         self.client = APIClient()
@@ -18,6 +18,17 @@ class APITest(APITestCase):
 
     def tearDown(self):
         self.client.logout()
+
+    def test_server(self):
+        response = self.client.get('/api/v1/core/server/1/test_connection/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {'status': True})
+        server = Server.get_by_id(1)
+        server.become = False
+        server.save()
+        response = self.client.get('/api/v1/core/server/1/test_connection/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {'status': True})
 
     def test_configuration(self):
         response = self.client.get('/api/v1/core/configuration/')
@@ -52,13 +63,13 @@ class APITest(APITestCase):
     def test_sshkey(self):
         response = self.client.get('/api/v1/core/sshkey/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['count'], 0)
+        self.assertEqual(response.data['count'], 1)
 
-        data = {"name": "test", "file": "ssh_keys/test.com_rsa"}
+        data = {"name": "test2", "file": "ssh_keys/test.com_rsa"}
 
         response = self.client.post('/api/v1/core/sshkey/', data)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         response = self.client.get('/api/v1/core/sshkey/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['count'], 2)
