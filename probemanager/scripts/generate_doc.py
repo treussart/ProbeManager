@@ -38,4 +38,5 @@ def run(*args):
                             f_include.write(template_include_rendered)
                             f_include.close()
                             f.write(template_rendered)
+                            break
     exit(0)
