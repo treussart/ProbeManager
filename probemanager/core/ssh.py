@@ -15,7 +15,8 @@ def connection(server):
     client.connect(hostname=server.host,
                    username=server.remote_user,
                    port=server.remote_port,
-                   key_filename=settings.MEDIA_ROOT + "/" + server.ssh_private_key_file.file.name
+                   key_filename=settings.MEDIA_ROOT + "/" + server.ssh_private_key_file.file.name,
+                   passphrase=settings.SECRET_KEY,
                    )
     return client
 

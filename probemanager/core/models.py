@@ -1,8 +1,10 @@
 import logging
 
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule
+from paramiko.rsakey import RSAKey
 
 from .modelsmixins import CommonMixin
 from .ssh import execute
@@ -63,6 +65,11 @@ class SshKey(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+    def save(self, **kwargs):
+        super().save(**kwargs)
+        rsakey = RSAKey.from_private_key_file(settings.MEDIA_ROOT + "/" + self.file.name)
+        rsakey.write_private_key_file(settings.MEDIA_ROOT + "/" + self.file.name, settings.SECRET_KEY)
 
 
 class Server(CommonMixin, models.Model):
