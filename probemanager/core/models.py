@@ -1,4 +1,5 @@
 import logging
+import os
 
 from django.conf import settings
 from django.db import models
@@ -70,6 +71,7 @@ class SshKey(models.Model):
         super().save(**kwargs)
         rsakey = RSAKey.from_private_key_file(settings.MEDIA_ROOT + "/" + self.file.name)
         rsakey.write_private_key_file(settings.MEDIA_ROOT + "/" + self.file.name, settings.SECRET_KEY)
+        os.chmod(settings.MEDIA_ROOT + "/" + self.file.name, 0o640)
 
 
 class Server(CommonMixin, models.Model):
