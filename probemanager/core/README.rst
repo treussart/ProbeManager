@@ -57,6 +57,8 @@ Page to add a SSH Key :
 * Name: A name for this key. (In the API, the name is the name of the file)
 * File: The file to upload. (In the API, the file is the text file of the private key)
 
+The SSH key must not be encrypted, the tool will encrypt it with the secret key of Django.
+
 Page to see results of asynchronous jobs :
 ------------------------------------------
 
