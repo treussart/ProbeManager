@@ -98,6 +98,7 @@ copy_files(){
                 # copy the start script for test
                 cp start.sh $destfull
                 cp README.rst $destfull
+                cp CHANGELOG.rst $destfull
             fi
         fi
     fi
