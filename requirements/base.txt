@@ -1,6 +1,6 @@
 bcrypt==3.1.4
-celery==4.1.0
-Django==2.0.4
+celery==4.1.1
+Django==2.0.5
 django-celery-beat==1.1.1
 django-celery-results==1.0.1
 django-extensions==2.0.7
@@ -13,7 +13,7 @@ paramiko==2.4.1
 psutil==5.4.5
 psycopg2-binary==2.7.4
 pushbullet.py==0.11.0
-pymisp==2.4.90
+pymisp==2.4.90.1
 PyYAML==3.12
 Sphinx==1.7.4
-sphinx-rtd-theme==0.3.0
+sphinx-rtd-theme==0.3.1
