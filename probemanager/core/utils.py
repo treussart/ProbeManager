@@ -9,7 +9,6 @@ from contextlib import contextmanager
 import psutil
 from cryptography.fernet import Fernet
 from django.conf import settings
-from django.db.utils import IntegrityError
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
 
 fernet_key = Fernet(settings.FERNET_KEY)
@@ -50,23 +49,20 @@ def create_deploy_rules_task(probe, schedule=None, source=None):
             PeriodicTask.objects.get(
                 name=probe.name + "_deploy_rules_" + str(probe.scheduled_rules_deployment_crontab))
         except PeriodicTask.DoesNotExist:
-            try:
-                if probe.scheduled_rules_deployment_crontab:
-                    PeriodicTask.objects.create(crontab=probe.scheduled_rules_deployment_crontab,
-                                                name=probe.name + "_deploy_rules_" + str(
-                                                    probe.scheduled_rules_deployment_crontab),
-                                                task='core.tasks.deploy_rules',
-                                                enabled=probe.scheduled_rules_deployment_enabled,
-                                                args=json.dumps([probe.name, ]))
-                else:
-                    PeriodicTask.objects.create(crontab=CrontabSchedule.objects.get(id=4),
-                                                name=probe.name + "_deploy_rules_" + str(
-                                                    CrontabSchedule.objects.get(id=4)),
-                                                task='core.tasks.deploy_rules',
-                                                enabled=probe.scheduled_rules_deployment_enabled,
-                                                args=json.dumps([probe.name, ]))
-            except IntegrityError:
-                pass
+            if probe.scheduled_rules_deployment_crontab:
+                PeriodicTask.objects.create(crontab=probe.scheduled_rules_deployment_crontab,
+                                            name=probe.name + "_deploy_rules_" + str(
+                                                probe.scheduled_rules_deployment_crontab),
+                                            task='core.tasks.deploy_rules',
+                                            enabled=probe.scheduled_rules_deployment_enabled,
+                                            args=json.dumps([probe.name, ]))
+            else:
+                PeriodicTask.objects.create(crontab=CrontabSchedule.objects.get(id=4),
+                                            name=probe.name + "_deploy_rules_" + str(
+                                                CrontabSchedule.objects.get(id=4)),
+                                            task='core.tasks.deploy_rules',
+                                            enabled=probe.scheduled_rules_deployment_enabled,
+                                            args=json.dumps([probe.name, ]))
     elif source is not None:
         try:
             PeriodicTask.objects.get(name=probe.name + "_" + source.uri + "_deploy_rules_" + str(schedule))
