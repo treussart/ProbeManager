@@ -1,4 +1,5 @@
 import importlib
+import reprlib
 
 from celery import task
 from celery.utils.log import get_task_logger
@@ -7,6 +8,9 @@ from .models import Probe, Job
 from .notifications import send_notification
 
 logger = get_task_logger(__name__)
+
+repr_instance = reprlib.Repr()
+repr_instance.maxstring = 200
 
 
 @task
@@ -29,7 +33,8 @@ def deploy_rules(probe_name):
         elif not response_deploy_rules['status']:
             if 'errors' in response_deploy_rules:
                 job.update_job('Error during the rules deployed',
-                               'Error: ' + str(probe_name) + " - " + str(response_deploy_rules['errors']))
+                               'Error: ' + str(probe_name) + " - " +
+                               repr_instance.repr(response_deploy_rules['errors']))
                 logger.error("task - deploy_rules : " + str(probe_name) + " - " + str(response_deploy_rules['errors']))
                 return {"message": "Error for probe " + str(probe.name) + " to deploy rules",
                         "exception": str(response_deploy_rules['errors'])}
@@ -39,13 +44,13 @@ def deploy_rules(probe_name):
                 return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": " "}
         elif not response_reload['status']:
             job.update_job('Error during the rules deployed',
-                           'Error: ' + str(probe_name) + str(response_reload['errors']))
+                           'Error: ' + str(probe_name) + repr_instance.repr(response_reload['errors']))
             logger.error("task - deploy_rules : " + str(probe_name) + " - " + str(response_reload['errors']))
             return {"message": "Error for probe " + str(probe.name) + " to deploy rules",
                     "exception": str(response_reload['errors'])}
     except Exception as e:
         logger.exception('Error during the rules deployed')
-        job.update_job(str(e), 'Error')
+        job.update_job(repr_instance.repr(e), 'Error')
         send_notification("Probe " + str(probe.name), str(e))
         return {"message": "Error for probe " + str(probe.name) + " to deploy rules", "exception": str(e)}
     return {"message": "Probe " + probe.name + ' deployed rules successfully'}
@@ -71,12 +76,12 @@ def reload_probe(probe_name):
                 logger.info("task - reload_probe : " + str(probe_name))
                 return {"message": "Probe " + str(probe.name) + " reloaded successfully"}
             else:
-                job.update_job(str(response['errors']), 'Error')
+                job.update_job(repr_instance.repr(response['errors']), 'Error')
                 return {"message": "Error for probe " + str(probe.name) + " to reload",
                         "exception": str(response['errors'])}
         except Exception as e:
             logger.exception("Error for probe to reload")
-            job.update_job(str(e), 'Error')
+            job.update_job(repr_instance.repr(e), 'Error')
             send_notification("Probe " + str(probe.name), str(e))
             return {"message": "Error for probe " + str(probe.name) + " to reload", "exception": str(e)}
     else:
@@ -104,7 +109,7 @@ def install_probe(probe_name):
         response_start = probe.start()
     except Exception as e:
         logger.exception("Error for probe to install")
-        job.update_job(str(e), 'Error')
+        job.update_job(repr_instance.repr(e), 'Error')
         send_notification("Error for probe " + str(probe.name), str(e))
         return {"message": "Error for probe " + str(probe.name) + " to install", "exception": str(e)}
     if response_install['status'] and response_start['status'] and response_deploy_conf['status'] \
@@ -133,7 +138,7 @@ def update_probe(probe_name):
         response_restart = probe.restart()
     except Exception as e:
         logger.exception("Error for probe to install")
-        job.update_job(str(e), 'Error')
+        job.update_job(repr_instance.repr(e), 'Error')
         send_notification("Error for probe " + str(probe.name), str(e))
         return {"message": "Error for probe " + str(probe.name) + " to install", "exception": str(e)}
     if response_update['status'] and response_restart['status']:
@@ -161,7 +166,7 @@ def check_probe(probe_name):
             response_status = probe.status()
         except Exception as e:
             logger.exception("Error for probe to check status")
-            job.update_job(str(e), 'Error')
+            job.update_job(repr_instance.repr(e), 'Error')
             send_notification("Error for probe " + str(probe.name), str(e))
             return {"message": "Error for probe " + str(probe.name) + " to check status", "exception": str(e)}
         if response_status:
