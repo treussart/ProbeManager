@@ -76,11 +76,11 @@ if [[ "$CODACY_PROJECT_TOKEN" != "" && "$TRAVIS_JOB_NUM_MIN" = "1" ]]; then
     python probemanager/scripts/remove_in_file.py -p probemanager/bro/ -p probemanager.bro -r ProbeManager:ProbeManager/probemanager/bro -f coverage-bro.xml
     ( cd probemanager/bro && python-codacy-coverage -r ../../coverage-bro.xml -t $CODACY_BRO_TOKEN )
 fi
-if [ -f "$LOG_PATH"probemanager-error.log ]; then
+if [[ -f "$LOG_PATH"probemanager-error.log && "$TRAVIS" = true ]]; then
     echo "#### ERROR LOGS ####"
     cat "$LOG_PATH"probemanager-error.log
 fi
-if [ -f "$LOG_PATH"probemanager-celery.log ]; then
+if [[ -f "$LOG_PATH"probemanager-celery.log && "$TRAVIS" = true ]]; then
     echo "#### CELERY LOGS ####"
     cat "$LOG_PATH"probemanager-celery.log
 fi
