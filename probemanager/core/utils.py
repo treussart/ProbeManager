@@ -10,7 +10,6 @@ import psutil
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.db.utils import IntegrityError
-from django.db import transaction
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
 
 fernet_key = Fernet(settings.FERNET_KEY)
@@ -29,8 +28,7 @@ def create_reload_task(probe):
 
 def create_check_task(probe):
     try:
-        with transaction.atomic():
-            PeriodicTask.objects.get(name=probe.name + "_check_task")
+        PeriodicTask.objects.get(name=probe.name + "_check_task")
     except PeriodicTask.DoesNotExist:
         if probe.scheduled_check_crontab:
             PeriodicTask.objects.create(crontab=probe.scheduled_check_crontab,
