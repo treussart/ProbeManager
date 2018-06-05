@@ -1,5 +1,5 @@
-import logging
 import inspect
+import logging
 import os
 import shutil
 import time
@@ -39,12 +39,7 @@ class CommonMixin:
 
     @classmethod
     def get_nbr(cls, nbr):
-        try:
-            objects = cls.objects.all()[:nbr]
-        except IndexError:
-            cls.get_logger().warning('Tries to access an object that does not exist', exc_info=True)
-            return None
-        return objects
+        return cls.objects.all()[:nbr]
 
     @classmethod
     @contextmanager

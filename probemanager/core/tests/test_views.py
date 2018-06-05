@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 
-from core.models import Server, SshKey, OsSupported
+from core.models import Server
 
 
 class ViewsCoreTest(TestCase):
@@ -83,6 +83,7 @@ class ViewsCoreTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(' was added successfully', str(response.content))
         self.assertIn('Connection to the server Failed', str(response.content))
+        self.assertNotEqual(Server.objects.get(name='test-server').become_pass, 'test')
         self.assertEqual(len(Server.get_all()), 2)
         Server.get_by_id(1).delete()
         self.assertEqual(len(Server.get_all()), 1)

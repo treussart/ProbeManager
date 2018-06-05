@@ -15,14 +15,14 @@ def connection(server):
     client.connect(hostname=server.host,
                    username=server.remote_user,
                    port=server.remote_port,
-                   key_filename=settings.MEDIA_ROOT + "/" + server.ssh_private_key_file.file.name
+                   key_filename=settings.MEDIA_ROOT + "/" + server.ssh_private_key_file.file.name,
+                   passphrase=settings.SECRET_KEY,
                    )
     return client
 
 
 def execute(server, commands, become=False):
     result = dict()
-    # commands is a dict {'name of command': command}
     for command_name, command in commands.items():
         if become:
             if server.become:

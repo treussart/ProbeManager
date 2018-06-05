@@ -1,8 +1,10 @@
-from django.apps.registry import apps
-from jinja2 import Template
-from core.models import Probe
 import os
+
+from django.apps.registry import apps
 from django.conf import settings
+from jinja2 import Template
+
+from core.models import Probe
 
 
 def run(*args):
@@ -10,7 +12,7 @@ def run(*args):
 
 {{ name }}
 {% for char in range(name|length) -%}
-~
+=
 {%- endfor %}
 
 .. toctree::
@@ -36,4 +38,5 @@ def run(*args):
                             f_include.write(template_include_rendered)
                             f_include.close()
                             f.write(template_rendered)
+                            break
     exit(0)

@@ -1,9 +1,9 @@
 import argparse
 import sys
 from getpass import getpass
+from string import Template
 
 from cryptography.fernet import Fernet
-from string import Template
 
 template_smtp = """
 [EMAIL]

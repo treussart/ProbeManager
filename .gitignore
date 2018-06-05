@@ -175,3 +175,5 @@ probemanager/static/
 /probemanager/core/fixtures/test-core-secrets.json
 /probemanager/core/fixtures/test-core-secrets.ini
 secrets.tar
+/probemanager/file_test_success/
+/erl_crash.dump
