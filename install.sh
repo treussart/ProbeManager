@@ -158,6 +158,12 @@ set_git(){
 }
 
 install_virtualenv() {
+    python_major_version=$( python -c 'import platform; print(platform.python_version())' | cut -d. -f1 )
+    python_minor_version=$( python -c 'import platform; print(platform.python_version())' | cut -d. -f2 )
+    if [[ $python_major_version -ne 3 || $python_minor_version -lt 5 || $python_minor_version -gt 6 ]]; then
+        echo "Python version not allowed : "$( python -c 'import platform; print(platform.python_version())')
+        exit 1
+    fi
     if [[ "$VIRTUAL_ENV" = "" ]]; then
         if [ ! -d "$destfull"venv ]; then
             echo '## Create Virtualenv ##'
