@@ -44,7 +44,7 @@ Page to add a remote server :
 * Become method:
 * Become user: Often root, but you can use another user with fewer privileges than root.
 * Become pass: The password for the user you will want to become, if necessary.
-* Ssh private key file: The private key file to authenticate.
+* Ssh private key file: The private key file to authenticate (not encrypted, the tool will encrypt it).
 
 
 Page to add a SSH Key :
