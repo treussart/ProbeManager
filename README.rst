@@ -2,9 +2,9 @@
 ProbeManager
 ############
 
-.. image:: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
+.. image:: https://www.ko-fi.com/img/donate_sm.png
    :alt: Codacy Grade
-   :target: https://www.buymeacoffee.com/mtreussart
+   :target: https://ko-fi.com/T6T6GPP6
 
 |Licence| |Version|
 
