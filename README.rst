@@ -2,6 +2,10 @@
 ProbeManager
 ############
 
+.. image:: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
+   :alt: Codacy Grade
+   :target: https://www.buymeacoffee.com/mtreussart
+
 |Licence| |Version|
 
 
