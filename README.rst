@@ -3,7 +3,7 @@ ProbeManager
 ############
 
 .. image:: https://www.ko-fi.com/img/donate_sm.png
-   :alt: Codacy Grade
+   :alt: Donate
    :target: https://ko-fi.com/mtreussart
 
 |Licence| |Version|
