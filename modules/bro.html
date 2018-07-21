@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bro for Probe Manager &mdash; ProbeManager v1.2.1-102-g1c1b687-2018-07-21 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CheckCVE for Probe Manager" href="checkcve.html" />
+    <link rel="prev" title="Bro" href="index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ProbeManager
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.2.1-102-g1c1b687-2018-07-21
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">ProbeManager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">ProbeManager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Internals modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../internal/index.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internal/index.html#core">Core</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Bro</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bro for Probe Manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#presentation">Presentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compatible-version">Compatible version</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#administration-page-of-the-module">Administration Page of the module :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-bro-ids-instance">Page to add a Bro IDS instance :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-configuration">Page to add a configuration :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-bro-intel">Page to add a Bro Intel :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-critical-stack-client-on-a-bro-instance">Page to add a Critical Stack client on a Bro instance :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-of-an-instance">Page of an instance :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#checkcve">Checkcve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#suricata">Suricata</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ProbeManager</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Bro</a> &raquo;</li>
+        
+      <li>Bro for Probe Manager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/bro.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bro-for-probe-manager">
+<h1>Bro for Probe Manager<a class="headerlink" href="#bro-for-probe-manager" title="Permalink to this headline">¶</a></h1>
+<p><img alt="Licence" src="https://img.shields.io/github/license/treussart/ProbeManager_Bro.svg" /> <img alt="Version" src="https://img.shields.io/github/tag/treussart/ProbeManager_Bro.svg" /></p>
+<a class="reference external image-reference" href="https://www.codacy.com/app/treussart/ProbeManager_Bro?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=treussart/ProbeManager_Bro&amp;amp;utm_campaign=Badge_Grade"><img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/f5e3cb111fc949d08287c36ce4fa5798?branch=master" /></a>
+<a class="reference external image-reference" href="https://www.codacy.com/app/treussart/ProbeManager_Bro?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=treussart/ProbeManager_Bro&amp;amp;utm_campaign=Badge_Coverage"><img alt="Codacy Coverage" src="https://api.codacy.com/project/badge/Grade/f5e3cb111fc949d08287c36ce4fa5798?branch=master" /></a>
+<div class="section" id="presentation">
+<h2>Presentation<a class="headerlink" href="#presentation" title="Permalink to this headline">¶</a></h2>
+<p>Module for <a class="reference external" href="https://www.bro.org/">Bro IDS</a></p>
+<div class="section" id="compatible-version">
+<h3>Compatible version<a class="headerlink" href="#compatible-version" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Bro version 2.5.3 RELEASE</li>
+</ul>
+</div>
+<div class="section" id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Install and update Bro NIDS on a remote server.</li>
+<li>Configure the settings and test the configuration.</li>
+<li>Add, Delete, Update scripts and signatures.</li>
+<li>Test signatures and scripts compliance.</li>
+<li>Test signatures and scripts via Pcap.</li>
+<li>Add data to the <a class="reference external" href="https://www.bro.org/sphinx-git/scripts/base/frameworks/intel/main.bro.html">Intelligence Framework</a> (IP, URL, Domain …) possibility to import them in csv format.</li>
+<li>Group rules into groups and assign them to probes.</li>
+<li>Pull feeds from <a class="reference external" href="https://intel.criticalstack.com/">Critical Stack</a>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install with <a class="reference external" href="https://github.com/treussart/ProbeManager/">ProbeManager</a></p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="administration-page-of-the-module">
+<h3>Administration Page of the module :<a class="headerlink" href="#administration-page-of-the-module" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-index.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-index.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-index.png" style="width: 80%;" /></a>
+</div>
+<div class="section" id="page-to-add-a-bro-ids-instance">
+<h3>Page to add a Bro IDS instance :<a class="headerlink" href="#page-to-add-a-bro-ids-instance" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-bro-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-bro-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-bro-add.png" style="width: 70%;" /></a>
+<ul class="simple">
+<li>Name: Give a unique name for this instance, example: server-tap1_bro.</li>
+<li>Secure deployment: Specify if you want rules to be verified at each deployment.</li>
+<li>Scheduled rules deployment enabled: Enable scheduled deployment of rules.</li>
+<li>Scheduled check enabled: Enable instance monitoring. (Check if the probe is active)</li>
+<li>Server: Specify the server for the probe.</li>
+<li>Probe already installed: Specify if the probe is already installed.</li>
+<li>Rulesets: Choose the sets of rules that will be deployed on this probe.</li>
+<li>Configuration: Give the configuration of the probe.</li>
+</ul>
+</div>
+<div class="section" id="page-to-add-a-configuration">
+<h3>Page to add a configuration :<a class="headerlink" href="#page-to-add-a-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Allows you to modify the <a class="reference external" href="https://www.bro.org/sphinx/quickstart/index.html#a-minimal-starting-configuration">Bro configuration</a>.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-conf-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-conf-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-conf-add.png" style="width: 80%;" /></a>
+<ul class="simple">
+<li>broctl.cfg: Change the MailTo email address to a desired recipient and the LogRotationInterval to a desired log archival frequency.</li>
+<li>node.cfg: Set the right interface to monitor.</li>
+<li>networks.cfg: Comment out the default settings and add the networks that Bro will consider local to the monitored environment.</li>
+<li>local.bro: The main entry point for the default analysis configuration of a standalone Bro instance managed by BroControl.</li>
+</ul>
+</div>
+<div class="section" id="page-to-add-a-bro-intel">
+<h3>Page to add a Bro Intel :<a class="headerlink" href="#page-to-add-a-bro-intel" title="Permalink to this headline">¶</a></h3>
+<p>Allows you to add a <a class="reference external" href="https://www.bro.org/sphinx-git/frameworks/intel.html">Bro Intel</a>.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-intel-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-intel-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-intel-add.png" style="width: 60%;" /></a>
+<ul class="simple">
+<li>indicator: The value</li>
+<li>indicator_type: <a class="reference external" href="https://www.bro.org/sphinx-git/scripts/base/frameworks/intel/main.bro.html#type-Intel::Type">List of types available</a>.</li>
+<li>meta.source: An arbitrary string value representing the data source. This value is used as a unique key to identify a metadata record in the scope of a single intelligence item.</li>
+<li>meta.desc: A freeform description for the data.</li>
+<li>meta.url: A URL for more information about the data.</li>
+</ul>
+<p>Intels are deployed at each deployment of the rules by a Bro instance.</p>
+</div>
+<div class="section" id="page-to-add-a-critical-stack-client-on-a-bro-instance">
+<h3>Page to add a Critical Stack client on a Bro instance :<a class="headerlink" href="#page-to-add-a-critical-stack-client-on-a-bro-instance" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://criticalstack.zendesk.com/hc/en-us/articles/203408139-Full-Documentation-all-the-things-">Critical Stack client</a>.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-criticalstack-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-criticalstack-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/admin-criticalstack-add.png" style="width: 70%;" /></a>
+<ul class="simple">
+<li>API Key: API Key of your Sensor.</li>
+<li>Schedulled pull: Give a crontab to plan a pull of intel from feeds.</li>
+<li>Bros: Select Bro instances to apply.</li>
+</ul>
+</div>
+<div class="section" id="page-of-an-instance">
+<h3>Page of an instance :<a class="headerlink" href="#page-of-an-instance" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/instance-index.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/instance-index.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Bro/master/data/instance-index.png" style="width: 80%;" /></a>
+<ul class="simple">
+<li>‘Uptime’ Indicate the time elapsed since the last time the application was started.</li>
+<li>‘Refresh Instance Status’ is a button to know the status of the application (running or not).</li>
+<li>‘Update instance’, you need to edit the configuration file to change the version number you want.</li>
+<li>‘Deploy configuration’, copy configuration files to the remote server, and reload the Bro instance.</li>
+<li>‘Deploy rules’, copy rules (signatures and scripts) files to the remote server, and reload the Bro instance.</li>
+</ul>
+</div>
+<div class="section" id="miscellaneous">
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<p>The problem with Bro scripts is that they are not necessarily independent of each other, which is why it’s complicated to test them.
+To solve this problem, it necessary to test all the scripts of an instance at the same time.</p>
+<p>Warning: Bro default scripts are not in database.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="checkcve.html" class="btn btn-neutral float-right" title="CheckCVE for Probe Manager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Bro" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright GNU GPLv3.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v1.2.1-102-g1c1b687-2018-07-21',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

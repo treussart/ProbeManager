@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CheckCVE for Probe Manager &mdash; ProbeManager v1.2.1-102-g1c1b687-2018-07-21 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Suricata for Probe Manager" href="suricata.html" />
+    <link rel="prev" title="Bro for Probe Manager" href="bro.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ProbeManager
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.2.1-102-g1c1b687-2018-07-21
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">ProbeManager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">ProbeManager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Internals modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../internal/index.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internal/index.html#core">Core</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Bro</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html#checkcve">Checkcve</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">CheckCVE for Probe Manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#presentation">Presentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#administration-page-of-the-module">Administration Page of the module :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-an-instance-which-verifies-the-cve-of-the-software-of-a-remote-server">Page to add an instance which verifies the CVE of the software of a remote server :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-software-for-which-a-check-of-cve-can-be-made">Page to add a software for which a check of CVE can be made :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-of-an-instance">Page of an instance :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#suricata">Suricata</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ProbeManager</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Bro</a> &raquo;</li>
+        
+      <li>CheckCVE for Probe Manager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/checkcve.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="checkcve-for-probe-manager">
+<h1>CheckCVE for Probe Manager<a class="headerlink" href="#checkcve-for-probe-manager" title="Permalink to this headline">¶</a></h1>
+<p><img alt="Licence" src="https://img.shields.io/github/license/treussart/ProbeManager_CheckCVE.svg" /> <img alt="Version" src="https://img.shields.io/github/tag/treussart/ProbeManager_CheckCVE.svg" /></p>
+<a class="reference external image-reference" href="https://www.codacy.com/app/treussart/ProbeManager_CheckCVE?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=treussart/ProbeManager_CheckCVE&amp;amp;utm_campaign=Badge_Grade"><img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/64dc0388b44a4b75952d2b6ad3920c0c?branch=master" /></a>
+<a class="reference external image-reference" href="https://www.codacy.com/app/treussart/ProbeManager_CheckCVE?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=treussart/ProbeManager_CheckCVE&amp;amp;utm_campaign=Badge_Coverage"><img alt="Codacy Coverage" src="https://api.codacy.com/project/badge/Coverage/64dc0388b44a4b75952d2b6ad3920c0c?branch=master" /></a>
+<div class="section" id="presentation">
+<h2>Presentation<a class="headerlink" href="#presentation" title="Permalink to this headline">¶</a></h2>
+<p>Module to check the CVE of softwares</p>
+<div class="section" id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Check if there is a CVE for a software on a remote server.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install with <a class="reference external" href="https://github.com/treussart/ProbeManager/">ProbeManager</a></p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="administration-page-of-the-module">
+<h3>Administration Page of the module :<a class="headerlink" href="#administration-page-of-the-module" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-index.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-index.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-index.png" style="width: 80%;" /></a>
+</div>
+<div class="section" id="page-to-add-an-instance-which-verifies-the-cve-of-the-software-of-a-remote-server">
+<h3>Page to add an instance which verifies the CVE of the software of a remote server :<a class="headerlink" href="#page-to-add-an-instance-which-verifies-the-cve-of-the-software-of-a-remote-server" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-checkcve-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-checkcve-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-checkcve-add.png" style="width: 80%;" /></a>
+<ul class="simple">
+<li>Give a unique name for this instance, example: server-proxy_checkcve.</li>
+<li>Give a crontab for planning verifications of existing CVE.</li>
+<li>Specify the server on which the software to be monitored is located.</li>
+<li>Select the software to be monitored.</li>
+<li>Select a whitelist for which the software are not vulnerable.</li>
+</ul>
+</div>
+<div class="section" id="page-to-add-a-software-for-which-a-check-of-cve-can-be-made">
+<h3>Page to add a software for which a check of CVE can be made :<a class="headerlink" href="#page-to-add-a-software-for-which-a-check-of-cve-can-be-made" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-software-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-software-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/admin-software-add.png" style="width: 70%;" /></a>
+<ul class="simple">
+<li>Give the name of the software as seen by the OS. example: dovecot-imapd is the name of Dovecot on Debian.</li>
+<li>Specify for which operating systems the software is installed.</li>
+<li>Give its valid <a class="reference external" href="https://nvd.nist.gov/products/cpe">CPE</a> name.</li>
+<li>Specify how it was installed, by which package manager.</li>
+</ul>
+</div>
+<div class="section" id="page-of-an-instance">
+<h3>Page of an instance :<a class="headerlink" href="#page-of-an-instance" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/instance-index.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/instance-index.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_CheckCVE/master/data/instance-index.png" style="width: 80%;" /></a>
+<ul class="simple">
+<li>The button ‘Check CVE’: launch a CVE audit, check if there are known vulnerabilities on this instance.</li>
+<li>Under CVE found: There are links for CVE found. For Debian, it redirects to the security bug tracker. For others, it redirects to www.cvedetails.com.</li>
+</ul>
+</div>
+<div class="section" id="miscellaneous">
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<p>CVEs are registered with their <a class="reference external" href="https://cve.mitre.org/about/faqs.html#what_is_cve_id">CVE ID</a>, example : CVE-2016-6304</p>
+<p>Before putting a CVE in a whitelist, it is necessary to make sure that the patch is well applied to its version.
+There are sites that help you know this,for example for Debian : <a class="reference external" href="https://security-tracker.debian.org/tracker/">Security Bug Tracker</a></p>
+<p>On the home page, if the instance icon is red, there are known vulnerabilities on this instance. If the icon is green, there are none.</p>
+<p>All operating systems that have an SSH server are theoretically compatible, in fact as currently only the APT and Brew package manager are supported, this limits to Debian, Ubuntu and OSX.</p>
+<p>The knowledge base of CVE used is: <a class="reference external" href="https://cve.circl.lu">https://cve.circl.lu</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="suricata.html" class="btn btn-neutral float-right" title="Suricata for Probe Manager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bro.html" class="btn btn-neutral" title="Bro for Probe Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright GNU GPLv3.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v1.2.1-102-g1c1b687-2018-07-21',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

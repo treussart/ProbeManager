@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Core &mdash; ProbeManager v1.2.1-102-g1c1b687-2018-07-21 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bro" href="../modules/index.html" />
+    <link rel="prev" title="Rules" href="rules.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ProbeManager
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.2.1-102-g1c1b687-2018-07-21
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">ProbeManager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">ProbeManager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Internals modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Rules</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html#core">Core</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Core</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#presentation">Presentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#administration-page-of-the-module">Administration Page of the module :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-remote-server">Page to add a remote server :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-ssh-key">Page to add a SSH Key :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-see-results-of-asynchronous-jobs">Page to see results of asynchronous jobs :</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Bro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html#checkcve">Checkcve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html#suricata">Suricata</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ProbeManager</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Rules</a> &raquo;</li>
+        
+      <li>Core</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/internal/core.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="core">
+<h1>Core<a class="headerlink" href="#core" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="presentation">
+<h2>Presentation<a class="headerlink" href="#presentation" title="Permalink to this headline">¶</a></h2>
+<p>Application for general things about project and probe.</p>
+<div class="section" id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Jobs. To see the results of asynchronous tasks.</li>
+<li>List of the operating systems supported by this application.</li>
+<li>Server, remote server.</li>
+<li>Ssh Key, to authenticate on the remote server.</li>
+<li>General configuration of this application. (Pushbullet API KEY, MISP API KEY, SPLUNK HOST …)</li>
+<li>Generic Probe.</li>
+<li>Generic Probe configuration.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="administration-page-of-the-module">
+<h3>Administration Page of the module :<a class="headerlink" href="#administration-page-of-the-module" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-index.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-index.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-index.png" style="width: 80%;" /></a>
+</div>
+<div class="section" id="page-to-add-a-remote-server">
+<h3>Page to add a remote server :<a class="headerlink" href="#page-to-add-a-remote-server" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-server-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-server-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-server-add.png" style="width: 70%;" /></a>
+<ul class="simple">
+<li>Name: Give a unique name for this server, example: server-tap1.</li>
+<li>Host: The IP address or Hostname.</li>
+<li>Os: The Operating system (Debian or Ubuntu).</li>
+<li>Remote User: The user used for the connection ‘ssh <a class="reference external" href="mailto:user&#37;&#52;&#48;hostname">user<span>&#64;</span>hostname</a>’</li>
+<li>Remote port: The remote port ‘ssh -p 22’.</li>
+<li>Become: True or False, if the user needs to elevate his privileges to be root.</li>
+<li>Become method:</li>
+<li>Become user: Often root, but you can use another user with fewer privileges than root.</li>
+<li>Become pass: The password for the user you will want to become, if necessary.</li>
+<li>Ssh private key file: The private key file to authenticate (not encrypted, the tool will encrypt it).</li>
+</ul>
+</div>
+<div class="section" id="page-to-add-a-ssh-key">
+<h3>Page to add a SSH Key :<a class="headerlink" href="#page-to-add-a-ssh-key" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-sshkey-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-sshkey-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-sshkey-add.png" style="width: 60%;" /></a>
+<ul class="simple">
+<li>Name: A name for this key. (In the API, the name is the name of the file)</li>
+<li>File: The file to upload. (In the API, the file is the text file of the private key)</li>
+</ul>
+<p>The SSH key must not be encrypted, the tool will encrypt it with the secret key of Django.</p>
+</div>
+<div class="section" id="page-to-see-results-of-asynchronous-jobs">
+<h3>Page to see results of asynchronous jobs :<a class="headerlink" href="#page-to-see-results-of-asynchronous-jobs" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-jobs-full.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-jobs-full.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager/master/probemanager/core/data/admin-jobs-full.png" style="width: 90%;" /></a>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../modules/index.html" class="btn btn-neutral float-right" title="Bro" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rules.html" class="btn btn-neutral" title="Rules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright GNU GPLv3.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v1.2.1-102-g1c1b687-2018-07-21',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

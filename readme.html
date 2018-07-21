@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ProbeManager &mdash; ProbeManager v1.2.1-102-g1c1b687-2018-07-21 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="Welcome to ProbeManager’s documentation!" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> ProbeManager
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.2.1-102-g1c1b687-2018-07-21
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">ProbeManager</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ProbeManager</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#presentation">Presentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#operating-system">Operating System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieve-the-project">Retrieve the project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install">Install</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-developer">For developer :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-production">For Production :</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#launch-the-tests">Launch the tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#add-a-submodule">Add a submodule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Internals modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internal/index.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internal/index.html#core">Core</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Bro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html#checkcve">Checkcve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html#suricata">Suricata</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ProbeManager</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ProbeManager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="probemanager">
+<h1>ProbeManager<a class="headerlink" href="#probemanager" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://ko-fi.com/mtreussart"><img alt="Donate" src="https://www.ko-fi.com/img/donate_sm.png" /></a>
+<p><img alt="Licence" src="https://img.shields.io/github/license/treussart/ProbeManager.svg" /> <img alt="Version" src="https://img.shields.io/github/tag/treussart/ProbeManager.svg" /></p>
+<a class="reference external image-reference" href="https://app.codacy.com/app/treussart/ProbeManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=treussart/ProbeManager&amp;utm_campaign=badger"><img alt="Codacy Grade" src="https://api.codacy.com/project/badge/Grade/afc2ab5226584ac3b594eb09ebcc2ccc?branch=master" /></a>
+<a class="reference external image-reference" href="https://www.codacy.com/app/treussart/ProbeManager?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=treussart/ProbeManager&amp;amp;utm_campaign=Badge_Coverage"><img alt="Codacy Coverage" src="https://api.codacy.com/project/badge/Coverage/8c16c475964d4db58ce0c7de0d03abbf?branch=master" /></a>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Status</th>
+<th class="head">Operating system</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://travis-ci.org/treussart/ProbeManager"><img alt="Build_Status" src="https://travis-ci.org/treussart/ProbeManager.svg?branch=master" /></a></td>
+<td>Linux x86_64</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="presentation">
+<h2>Presentation<a class="headerlink" href="#presentation" title="Permalink to this headline">¶</a></h2>
+<p>It is common to see that many IDS (intrusion and detection system), including the software and its rules are not updated regularly. This can be explained by the fact the software and rule management is often complicated, which can be a particular problem for small and medium sized enterprises that normally lack system security expertise and full time operators to supervise their respective IDS. This finding encouraged me to develop an application (ProbeManager) that will better manage network and machine detection probes on a system.</p>
+<p>ProbeManager is an application that centralizes the management of intrusion detection systems. The purpose of ProbeManager is to simplify the deployment of detection probes and to put together all of their functionalities in one single place. ProbeManager also allows you to check the status of the probes and to be notified whenever there is a problem or dysfunction. ProbeManager is not a SIEM (security information and event management), therefore, it doesn’t display the probe outputs (alerts, logs, etc…)</p>
+<p>ProbeManager is currently compatible with NIDS Suricata and Bro, and it will soon also be compatible with OSSEC.</p>
+<div class="section" id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Search rules in all probes.</li>
+<li>List installed probes and their status (Running or not, uptime …).</li>
+<li>Install, update probe.</li>
+<li>Start, stop, reload and restart probe.</li>
+<li>Push, Email notifications (change of status, …).</li>
+<li>API Restfull.</li>
+<li>See all asynchronous jobs.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<img alt="Deployement example of Probemanager in a network" src="https://raw.githubusercontent.com/treussart/ProbeManager/master/docs/data/Deployement_example_of_Probemanager_in_a_network.png" />
+<img alt="Deployement example of Probemanager in a VPS" src="https://raw.githubusercontent.com/treussart/ProbeManager/master/docs/data/Deployement_example_of_Probemanager_in_a_VPS.png" />
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="operating-system">
+<h3>Operating System<a class="headerlink" href="#operating-system" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="34%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">OS</th>
+<th class="head">prod</th>
+<th class="head">test</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>OSX 12+</td>
+<td>&#160;</td>
+<td>X</td>
+</tr>
+<tr class="row-odd"><td>Debian 9</td>
+<td>X</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>Ubuntu 14</td>
+<td>X</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<p>OSX 12+ (Only for project development), Debian stable and Ubuntu 14.04+ are Supported and tested.</p>
+</div>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Python3.5+</li>
+<li>Pip</li>
+<li>Rabbitmq-server (installed with install script)</li>
+<li>Postgresql (installed with install script)</li>
+</ul>
+</div>
+<div class="section" id="retrieve-the-project">
+<h3>Retrieve the project<a class="headerlink" href="#retrieve-the-project" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://github.com/treussart/ProbeManager/">Source code on Github</a></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git clone --recursive https://github.com/treussart/ProbeManager.git
+</pre></div>
+</div>
+</div>
+<div class="section" id="install">
+<h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="for-developer">
+<h4>For developer :<a class="headerlink" href="#for-developer" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./install.sh
+./start.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="for-production">
+<h4>For Production :<a class="headerlink" href="#for-production" title="Permalink to this headline">¶</a></h4>
+<p>Default destination path : /usr/local/share</p>
+<p>For same destination path : .</p>
+<p>Be sure to have the write rights in the destination path.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./install.sh prod <span class="o">[</span>destination path<span class="o">]</span>
+</pre></div>
+</div>
+<p>With Django server (not recommended) :</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>destination path<span class="o">]</span>./start.sh prod
+</pre></div>
+</div>
+<p>With Apache (Only for Debian) :</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>http://localhost
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="launch-the-tests">
+<h3>Launch the tests<a class="headerlink" href="#launch-the-tests" title="Permalink to this headline">¶</a></h3>
+<p>(Only for Dev or Travis) :</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./test.sh
+</pre></div>
+</div>
+<p>Open the file with a web browser :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coverage_html</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="add-a-submodule">
+<h2>Add a submodule<a class="headerlink" href="#add-a-submodule" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git submodule add -b master --name suricata https://github.com/treussart/ProbeManager_Suricata.git probemanager/suricata
+</pre></div>
+</div>
+<p>Modules must respect a few rules:</p>
+<ul class="simple">
+<li>A file version.txt (generated by install script)</li>
+<li>A file README.rst</li>
+<li>A folder api with a variable ‘urls_to_register’ into urls.py (Optional)</li>
+<li>An install script : install.sh (Optional)</li>
+<li>A script for initializing the database : init_db.sh (Optional)</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>Respect standard : reStructuredText (RST).</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>venv/bin/python probemanager/manage.py runscript generate_doc --settings<span class="o">=</span>probemanager.settings.dev
+</pre></div>
+</div>
+<p>Open the file with a web browser :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span><span class="o">/</span><span class="n">_build</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>Or retrieve the full documentation <a class="reference external" href="https://treussart.github.io/ProbeManager/">here</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to ProbeManager’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright GNU GPLv3.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'v1.2.1-102-g1c1b687-2018-07-21',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

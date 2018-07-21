@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Suricata for Probe Manager &mdash; ProbeManager v1.2.1-102-g1c1b687-2018-07-21 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="CheckCVE for Probe Manager" href="checkcve.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ProbeManager
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.2.1-102-g1c1b687-2018-07-21
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">ProbeManager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">ProbeManager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Internals modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../internal/index.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internal/index.html#core">Core</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Bro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#checkcve">Checkcve</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html#suricata">Suricata</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Suricata for Probe Manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#presentation">Presentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compatible-version">Compatible version</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#administration-page-of-the-module">Administration Page of the module :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-suricata-ids-instance">Page to add a Suricata IDS instance :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-configuration">Page to add a configuration :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-value-in-blacklist">Page to add a value in Blacklist :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-reputation-on-an-ip">Page to add a reputation on an IP :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-add-a-value-in-classtype">Page to add a value in Classtype :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-of-an-instance">Page of an instance :</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ProbeManager</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Bro</a> &raquo;</li>
+        
+      <li>Suricata for Probe Manager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/suricata.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="suricata-for-probe-manager">
+<h1>Suricata for Probe Manager<a class="headerlink" href="#suricata-for-probe-manager" title="Permalink to this headline">¶</a></h1>
+<p><img alt="Licence" src="https://img.shields.io/github/license/treussart/ProbeManager_Suricata.svg" /> <img alt="Version" src="https://img.shields.io/github/tag/treussart/ProbeManager_Suricata.svg" /></p>
+<a class="reference external image-reference" href="https://www.codacy.com/app/treussart/ProbeManager_Suricata?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=treussart/ProbeManager_Suricata&amp;amp;utm_campaign=Badge_Grade"><img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/8ed3ca514eaa4aeb8941b082273444f3?branch=master" /></a>
+<a class="reference external image-reference" href="https://www.codacy.com/app/treussart/ProbeManager_Suricata?utm_source=github.com&amp;amp;utm_medium=referral&amp;amp;utm_content=treussart/ProbeManager_Suricata&amp;amp;utm_campaign=Badge_Coverage"><img alt="Codacy Coverage" src="https://api.codacy.com/project/badge/Coverage/8ed3ca514eaa4aeb8941b082273444f3?branch=master" /></a>
+<div class="section" id="presentation">
+<h2>Presentation<a class="headerlink" href="#presentation" title="Permalink to this headline">¶</a></h2>
+<p>Module for <a class="reference external" href="https://suricata-ids.org/">Suricata IDS</a></p>
+<div class="section" id="compatible-version">
+<h3>Compatible version<a class="headerlink" href="#compatible-version" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>Suricata version 4.0.4 RELEASE</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Install and update Suricata NIDS on a remote server.</li>
+<li>Configure the settings and test the configuration.</li>
+<li>Add, Delete, Update scripts and signatures.</li>
+<li>Tests signatures compliance.</li>
+<li>Tests signatures if generates alert via Pcap.</li>
+<li>Add rules via HTTP or via upload file.</li>
+<li>Schedule rules update via HTTP (EmergingThreat …)</li>
+<li>Group rules into groups and assign this to probes.</li>
+<li>Possibility to add into blacklist an IP, Domain or MD5.</li>
+<li>Implements IP reputation.</li>
+<li>Ability to have scripts called via rules as a filter condition in signatures and to write arbitrary output.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install with <a class="reference external" href="https://github.com/treussart/ProbeManager/">ProbeManager</a></p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="administration-page-of-the-module">
+<h3>Administration Page of the module :<a class="headerlink" href="#administration-page-of-the-module" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-index.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-index.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-index.png" style="width: 80%;" /></a>
+</div>
+<div class="section" id="page-to-add-a-suricata-ids-instance">
+<h3>Page to add a Suricata IDS instance :<a class="headerlink" href="#page-to-add-a-suricata-ids-instance" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-suricata-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-suricata-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-suricata-add.png" style="width: 80%;" /></a>
+<ul class="simple">
+<li>Name: Give a unique name for this instance, example: server-tap1_suricata.</li>
+<li>Secure deployment: Specify if you want rules to be verified at each deployment.</li>
+<li>Scheduled rules deployment enabled: Enable scheduled deployment of rules.</li>
+<li>Scheduled check enabled: Enable instance monitoring. (Check if the probe is active)</li>
+<li>Server: Specify the server for the probe.</li>
+<li>Probe already installed: Specify if the probe is already installed.</li>
+<li>Rulesets: Choose the sets of rules that will be deployed on this probe.</li>
+<li>Configuration: Give the configuration of the probe.</li>
+</ul>
+</div>
+<div class="section" id="page-to-add-a-configuration">
+<h3>Page to add a configuration :<a class="headerlink" href="#page-to-add-a-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Allows you to modify the <a class="reference external" href="http://suricata.readthedocs.io/en/latest/configuration/index.html">Suricata configuration</a>.</p>
+<div class="section" id="simple">
+<h4>Simple<a class="headerlink" href="#simple" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-conf-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-conf-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-conf-add.png" style="width: 70%;" /></a>
+<ul class="simple">
+<li>Under ‘Conf advanced’: there are the most important settings of Suricata to simplify the configuration. This application will generate the YAML file.</li>
+</ul>
+</div>
+<div class="section" id="advanced">
+<h4>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-conf-add-advanced.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-conf-add-advanced.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-conf-add-advanced.png" style="width: 90%;" /></a>
+<ul class="simple">
+<li>‘Conf advanced’: Allows to edit directly the YAML file.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="page-to-add-a-value-in-blacklist">
+<h3>Page to add a value in Blacklist :<a class="headerlink" href="#page-to-add-a-value-in-blacklist" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-blacklist-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-blacklist-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-blacklist-add.png" style="width: 80%;" /></a>
+<ul class="simple">
+<li>Type: (IP, MD5, HOST). For IP and HOST, a signature is created automatically. For <a class="reference external" href="http://suricata.readthedocs.io/en/latest/rules/file-keywords.html?highlight=MD5#filemd5">MD5</a>, a text file is stored with a single md5 per line.</li>
+<li>Value: The value for this type.</li>
+<li>Comment: To keep track of information.</li>
+<li>Rulesets: Choose the sets of rules that will contain this blacklist.</li>
+</ul>
+</div>
+<div class="section" id="page-to-add-a-reputation-on-an-ip">
+<h3>Page to add a reputation on an IP :<a class="headerlink" href="#page-to-add-a-reputation-on-an-ip" title="Permalink to this headline">¶</a></h3>
+<p>Allows you to use the <a class="reference external" href="http://suricata.readthedocs.io/en/latest/reputation/index.html">IP Reputation of Suricata</a>.</p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-ipreputation-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-ipreputation-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-ipreputation-add.png" style="width: 55%;" /></a>
+<ul class="simple">
+<li>Ip: Specify an IP address.</li>
+<li>Category: Specify a Category (short name and long description).</li>
+<li>Reputation score: The reputation score is the confidence that this IP is in the specified category, represented by a number between 1 and 127 (0 means no data).</li>
+</ul>
+</div>
+<div class="section" id="page-to-add-a-value-in-classtype">
+<h3>Page to add a value in Classtype :<a class="headerlink" href="#page-to-add-a-value-in-classtype" title="Permalink to this headline">¶</a></h3>
+<p>Allows to modify and create new <a class="reference external" href="http://suricata.readthedocs.io/en/latest/rules/meta.html?#classtype">Classtype</a></p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-classtype-add.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-classtype-add.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/admin-classtype-add.png" style="width: 60%;" /></a>
+<ul class="simple">
+<li>Name: (IP, MD5, HOST). For IP and HOST, a signature is created automatically, for <a class="reference external" href="http://suricata.readthedocs.io/en/latest/rules/file-keywords.html?highlight=MD5#filemd5">MD5</a>, it store a text file with a single md5 per line.</li>
+<li>Description: A description for this classtype.</li>
+<li>Security Level: A priority of 1 (high) is the most severe and 4 (very low) is the least severe.</li>
+</ul>
+</div>
+<div class="section" id="page-of-an-instance">
+<h3>Page of an instance :<a class="headerlink" href="#page-of-an-instance" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/instance-index.png"><img alt="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/instance-index.png" class="align-center" src="https://raw.githubusercontent.com/treussart/ProbeManager_Suricata/master/data/instance-index.png" style="width: 80%;" /></a>
+<ul class="simple">
+<li>‘Uptime’: indicate the time elapsed since the last time the application was started.</li>
+<li>‘Refresh Instance Status’: is a button to know the status of the application (running or not).</li>
+<li>‘Update instance’: you need to edit the configuration file to change the version number you want.</li>
+<li>‘Deploy configuration’: copy configuration files to the remote server, and reload the Suricata instance.</li>
+<li>‘Deploy rules’: copy rule (signatures and scripts) files to the remote server, and reload the Suricata instance.</li>
+<li>‘Deploy reputation list’: copy the <a class="reference external" href="http://suricata.readthedocs.io/en/latest/reputation/index.html">IP and Category reputation</a> files to the remote server. The probe is not reloaded because if categories change, Suricata should be restarted. And Restarting can result in packet loss, which is why it is up to the user to intentionally restart.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="checkcve.html" class="btn btn-neutral" title="CheckCVE for Probe Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright GNU GPLv3.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'v1.2.1-102-g1c1b687-2018-07-21',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
