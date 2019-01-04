@@ -15,6 +15,6 @@ psutil==5.4.6
 psycopg2-binary==2.7.5
 pushbullet.py==0.11.0
 pymisp==2.4.92.1
-PyYAML==3.12
+PyYAML==4.2b1
 Sphinx==1.7.5
 sphinx-rtd-theme==0.4.0
